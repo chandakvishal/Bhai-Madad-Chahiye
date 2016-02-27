@@ -1,24 +1,25 @@
 package com.bhaimadadchahiye.club.login;
 
-import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_FULLNAME;
-
+import com.bhaimadadchahiye.club.R;
 import com.bhaimadadchahiye.club.library.DatabaseHandler;
 import com.bhaimadadchahiye.club.library.UserFunctions;
-
-import com.bhaimadadchahiye.club.R;
+import com.bhaimadadchahiye.club.location.GPSTracker;
 
 import java.util.HashMap;
+
+import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_FULLNAME;
 
 public class MyMainActivity extends AppCompatActivity {
     Button btnLogout;
     Button changePassBtn;
+    double latitude, longitude;
 
     /**
      * Called when the activity is first created.
@@ -70,6 +71,18 @@ public class MyMainActivity extends AppCompatActivity {
  * Sets user first name and last name in text view.
  **/
         final TextView login = (TextView) findViewById(R.id.textwelcome);
-        login.setText("Welcome, "+user.get(KEY_FULLNAME));
+        login.setText("Welcome, " + user.get(KEY_FULLNAME));
+
+        GPSTracker gps = new GPSTracker(this);
+        if (gps.canGetLocation()) {
+            latitude = gps.getLatitude(); // returns latitude
+            longitude = gps.getLongitude(); // returns longitude
+            gps.stopUsingGPS();
+        }
+        else {
+            gps.showSettingsAlert();
+        }
+        final TextView gpsLocation = (TextView) findViewById(R.id.textView4);
+        gpsLocation.setText(latitude + " " + longitude);
     }
 }

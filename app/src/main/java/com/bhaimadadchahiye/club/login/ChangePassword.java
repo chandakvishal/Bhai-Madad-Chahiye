@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bhaimadadchahiye.club.R;
 
@@ -50,8 +51,8 @@ public class ChangePassword extends Activity {
         setContentView(R.layout.change_password);
 
         cancel = (Button) findViewById(R.id.cancelBtn);
-        cancel.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View arg0){
+        cancel.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
 
                 Intent login = new Intent(getApplicationContext(), MyMainActivity.class);
 
@@ -67,17 +68,22 @@ public class ChangePassword extends Activity {
         changePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NetAsync(view);
+                if (newPass.getText().toString().length() < 8) {
+                    Toast.makeText(getApplicationContext(),
+                            "Hey, aren't you worried about your weak password!!!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    NetAsync(view);
+                }
             }
         });
     }
 
-    private class NetCheck extends AsyncTask<String, Void, Boolean>
-    {
+    private class NetCheck extends AsyncTask<String, Void, Boolean> {
         private ProgressDialog nDialog;
 
         @Override
-        protected void onPreExecute(){
+        protected void onPreExecute() {
             super.onPreExecute();
             nDialog = new ProgressDialog(ChangePassword.this);
             nDialog.setMessage("Loading..");
@@ -88,7 +94,7 @@ public class ChangePassword extends Activity {
         }
 
         @Override
-        protected Boolean doInBackground(String... args){
+        protected Boolean doInBackground(String... args) {
             ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo netInfo = cm.getActiveNetworkInfo();
             if (netInfo != null && netInfo.isConnected()) {
@@ -110,14 +116,14 @@ public class ChangePassword extends Activity {
             }
             return false;
         }
-        @Override
-        protected void onPostExecute(Boolean th){
 
-            if(th == true){
+        @Override
+        protected void onPostExecute(Boolean th) {
+
+            if (th == true) {
                 nDialog.dismiss();
                 new ProcessRegister().execute();
-            }
-            else{
+            } else {
                 nDialog.dismiss();
                 alert.setText("Error in Network Connection");
             }
@@ -128,7 +134,8 @@ public class ChangePassword extends Activity {
 
         private ProgressDialog pDialog;
 
-        String newPass,email;
+        String newPass, email;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -188,8 +195,10 @@ public class ChangePassword extends Activity {
 
             }
 
-        }}
-    public void NetAsync(View view){
+        }
+    }
+
+    public void NetAsync(View view) {
         new NetCheck().execute();
     }
 }

@@ -17,6 +17,7 @@
     <string name="register_name">Enter your full name</string>
     <string name="username">Choose a Username</string>
     <string name="phoneNumber">Enter your Phone Number</string>
+    <string name="google_app_id">740202396106</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
