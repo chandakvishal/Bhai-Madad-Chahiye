@@ -21,8 +21,7 @@
 
         <activity
             android:name=".start.SplashScreen"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -44,7 +43,7 @@
         <activity android:label="@string/app_name" android:name="com.bhaimadadchahiye.club.login.Registered">
         </activity>
 
-        <activity android:label="Bhai Madad Chahiye User Panel" android:name="com.bhaimadadchahiye.club.login.MyMainActivity">
+        <activity android:label="Bhai Madad Chahiye" android:name="com.bhaimadadchahiye.club.login.MyMainActivity">
         </activity>
 
         <activity android:label="@string/forgot_password" android:name="com.bhaimadadchahiye.club.login.PasswordReset">

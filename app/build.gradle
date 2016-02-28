@@ -22,6 +22,9 @@ android {
 
 repositories {
     mavenCentral()
+    maven {
+        url "https://jitpack.io"
+    }
 }
 
 dependencies {
@@ -31,4 +34,5 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     compile 'org.apache.directory.studio:org.apache.commons.io:2.4'
     compile 'com.google.android.gms:play-services:8.4.0'
+    compile 'com.github.scottyab:showhidepasswordedittext:0.5.1'
 }

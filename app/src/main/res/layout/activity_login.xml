@@ -1,4 +1,5 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -45,24 +46,23 @@
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:singleLine="true" />
-
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/prompt_password"
-                    android:imeActionId="@+id/login"
-                    android:imeActionLabel="@string/action_sign_in_short"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:singleLine="true" />
+                    <EditText
+                        android:id="@+id/password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/prompt_password"
+                        android:imeActionId="@+id/login"
+                        android:imeActionLabel="@string/action_sign_in_short"
+                        android:imeOptions="actionUnspecified"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:singleLine="true"/>
 
             </android.support.design.widget.TextInputLayout>
 
@@ -80,22 +80,22 @@
     </ScrollView>
 
     <TextView
+        android:id="@+id/loginErrorMsg"
         android:layout_width="fill_parent"
         android:layout_height="56dp"
-        android:id="@+id/loginErrorMsg"
-        android:textColor="#000000"
+        android:layout_alignParentLeft="true"
         android:layout_below="@+id/forgotPass"
-        android:layout_alignParentLeft="true"/>
+        android:textColor="#000000" />
 
     <Button
         android:id="@+id/forgotPass"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/login_form"
+        android:backgroundTint="@color/White"
         android:gravity="center"
         android:text="@string/forgot_password"
-        android:textColor="#0b84aa"
-        android:backgroundTint="@color/White"
-        android:layout_below="@+id/login_form"
-        android:layout_alignParentEnd="true" />
+        android:textColor="#0b84aa" />
 
 </RelativeLayout>
