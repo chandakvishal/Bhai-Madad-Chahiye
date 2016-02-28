@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -69,6 +70,9 @@ public class Register extends AppCompatActivity {
         inputPassword = (EditText) findViewById(R.id.register_password);
         btnRegister = (Button) findViewById(R.id.registerBtn);
         registerErrorMsg = (TextView) findViewById(R.id.register_error);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         /**
          * Register Button click event.

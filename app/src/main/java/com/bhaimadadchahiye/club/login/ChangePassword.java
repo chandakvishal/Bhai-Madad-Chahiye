@@ -11,6 +11,7 @@ import android.os.Bundle;
 
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -49,6 +50,9 @@ public class ChangePassword extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.change_password);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         cancel = (Button) findViewById(R.id.cancelBtn);
         cancel.setOnClickListener(new View.OnClickListener() {

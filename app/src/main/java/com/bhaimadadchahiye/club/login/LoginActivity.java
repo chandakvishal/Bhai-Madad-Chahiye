@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -46,7 +47,6 @@ public class LoginActivity extends AppCompatActivity {
     private EditText inputPass;
 
     Button btnLogin;
-    Button Btnregister;
     Button passreset;
 
     private TextView loginErrorMsg;
@@ -55,9 +55,12 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         // Set up the login form.
         inputEmail = (AutoCompleteTextView) findViewById(R.id.email);
-        Btnregister = (Button) findViewById(R.id.email_sign_up_button);
         btnLogin = (Button) findViewById(R.id.email_sign_in_button);
         passreset = (Button) findViewById(R.id.forgotPass);
         loginErrorMsg = (TextView) findViewById(R.id.loginErrorMsg);
@@ -71,20 +74,15 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent myIntent = new Intent(view.getContext(), PasswordReset.class);
                 startActivityForResult(myIntent, 0);
-                finish();
+                overridePendingTransition(R.animator.animation1, R.animator.animation3);
+
+                //finish();
             }
         });
 
         /**
          * To change the activity to register new id activity
          */
-        Btnregister.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Intent myIntent = new Intent(view.getContext(), Register.class);
-                startActivityForResult(myIntent, 0);
-                finish();
-            }
-        });
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
 

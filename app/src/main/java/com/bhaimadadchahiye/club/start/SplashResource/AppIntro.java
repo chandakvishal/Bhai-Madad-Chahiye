@@ -8,9 +8,9 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -28,12 +28,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-public abstract class AppIntro extends AppCompatActivity {
+public abstract class AppIntro extends FragmentActivity {
     public final static int DEFAULT_COLOR = 1;
     private static final int DEFAULT_SCROLL_DURATION_FACTOR = 1;
 
     //REMEMBER SIGN-IN is SKIP Button
-    //REMEMBER SIGN-UP is DONE Button
+    //REMEMBER SIGN-UP is DONE/NEXT Button
 
     protected PagerAdapter mPagerAdapter;
     protected AppIntroViewPager pager;
@@ -85,8 +85,7 @@ public abstract class AppIntro extends AppCompatActivity {
         }
 
         skipButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(@NonNull View v) {
+            public void onClick(View v) {
                 if (isVibrateOn) {
                     mVibrator.vibrate(vibrateIntensity);
                 }
@@ -95,8 +94,7 @@ public abstract class AppIntro extends AppCompatActivity {
         });
 
         nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(@NonNull View v) {
+            public void onClick(View v) {
                 if (isVibrateOn) {
                     mVibrator.vibrate(vibrateIntensity);
                 }
@@ -105,8 +103,7 @@ public abstract class AppIntro extends AppCompatActivity {
         });
 
         doneButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(@NonNull View v) {
+            public void onClick(View v) {
                 if (isVibrateOn) {
                     mVibrator.vibrate(vibrateIntensity);
                 }

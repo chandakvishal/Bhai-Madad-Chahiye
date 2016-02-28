@@ -10,6 +10,7 @@ import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -42,6 +43,9 @@ public class PasswordReset extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.password_reset);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         Button login = (Button) findViewById(R.id.backToLoginBtn);
         login.setOnClickListener(new View.OnClickListener() {

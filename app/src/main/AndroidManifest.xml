@@ -29,16 +29,16 @@
             </intent-filter>
         </activity>
 
-        <activity android:label="Bhai Madad Chahiye Intro" android:name="com.bhaimadadchahiye.club.start.DefaultIntro">
+        <activity
+            android:label="Bhai Madad Chahiye"
+            android:name="com.bhaimadadchahiye.club.start.SplashScr"
+            android:theme="@android:style/Theme.WithActionBar">
         </activity>
 
-        <activity android:label="Bhai Madad Chahiye Intro" android:name="com.bhaimadadchahiye.club.start.SplashScr">
+        <activity android:label="@string/action_sign_in" android:name="com.bhaimadadchahiye.club.login.LoginActivity">
         </activity>
 
-        <activity android:label="Bhai Madad Chahiye User Panel" android:name="com.bhaimadadchahiye.club.login.LoginActivity">
-        </activity>
-
-        <activity android:label="@string/app_name" android:name="com.bhaimadadchahiye.club.login.Register">
+        <activity android:label="@string/create_account" android:name="com.bhaimadadchahiye.club.login.Register">
         </activity>
 
         <activity android:label="@string/app_name" android:name="com.bhaimadadchahiye.club.login.Registered">
@@ -47,10 +47,10 @@
         <activity android:label="Bhai Madad Chahiye User Panel" android:name="com.bhaimadadchahiye.club.login.MyMainActivity">
         </activity>
 
-        <activity android:label="@string/app_name" android:name="com.bhaimadadchahiye.club.login.PasswordReset">
+        <activity android:label="@string/forgot_password" android:name="com.bhaimadadchahiye.club.login.PasswordReset">
         </activity>
 
-        <activity android:label="@string/app_name" android:name="com.bhaimadadchahiye.club.login.ChangePassword">
+        <activity android:label="@string/change_password" android:name="com.bhaimadadchahiye.club.login.ChangePassword">
         </activity>
     </application>
 

@@ -7,6 +7,7 @@
         android:id="@+id/view_pager"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
+
     </com.bhaimadadchahiye.club.start.SplashResource.AppIntroViewPager>
         <LinearLayout
             android:id="@+id/bottom"
