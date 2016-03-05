@@ -3,7 +3,7 @@ package com.bhaimadadchahiye.club.constants;
 /**
  * Constants used to generate SQL Query
  */
-    public class DB_Constants {
+public class DB_Constants {
 
     public static String KEY_SUCCESS = "success";
 

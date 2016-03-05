@@ -23,13 +23,14 @@ public class SampleSlide extends Fragment {
 
     private int layoutResId;
 
-    public SampleSlide() {}
+    public SampleSlide() {
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(getArguments() != null && getArguments().containsKey(ARG_LAYOUT_RES_ID))
+        if (getArguments() != null && getArguments().containsKey(ARG_LAYOUT_RES_ID))
             layoutResId = getArguments().getInt(ARG_LAYOUT_RES_ID);
     }
 

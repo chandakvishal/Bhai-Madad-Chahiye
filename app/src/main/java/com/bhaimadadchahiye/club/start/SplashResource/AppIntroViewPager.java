@@ -51,20 +51,14 @@ public class AppIntroViewPager extends ViewPager {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        if (checkPagingState(event)) {
-            return false;
-        }
+        return !checkPagingState(event) && super.onInterceptTouchEvent(event);
 
-        return super.onInterceptTouchEvent(event);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (checkPagingState(event)) {
-            return false;
-        }
+        return !checkPagingState(event) && super.onTouchEvent(event);
 
-        return super.onTouchEvent(event);
     }
 
     private boolean checkPagingState(MotionEvent event) {
@@ -92,6 +86,7 @@ public class AppIntroViewPager extends ViewPager {
             lockPage = getCurrentItem();
         }
     }
+
     private ScrollerCustomDuration mScroller = null;
 
     /**

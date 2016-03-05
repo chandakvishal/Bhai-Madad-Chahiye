@@ -58,7 +58,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     /**
      * Storing user details in database
-     * */
+     */
     public void addUser(String fname, String phone, String email, String uname, String uid, String created_at) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -77,16 +77,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     /**
      * Getting user data from database
-     * */
-    public HashMap getUserDetails(){
-        HashMap user = new HashMap();
+     */
+    public HashMap<String, String> getUserDetails() {
+        HashMap<String, String> user = new HashMap<>();
         String selectQuery = "SELECT  * FROM " + TABLE_LOGIN;
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         // Move to first row
         cursor.moveToFirst();
-        if(cursor.getCount() > 0){
+        if (cursor.getCount() > 0) {
             user.put(KEY_FULLNAME, cursor.getString(1));
             user.put(KEY_PHONE, cursor.getString(2));
             user.put(KEY_EMAIL, cursor.getString(3));
@@ -103,7 +103,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     /**
      * Getting user login status
      * return true if rows are there in table
-     * */
+     */
     public int getRowCount() {
         String countQuery = "SELECT  * FROM " + TABLE_LOGIN;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -119,8 +119,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     /**
      * Re create database
      * Delete all tables and create them again
-     * */
-    public void resetTables(){
+     */
+    public void resetTables() {
         SQLiteDatabase db = this.getWritableDatabase();
         // Delete All Rows
         db.delete(TABLE_LOGIN, null, null);

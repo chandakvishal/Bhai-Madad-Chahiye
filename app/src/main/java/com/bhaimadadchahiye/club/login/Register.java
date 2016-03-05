@@ -6,28 +6,31 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.bhaimadadchahiye.club.MyMainActivity;
 import com.bhaimadadchahiye.club.R;
+import com.bhaimadadchahiye.club.library.DatabaseHandler;
+import com.bhaimadadchahiye.club.library.UserFunctions;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-
-import com.bhaimadadchahiye.club.library.DatabaseHandler;
-import com.bhaimadadchahiye.club.library.UserFunctions;
 
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_CREATED_AT;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_EMAIL;
@@ -40,25 +43,30 @@ import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_USERNAME;
 
 public class Register extends AppCompatActivity {
 
-    /**
-     * Defining layout items.
-     **/
-
     EditText inputFullName;
     EditText inputPhoneNumber;
     EditText inputUsername;
     EditText inputEmail;
     EditText inputPassword;
     Button btnRegister;
-    TextView registerErrorMsg;
+    private Snackbar snackbar;
 
     /**
      * Called when the activity is first created.
      */
+    @SuppressWarnings("deprecation")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_layout);
+
+        final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id
+                .coordinatorLayout);
+        snackbar = Snackbar.make(coordinatorLayout, "Invalid Credentials", Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundColor(getResources().getColor(R.color.Black));
+        TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(getResources().getColor(R.color.YellowGreen));
 
         /**
          * Defining all layout items
@@ -69,38 +77,39 @@ public class Register extends AppCompatActivity {
         inputEmail = (EditText) findViewById(R.id.register_email);
         inputPassword = (EditText) findViewById(R.id.register_password);
         btnRegister = (Button) findViewById(R.id.registerBtn);
-        registerErrorMsg = (TextView) findViewById(R.id.register_error);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         /**
          * Register Button click event.
-         * A Toast is set to alert when the fields are empty.
-         * Another toast is set to alert Username must be 5 characters.
+         * A Snackbar is set to alert when the fields are empty.
+         * Another Snackbar is set to alert Username must be 5 characters.
          **/
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                try {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    //noinspection ConstantConditions
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 if ((!inputUsername.getText().toString().equals("")) && (!inputPassword.getText().toString().equals("")) && (!inputFullName.getText().toString().equals("")) && (!inputPhoneNumber.getText().toString().equals("")) && (!inputEmail.getText().toString().equals(""))) {
                     if (inputUsername.getText().toString().length() > 4) {
-                        if(inputPassword.getText().toString().length() > 6) {
-//                            NetAsync(view);
-                            new ProcessRegister().execute();
-                        }
-                        else {
-                            Toast.makeText(getApplicationContext(),
-                                    "Hey, aren't you worried about your weak password!!!", Toast.LENGTH_SHORT).show();
+                        if (inputPassword.getText().toString().length() > 6) {
+                            NetAsync(view);
+                        } else {
+                            snackbar.setText("Hey, Weak Password!!!").show();
                         }
                     } else {
-                        Toast.makeText(getApplicationContext(),
-                                "Username should be minimum 5 characters", Toast.LENGTH_SHORT).show();
+                        snackbar.setText("Username should be minimum 5 characters").show();
                     }
                 } else {
-                    Toast.makeText(getApplicationContext(),
-                            "One or more fields are empty", Toast.LENGTH_SHORT).show();
+                    snackbar.setText("One or more fields are empty").show();
                 }
             }
         });
@@ -141,11 +150,7 @@ public class Register extends AppCompatActivity {
                     if (urlc.getResponseCode() == 200) {
                         return true;
                     }
-                } catch (MalformedURLException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
@@ -156,12 +161,12 @@ public class Register extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean th) {
 
-            if (th == true) {
+            if (th) {
                 nDialog.dismiss();
                 new ProcessRegister().execute();
             } else {
                 nDialog.dismiss();
-                registerErrorMsg.setText("Error in Network Connection");
+                snackbar.setText("Error in Network Connection").show();
             }
         }
     }
@@ -187,19 +192,16 @@ public class Register extends AppCompatActivity {
             password = inputPassword.getText().toString();
             pDialog = new ProgressDialog(Register.this);
             pDialog.setTitle("Contacting Servers");
-            pDialog.setMessage("Registering ...");
+            pDialog.setMessage("Registering....");
             pDialog.setIndeterminate(false);
-            pDialog.setCancelable(true);
+            pDialog.setCancelable(false);
             pDialog.show();
         }
 
         @Override
         protected JSONObject doInBackground(String... args) {
-
             UserFunctions userFunction = new UserFunctions();
-            JSONObject json = userFunction.registerUser(fname, phone, email, uname, password);
-
-            return json;
+            return userFunction.registerUser(fname, phone, email, uname, password);
         }
 
         @Override
@@ -209,7 +211,6 @@ public class Register extends AppCompatActivity {
              **/
             try {
                 if (json.getString(KEY_SUCCESS) != null) {
-                    registerErrorMsg.setText("");
                     String res = json.getString(KEY_SUCCESS);
 
                     String red = json.getString(KEY_ERROR);
@@ -217,16 +218,12 @@ public class Register extends AppCompatActivity {
                     if (Integer.parseInt(res) == 1) {
                         pDialog.setTitle("Getting Data");
                         pDialog.setMessage("Loading Info");
-
-                        registerErrorMsg.setText("Successfully Registered");
-
                         DatabaseHandler db = new DatabaseHandler(getApplicationContext());
                         JSONObject json_user = json.getJSONObject("user");
 
                         /**
                          * Removes all the previous data in the SQlite database
                          **/
-
                         UserFunctions logout = new UserFunctions();
                         logout.logoutUser(getApplicationContext());
                         db.addUser(json_user.getString(KEY_FULLNAME), json_user.getString(KEY_PHONE), json_user.getString(KEY_EMAIL), json_user.getString(KEY_USERNAME), json_user.getString(KEY_UID), json_user.getString(KEY_CREATED_AT));
@@ -234,34 +231,32 @@ public class Register extends AppCompatActivity {
                          * Stores registered data in SQlite Database
                          * Launch Registered screen
                          **/
-
-                        Intent registered = new Intent(getApplicationContext(), Registered.class);
-
+                        Thread.sleep(1000);
+                        pDialog.dismiss();
+                        final Intent registered = new Intent(getApplicationContext(), MyMainActivity.class);
                         /**
                          * Close all views before launching Registered screen
                          **/
+                        registered.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        registered.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        registered.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         registered.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        pDialog.dismiss();
                         startActivity(registered);
-
                         finish();
                     } else if (Integer.parseInt(red) == 2) {
                         pDialog.dismiss();
-                        registerErrorMsg.setText("User already exists");
+                        snackbar.setText("User already exists").show();
                     } else if (Integer.parseInt(red) == 3) {
                         pDialog.dismiss();
-                        registerErrorMsg.setText("Invalid Email id");
+                        snackbar.setText("Invalid Email id").show();
                     }
-
                 } else {
                     pDialog.dismiss();
                     Log.d("JSON Registration", String.valueOf(json));
-                    registerErrorMsg.setText("Error occured in registration");
+                    snackbar.setText("Error occurred in registration").show();
                 }
-
-            } catch (JSONException e) {
+            } catch (JSONException | InterruptedException e) {
                 e.printStackTrace();
-
             }
         }
     }

@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.bhaimadadchahiye.club.R;
+
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_EMAIL;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_CREATED_AT;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_FULLNAME;
@@ -34,18 +35,18 @@ public class Registered extends AppCompatActivity {
 
         DatabaseHandler db = new DatabaseHandler(getApplicationContext());
 
-        HashMap user = new HashMap();
+        HashMap user;
         user = db.getUserDetails();
 
         /**
          * Displays the registration details in Text view
          **/
 
-        final TextView fname = (TextView)findViewById(R.id.fullName);
-        final TextView lname = (TextView)findViewById(R.id.phoneNumber);
-        final TextView uname = (TextView)findViewById(R.id.username);
-        final TextView email = (TextView)findViewById(R.id.email);
-        final TextView created_at = (TextView)findViewById(R.id.regat);
+        final TextView fname = (TextView) findViewById(R.id.fullName);
+        final TextView lname = (TextView) findViewById(R.id.phoneNumber);
+        final TextView uname = (TextView) findViewById(R.id.username);
+        final TextView email = (TextView) findViewById(R.id.email);
+        final TextView created_at = (TextView) findViewById(R.id.regat);
         fname.setText((CharSequence) user.get(KEY_FULLNAME));
         lname.setText((CharSequence) user.get(KEY_PHONE));
         uname.setText((CharSequence) user.get(KEY_USERNAME));

@@ -1,11 +1,13 @@
 package com.bhaimadadchahiye.club.library;
 
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
@@ -13,27 +15,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.media.MediaMuxer;
-import android.util.Log;
 
 import javax.net.ssl.HttpsURLConnection;
 
 public class JSONParser {
 
-    static InputStream is = null;
     static JSONObject jObj = null;
     static String response = "";
 
@@ -48,7 +35,7 @@ public class JSONParser {
         try {
             // defaultHttpClient
             URL url = new URL(login_url);
-            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setReadTimeout(15000);
             httpURLConnection.setConnectTimeout(15000);
             httpURLConnection.setRequestMethod("POST");
@@ -60,7 +47,7 @@ public class JSONParser {
             bufferedWriter.flush();
             bufferedWriter.close();
             outputStream.close();
-            int responseCode=httpURLConnection.getResponseCode();
+            int responseCode = httpURLConnection.getResponseCode();
             response = "";
             if (responseCode == HttpsURLConnection.HTTP_OK) {
                 InputStream in = new BufferedInputStream(httpURLConnection.getInputStream());
@@ -81,10 +68,10 @@ public class JSONParser {
         return jObj;
     }
 
-    private String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException{
+    private String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException {
         StringBuilder result = new StringBuilder();
         boolean first = true;
-        for(Map.Entry<String, String> entry : params.entrySet()){
+        for (Map.Entry<String, String> entry : params.entrySet()) {
             if (first)
 
                 first = false;

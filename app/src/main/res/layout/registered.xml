@@ -1,134 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_gravity="center"
+        android:singleLine="false"
         android:text="Congratulations. You have Successfully Registered..."
-        android:textColor="#000000"
-        android:id="@+id/textView" android:layout_gravity="center"
-        android:textSize="18dp"
         android:textAlignment="center"
-        android:singleLine="false" />
-
-    <TextView
-        android:layout_width="200dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#000000"
-        android:layout_height="40dp"
-        android:text="Your Registration Details"
+        android:textSize="18dp" />
+
+    <TextView
         android:id="@+id/textView2"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true"/>
-
-    <TextView
-        android:layout_width="125dp"
-        android:textColor="#2d2d2d"
+        android:layout_width="200dp"
         android:layout_height="40dp"
-        android:text="Name"
-        android:id="@+id/textView3"
-        android:layout_below="@+id/textView2"
-        android:layout_alignParentLeft="true"
-        android:textSize="20dp"/>
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:text="Your Registration Details"
+        android:textColor="#000000" />
 
     <TextView
+        android:id="@+id/textView3"
+        android:layout_width="125dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView2"
+        android:text="Name"
+        android:textColor="#2d2d2d"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/fullName"
         android:layout_width="250dp"
         android:layout_height="40dp"
-        android:id="@+id/fullName"
-        android:textColor="#000000"
-        android:layout_alignTop="@+id/textView3"
         android:layout_alignParentRight="true"
-        android:textSize="18dp"/>
+        android:layout_alignTop="@+id/textView3"
+        android:textColor="#000000"
+        android:textSize="18dp" />
 
     <TextView
+        android:id="@+id/textView5"
         android:layout_width="125dp"
         android:layout_height="40dp"
+        android:layout_alignEnd="@+id/textView7"
+        android:layout_below="@+id/textView3"
         android:text="Phone"
         android:textColor="#2d2d2d"
-        android:id="@+id/textView5"
-        android:textSize="20dp"
-        android:layout_below="@+id/textView3"
-        android:layout_alignEnd="@+id/textView7" />
+        android:textSize="20dp" />
 
     <TextView
+        android:id="@+id/phoneNumber"
         android:layout_width="250dp"
         android:layout_height="40dp"
-        android:id="@+id/phoneNumber"
-        android:textColor="#000000"
-        android:textSize="18dp"
         android:layout_above="@+id/email"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:textColor="#000000"
+        android:textSize="18dp" />
 
     <TextView
+        android:id="@+id/textView7"
         android:layout_width="125dp"
         android:layout_height="40dp"
-        android:text="E-mail"
-        android:textColor="#2d2d2d"
-        android:id="@+id/textView7"
         android:layout_below="@+id/textView5"
         android:layout_toLeftOf="@+id/textView2"
-        android:textSize="20dp"/>
+        android:text="E-mail"
+        android:textColor="#2d2d2d"
+        android:textSize="20dp" />
 
     <TextView
+        android:id="@+id/email"
         android:layout_width="250dp"
         android:layout_height="40dp"
-        android:id="@+id/email"
-        android:textColor="#000000"
-        android:layout_below="@+id/textView5"
         android:layout_alignLeft="@+id/fullName"
-        android:textSize="18dp"/>
+        android:layout_below="@+id/textView5"
+        android:textColor="#000000"
+        android:textSize="18dp" />
 
     <TextView
+        android:id="@+id/textView9"
         android:layout_width="125dp"
         android:layout_height="40dp"
+        android:layout_below="@+id/textView7"
         android:text="Username"
         android:textColor="#2d2d2d"
-        android:id="@+id/textView9"
-        android:layout_below="@+id/textView7"
-        android:textSize="20dp"
-        android:textIsSelectable="false"/>
+        android:textIsSelectable="false"
+        android:textSize="20dp" />
 
     <TextView
+        android:id="@+id/username"
         android:layout_width="250dp"
         android:layout_height="40dp"
-        android:id="@+id/username"
-        android:textColor="#000000"
-        android:layout_below="@+id/email"
         android:layout_alignLeft="@+id/email"
-        android:textSize="18dp"/>
+        android:layout_below="@+id/email"
+        android:textColor="#000000"
+        android:textSize="18dp" />
 
     <TextView
+        android:id="@+id/textView11"
         android:layout_width="125dp"
         android:layout_height="40dp"
-        android:text="Registered at"
-        android:id="@+id/textView11"
-        android:textColor="#2d2d2d"
-        android:textSize="20dp"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/textView9"
-        android:layout_alignParentStart="true" />
+        android:text="Registered at"
+        android:textColor="#2d2d2d"
+        android:textSize="20dp" />
 
     <TextView
+        android:id="@+id/regat"
         android:layout_width="250dp"
         android:layout_height="40dp"
-        android:id="@+id/regat"
-        android:textColor="#000000"
-        android:textSize="15dp"
+        android:layout_alignParentEnd="true"
         android:layout_below="@+id/username"
-        android:layout_alignParentEnd="true" />
+        android:textColor="#000000"
+        android:textSize="15dp" />
 
     <Button
+        android:id="@+id/backToLoginBtn"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:text="Back to Login"
-        android:id="@+id/backToLoginBtn"
-        android:textColor="#000000"
-        android:textSize="13dp"
-        android:layout_below="@+id/textView11"
-        android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:backgroundTint="@color/CornflowerBlue"/>
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView11"
+        android:backgroundTint="@color/CornflowerBlue"
+        android:text="Back to Login"
+        android:textColor="#000000"
+        android:textSize="13dp" />
 
 </RelativeLayout>

@@ -8,48 +8,58 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.bhaimadadchahiye.club.MyMainActivity;
 import com.bhaimadadchahiye.club.R;
+import com.bhaimadadchahiye.club.library.DatabaseHandler;
+import com.bhaimadadchahiye.club.library.UserFunctions;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 
-import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_SUCCESS;
-import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_ERROR;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_EMAIL;
-
-import com.bhaimadadchahiye.club.library.DatabaseHandler;
-import com.bhaimadadchahiye.club.library.UserFunctions;
+import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_ERROR;
+import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_SUCCESS;
 
 public class ChangePassword extends Activity {
 
     EditText newPass;
-    TextView alert;
     Button changePass;
     Button cancel;
+
+    private Snackbar snackbar;
 
     /**
      * Called when the activity is first created.
      */
+    @SuppressWarnings("deprecation")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.change_password);
+
+        final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id
+                .coordinatorLayout);
+        snackbar = Snackbar.make(coordinatorLayout, "Invalid Credentials", Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundColor(getResources().getColor(R.color.Black));
+        TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(getResources().getColor(R.color.YellowGreen));
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -66,17 +76,21 @@ public class ChangePassword extends Activity {
         });
 
         newPass = (EditText) findViewById(R.id.newPass);
-        alert = (TextView) findViewById(R.id.alertpass);
         changePass = (Button) findViewById(R.id.changePassBtn);
 
         changePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (newPass.getText().toString().length() < 8) {
-                    Toast.makeText(getApplicationContext(),
-                            "Hey, aren't you worried about your weak password!!!", Toast.LENGTH_SHORT).show();
+                try {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    //noinspection ConstantConditions
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                else {
+                if (newPass.getText().toString().length() < 8) {
+                    snackbar.setText("Hey, Weak Password!!!").show();
+                } else {
                     NetAsync(view);
                 }
             }
@@ -110,11 +124,7 @@ public class ChangePassword extends Activity {
                     if (urlc.getResponseCode() == 200) {
                         return true;
                     }
-                } catch (MalformedURLException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
@@ -124,12 +134,12 @@ public class ChangePassword extends Activity {
         @Override
         protected void onPostExecute(Boolean th) {
 
-            if (th == true) {
+            if (th) {
                 nDialog.dismiss();
                 new ProcessRegister().execute();
             } else {
                 nDialog.dismiss();
-                alert.setText("Error in Network Connection");
+                snackbar.setText("Error in Network Connection").show();
             }
         }
     }
@@ -145,7 +155,7 @@ public class ChangePassword extends Activity {
             super.onPreExecute();
             DatabaseHandler db = new DatabaseHandler(getApplicationContext());
 
-            HashMap user = new HashMap();
+            HashMap user;
             user = db.getUserDetails();
 
             newPass = ChangePassword.this.newPass.getText().toString();
@@ -174,7 +184,7 @@ public class ChangePassword extends Activity {
 
             try {
                 if (json.getString(KEY_SUCCESS) != null) {
-                    alert.setText("");
+
                     String res = json.getString(KEY_SUCCESS);
                     String red = json.getString(KEY_ERROR);
 
@@ -183,14 +193,14 @@ public class ChangePassword extends Activity {
                          * Dismiss the process dialog
                          **/
                         pDialog.dismiss();
-                        alert.setText("Your Password is successfully changed.");
+                        snackbar.setText("Your Password is successfully changed.").show();
 
                     } else if (Integer.parseInt(red) == 2) {
                         pDialog.dismiss();
-                        alert.setText("Invalid old Password.");
+                        snackbar.setText("Invalid old Password.").show();
                     } else {
                         pDialog.dismiss();
-                        alert.setText("Error occured in changing Password.");
+                        snackbar.setText("Error occurred in changing Password.").show();
                     }
 
                 }

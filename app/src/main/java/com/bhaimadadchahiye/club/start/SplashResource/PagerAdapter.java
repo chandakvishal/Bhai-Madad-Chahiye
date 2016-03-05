@@ -25,10 +25,4 @@ class PagerAdapter extends FragmentPagerAdapter {
         return this.fragments.size();
     }
 
-    @NonNull
-    public List<Fragment> getFragments() {
-        return fragments;
-    }
-
-
 }

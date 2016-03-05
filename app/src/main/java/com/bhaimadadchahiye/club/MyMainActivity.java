@@ -1,17 +1,20 @@
-package com.bhaimadadchahiye.club.login;
+package com.bhaimadadchahiye.club;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.bhaimadadchahiye.club.R;
 import com.bhaimadadchahiye.club.library.DatabaseHandler;
 import com.bhaimadadchahiye.club.library.UserFunctions;
 import com.bhaimadadchahiye.club.location.GPSTracker;
+import com.bhaimadadchahiye.club.login.ChangePassword;
+import com.bhaimadadchahiye.club.start.SplashScreen;
 
 import java.util.HashMap;
 
@@ -21,6 +24,7 @@ public class MyMainActivity extends AppCompatActivity {
     Button btnLogout;
     Button changePassBtn;
     double latitude, longitude;
+    private Boolean exit = false;
 
     /**
      * Called when the activity is first created.
@@ -65,7 +69,7 @@ public class MyMainActivity extends AppCompatActivity {
 
                 UserFunctions logout = new UserFunctions();
                 logout.logoutUser(getApplicationContext());
-                Intent login = new Intent(getApplicationContext(), LoginActivity.class);
+                Intent login = new Intent(getApplicationContext(), SplashScreen.class);
                 login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(login);
                 finish();
@@ -75,18 +79,38 @@ public class MyMainActivity extends AppCompatActivity {
  * Sets user first name and last name in text view.
  **/
         final TextView login = (TextView) findViewById(R.id.textwelcome);
-        login.setText("Welcome, " + user.get(KEY_FULLNAME));
+        String welcomeText = "Welcome, " + user.get(KEY_FULLNAME);
+        login.setText(welcomeText);
 
         GPSTracker gps = new GPSTracker(this);
         if (gps.canGetLocation()) {
             latitude = gps.getLatitude(); // returns latitude
             longitude = gps.getLongitude(); // returns longitude
             gps.stopUsingGPS();
-        }
-        else {
+        } else {
             gps.showSettingsAlert();
         }
         final TextView gpsLocation = (TextView) findViewById(R.id.textView4);
-        gpsLocation.setText(latitude + " " + longitude);
+        String latlong = latitude + " " + longitude;
+        gpsLocation.setText(latlong);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (exit) {
+            finish(); // finish activity
+        } else {
+            Toast.makeText(this, "Press Back again to Exit.",
+                    Toast.LENGTH_SHORT).show();
+            exit = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    exit = false;
+                }
+            }, 3 * 1000);
+
+        }
+
     }
 }

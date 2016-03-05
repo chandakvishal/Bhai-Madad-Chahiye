@@ -7,7 +7,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
@@ -16,28 +17,29 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bhaimadadchahiye.club.R;
+import com.bhaimadadchahiye.club.library.UserFunctions;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
-import com.bhaimadadchahiye.club.library.UserFunctions;
-import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_SUCCESS;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_ERROR;
+import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_SUCCESS;
 
 public class PasswordReset extends AppCompatActivity {
 
     EditText email;
-    TextView alert;
     Button resetPass;
+
+    private Snackbar snackbar;
 
     /**
      * Called when the activity is first created.
      */
+    @SuppressWarnings("deprecation")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,16 +49,25 @@ public class PasswordReset extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id
+                .coordinatorLayout);
+
+        snackbar = Snackbar.make(coordinatorLayout, "Invalid Credentials", Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundColor(getResources().getColor(R.color.Black));
+        TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(getResources().getColor(R.color.YellowGreen));
+
         Button login = (Button) findViewById(R.id.backToLoginBtn);
         login.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent myIntent = new Intent(view.getContext(), LoginActivity.class);
                 startActivityForResult(myIntent, 0);
                 finish();
-            }});
+            }
+        });
 
         email = (EditText) findViewById(R.id.passResetEmail);
-        alert = (TextView) findViewById(R.id.alert);
         resetPass = (Button) findViewById(R.id.resetPassBtn);
         resetPass.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +83,7 @@ public class PasswordReset extends AppCompatActivity {
         private ProgressDialog nDialog;
 
         @Override
-        protected void onPreExecute(){
+        protected void onPreExecute() {
             super.onPreExecute();
             nDialog = new ProgressDialog(PasswordReset.this);
             nDialog.setMessage("Loading..");
@@ -83,7 +94,7 @@ public class PasswordReset extends AppCompatActivity {
         }
 
         @Override
-        protected Boolean doInBackground(String... args){
+        protected Boolean doInBackground(String... args) {
 
             ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo netInfo = cm.getActiveNetworkInfo();
@@ -96,27 +107,23 @@ public class PasswordReset extends AppCompatActivity {
                     if (urlc.getResponseCode() == 200) {
                         return true;
                     }
-                } catch (MalformedURLException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
             return false;
 
         }
-        @Override
-        protected void onPostExecute(Boolean th){
 
-            if(th == true){
+        @Override
+        protected void onPostExecute(Boolean th) {
+
+            if (th) {
                 nDialog.dismiss();
                 new ProcessRegister().execute();
-            }
-            else{
+            } else {
                 nDialog.dismiss();
-                alert.setText("Error in Network Connection");
+                snackbar.setText("Error in Network Connection").show();
             }
         }
     }
@@ -126,6 +133,7 @@ public class PasswordReset extends AppCompatActivity {
         private ProgressDialog pDialog;
 
         String forgotPassword;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -143,8 +151,7 @@ public class PasswordReset extends AppCompatActivity {
         protected JSONObject doInBackground(String... args) {
 
             UserFunctions userFunction = new UserFunctions();
-            JSONObject json = userFunction.forPass(forgotPassword);
-            return json;
+            return userFunction.forPass(forgotPassword);
 
         }
 
@@ -155,30 +162,29 @@ public class PasswordReset extends AppCompatActivity {
              **/
             try {
                 if (json.getString(KEY_SUCCESS) != null) {
-                    alert.setText("");
                     String res = json.getString(KEY_SUCCESS);
                     String red = json.getString(KEY_ERROR);
 
-                    if(Integer.parseInt(res) == 1){
+                    if (Integer.parseInt(res) == 1) {
                         pDialog.dismiss();
-                        alert.setText("A recovery email is sent to you, see it for more details.");
+                        snackbar.setText("A recovery email is sent to you, see it for more details.").show();
 
-                    }
-                    else if (Integer.parseInt(red) == 2)
-                    {    pDialog.dismiss();
-                        alert.setText("Your email does not exist in our database.");
-                    }
-                    else {
+                    } else if (Integer.parseInt(red) == 2) {
                         pDialog.dismiss();
-                        alert.setText("Error occured in changing Password");
+                        snackbar.setText("Your email does not exist in our database.").show();
+                    } else {
+                        pDialog.dismiss();
+                        snackbar.setText("Error occured in changing Password").show();
                     }
-
-                }}
-            catch (JSONException e) {
+                }
+            } catch (JSONException e) {
                 e.printStackTrace();
 
             }
-        }}
-    public void NetAsync(View view){
+        }
+    }
+
+    public void NetAsync(View view) {
         new NetCheck().execute();
-    }}
+    }
+}

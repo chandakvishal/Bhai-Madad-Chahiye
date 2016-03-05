@@ -34,7 +34,7 @@ public class GPSTracker extends Service implements LocationListener {
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
 
     // The minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 60; // 1 minute
 
     // Declaring a Location Manager
     protected LocationManager locationManager;
@@ -58,7 +58,7 @@ public class GPSTracker extends Service implements LocationListener {
                     .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
             if (!isGPSEnabled && !isNetworkEnabled) {
-                // no network provider is enabled
+                showSettingsAlert();
             } else {
                 this.canGetLocation = true;
                 // First get location from Network Provider
@@ -69,7 +69,7 @@ public class GPSTracker extends Service implements LocationListener {
                                 MIN_TIME_BW_UPDATES,
                                 MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
                     } catch (SecurityException e) {
-                        Log.e("PERMISSION_EXCEPTION","PERMISSION_NOT_GRANTED");
+                        Log.e("PERMISSION_EXCEPTION", "PERMISSION_NOT_GRANTED");
                     }
                     Log.d("Network", "Network");
                     if (locationManager != null) {
@@ -77,7 +77,7 @@ public class GPSTracker extends Service implements LocationListener {
                             location = locationManager
                                     .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                         } catch (SecurityException e) {
-                            Log.e("PERMISSION_EXCEPTION","PERMISSION_NOT_GRANTED");
+                            Log.e("PERMISSION_EXCEPTION", "PERMISSION_NOT_GRANTED");
                         }
                         if (location != null) {
                             latitude = location.getLatitude();
@@ -94,7 +94,7 @@ public class GPSTracker extends Service implements LocationListener {
                                     MIN_TIME_BW_UPDATES,
                                     MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
                         } catch (SecurityException e) {
-                            Log.e("PERMISSION_EXCEPTION","PERMISSION_NOT_GRANTED");
+                            Log.e("PERMISSION_EXCEPTION", "PERMISSION_NOT_GRANTED");
                         }
                         Log.d("GPS Enabled", "GPS Enabled");
                         if (locationManager != null) {
@@ -102,7 +102,7 @@ public class GPSTracker extends Service implements LocationListener {
                                 location = locationManager
                                         .getLastKnownLocation(LocationManager.GPS_PROVIDER);
                             } catch (SecurityException e) {
-                                Log.e("PERMISSION_EXCEPTION","PERMISSION_NOT_GRANTED");
+                                Log.e("PERMISSION_EXCEPTION", "PERMISSION_NOT_GRANTED");
                             }
                             if (location != null) {
                                 latitude = location.getLatitude();
@@ -123,18 +123,18 @@ public class GPSTracker extends Service implements LocationListener {
     /**
      * Stop using GPS listener
      * Calling this function will stop using GPS in your app
-     * */
-    public void stopUsingGPS(){
-        if(locationManager != null){
+     */
+    public void stopUsingGPS() {
+        if (locationManager != null) {
             locationManager.removeUpdates(GPSTracker.this);
         }
     }
 
     /**
      * Function to get latitude
-     * */
-    public double getLatitude(){
-        if(location != null){
+     */
+    public double getLatitude() {
+        if (location != null) {
             latitude = location.getLatitude();
         }
 
@@ -144,9 +144,9 @@ public class GPSTracker extends Service implements LocationListener {
 
     /**
      * Function to get longitude
-     * */
-    public double getLongitude(){
-        if(location != null){
+     */
+    public double getLongitude() {
+        if (location != null) {
             longitude = location.getLongitude();
         }
 
@@ -156,8 +156,9 @@ public class GPSTracker extends Service implements LocationListener {
 
     /**
      * Function to check GPS/wifi enabled
+     *
      * @return boolean
-     * */
+     */
     public boolean canGetLocation() {
         return this.canGetLocation;
     }
@@ -165,8 +166,8 @@ public class GPSTracker extends Service implements LocationListener {
     /**
      * Function to show settings alert dialog
      * On pressing Settings button will lauch Settings Options
-     * */
-    public void showSettingsAlert(){
+     */
+    public void showSettingsAlert() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
 
         // Setting Dialog Title
@@ -177,7 +178,7 @@ public class GPSTracker extends Service implements LocationListener {
 
         // On pressing Settings button
         alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog,int which) {
+            public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 mContext.startActivity(intent);
             }
@@ -214,5 +215,4 @@ public class GPSTracker extends Service implements LocationListener {
     public IBinder onBind(Intent arg0) {
         return null;
     }
-
 }

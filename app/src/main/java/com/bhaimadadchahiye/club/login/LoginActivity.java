@@ -8,15 +8,18 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.bhaimadadchahiye.club.MyMainActivity;
 import com.bhaimadadchahiye.club.R;
 import com.bhaimadadchahiye.club.library.DatabaseHandler;
 import com.bhaimadadchahiye.club.library.UserFunctions;
@@ -26,7 +29,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_CREATED_AT;
@@ -49,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
     Button btnLogin;
     Button passreset;
 
-    private TextView loginErrorMsg;
+    private Snackbar snackbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +61,20 @@ public class LoginActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id
+                .coordinatorLayout);
+        snackbar = Snackbar.make(coordinatorLayout, "Invalid Credentials", Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        //noinspection deprecation
+        snackBarView.setBackgroundColor(getResources().getColor(R.color.Black));
+        TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+        //noinspection deprecation
+        textView.setTextColor(getResources().getColor(R.color.YellowGreen));
+
         // Set up the login form.
         inputEmail = (AutoCompleteTextView) findViewById(R.id.email);
         btnLogin = (Button) findViewById(R.id.email_sign_in_button);
         passreset = (Button) findViewById(R.id.forgotPass);
-        loginErrorMsg = (TextView) findViewById(R.id.loginErrorMsg);
         inputPass = (EditText) findViewById(R.id.password);
         //populateAutoComplete();
 
@@ -71,7 +82,10 @@ public class LoginActivity extends AppCompatActivity {
          * To change the activity to reset password activity
          */
         passreset.setOnClickListener(new View.OnClickListener() {
+            @SuppressWarnings("ConstantConditions")
             public void onClick(View view) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 Intent myIntent = new Intent(view.getContext(), PasswordReset.class);
                 startActivityForResult(myIntent, 0);
                 overridePendingTransition(R.animator.animation1, R.animator.animation3);
@@ -86,19 +100,22 @@ public class LoginActivity extends AppCompatActivity {
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
 
+            @SuppressWarnings("ConstantConditions")
             public void onClick(View view) {
-
+                try {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 if ((!inputEmail.getText().toString().equals("")) && (!inputPass.getText().toString().equals(""))) {
                     NetAsync(view);
                 } else if ((!inputEmail.getText().toString().equals(""))) {
-                    Toast.makeText(getApplicationContext(),
-                            "Password field empty", Toast.LENGTH_SHORT).show();
+                    snackbar.setText("Password field empty").show();
                 } else if ((!inputPass.getText().toString().equals(""))) {
-                    Toast.makeText(getApplicationContext(),
-                            "Email field empty", Toast.LENGTH_SHORT).show();
+                    snackbar.setText("Email field empty").show();
                 } else {
-                    Toast.makeText(getApplicationContext(),
-                            "Email and Password field are empty", Toast.LENGTH_SHORT).show();
+                    snackbar.setText("Email and Password field empty").show();
                 }
             }
         });
@@ -146,8 +163,6 @@ public class LoginActivity extends AppCompatActivity {
                     if (urlc.getResponseCode() == 200) {
                         return true;
                     }
-                } catch (MalformedURLException e1) {
-                    e1.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -158,12 +173,12 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Boolean th) {
 
-            if (th == true) {
+            if (th) {
                 nDialog.dismiss();
                 new ProcessLogin().execute();
             } else {
                 nDialog.dismiss();
-                loginErrorMsg.setText("Error in Network Connection");
+                snackbar.setText("Error in Network Connection").show();
             }
         }
     }
@@ -197,8 +212,7 @@ public class LoginActivity extends AppCompatActivity {
         protected JSONObject doInBackground(String... args) {
 
             UserFunctions userFunction = new UserFunctions();
-            JSONObject json = userFunction.loginUser(email, password);
-            return json;
+            return userFunction.loginUser(email, password);
         }
 
         @Override
@@ -220,10 +234,13 @@ public class LoginActivity extends AppCompatActivity {
                         /**
                          *If JSON array details are stored in SQlite it launches the User Panel.
                          **/
-                        Intent upanel = new Intent(getApplicationContext(), MyMainActivity.class);
-                        upanel.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        Intent registered = new Intent(getApplicationContext(), MyMainActivity.class);
+                        registered.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        registered.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        registered.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        registered.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         pDialog.dismiss();
-                        startActivity(upanel);
+                        startActivity(registered);
                         /**
                          * Close Login Screen
                          **/
@@ -231,7 +248,7 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
 
                         pDialog.dismiss();
-                        loginErrorMsg.setText("Incorrect username/password");
+                        snackbar.setText("Incorrect Username/password").show();
                     }
                 }
             } catch (JSONException e) {
