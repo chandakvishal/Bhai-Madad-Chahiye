@@ -20,6 +20,8 @@
     <string name="google_app_id">740202396106</string>
     <string name="create_account">Create Account</string>
     <string name="change_password">Change Password</string>
+    <string name="details">User Profile</string>
+    <string name="location_updated_message">Location Successfully Updated</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>

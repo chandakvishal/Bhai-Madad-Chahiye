@@ -9,6 +9,8 @@ import java.util.HashMap;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_EMAIL;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_FORGOT_PASS;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_FULLNAME;
+import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_LATITUDE;
+import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_LONGITUDE;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_NEW_PASS;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_PASSWORD;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_PHONE;
@@ -18,6 +20,8 @@ import static com.bhaimadadchahiye.club.constants.URIs.chgpassURL;
 import static com.bhaimadadchahiye.club.constants.URIs.chgpass_tag;
 import static com.bhaimadadchahiye.club.constants.URIs.forpassURL;
 import static com.bhaimadadchahiye.club.constants.URIs.forpass_tag;
+import static com.bhaimadadchahiye.club.constants.URIs.home_location_tag;
+import static com.bhaimadadchahiye.club.constants.URIs.locationUrl;
 import static com.bhaimadadchahiye.club.constants.URIs.loginURL;
 import static com.bhaimadadchahiye.club.constants.URIs.login_tag;
 import static com.bhaimadadchahiye.club.constants.URIs.registerURL;
@@ -85,10 +89,21 @@ public class UserFunctions {
      * Function to logout user
      * Resets the temporary data stored in SQLite Database
      */
-    public boolean logoutUser(Context context) {
+    public boolean logoutUser(Context context, boolean deleteDB) {
         DatabaseHandler db = new DatabaseHandler(context);
-        db.resetTables();
+        db.resetUserTables();
+        if (deleteDB) {
+            db.deleteDatabase(context);
+        }
         return true;
     }
 
+    public JSONObject storeUserHomeLocation(String email, double latitude, double longitude) {
+         HashMap<String, String> dataToSend = new HashMap<>();
+        dataToSend.put(KEY_TAG, home_location_tag);
+        dataToSend.put(KEY_EMAIL, email);
+        dataToSend.put(KEY_LATITUDE, String.valueOf(latitude));
+        dataToSend.put(KEY_LONGITUDE, String.valueOf(longitude));
+        return jsonParser.getJSONFromUrl(locationUrl, dataToSend);
+    }
 }

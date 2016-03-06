@@ -5,14 +5,19 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_EMAIL;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_CREATED_AT;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_FULLNAME;
+import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_LATITUDE;
+import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_LONGITUDE;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_PHONE;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_UID;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_ID;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_USERNAME;
+import static com.bhaimadadchahiye.club.constants.DB_Constants.TABLE_LOCATION;
+import static com.bhaimadadchahiye.club.constants.DB_Constants.TABLE_LOGIN;
 
 import java.util.HashMap;
 
@@ -25,8 +30,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Database Name
     private static final String DATABASE_NAME = "bmc_local";
 
-    // Login table name
-    private static final String TABLE_LOGIN = "login";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -35,7 +38,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Creating Tables
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_LOGIN_TABLE = "CREATE TABLE " + TABLE_LOGIN + "("
+        String CREATE_LOGIN_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_LOGIN + "("
                 + KEY_ID + " INTEGER PRIMARY KEY,"
                 + KEY_FULLNAME + " TEXT,"
                 + KEY_PHONE + " TEXT,"
@@ -43,14 +46,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_USERNAME + " TEXT,"
                 + KEY_UID + " TEXT,"
                 + KEY_CREATED_AT + " TEXT" + ")";
+        Log.d("Enter DBHandler Class","");
+        String CREATE_LOCATION_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_LOCATION + " ("
+                +  KEY_EMAIL + " TEXT NOT NULL,"
+                + KEY_LATITUDE + " REAL,"
+                + KEY_LONGITUDE + " REAL,"
+                + " FOREIGN KEY (" + KEY_EMAIL + ") REFERENCES " + TABLE_LOGIN + "(" + KEY_EMAIL + "))";
         db.execSQL(CREATE_LOGIN_TABLE);
+        db.execSQL(CREATE_LOCATION_TABLE);
     }
 
     // Upgrading database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        Log.w(DatabaseHandler.class.getName(),
+                "Upgrading database from version " + oldVersion + " to "
+                        + newVersion + ", which will destroy all old data");
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOGIN);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_LOCATION);
 
         // Create tables again
         onCreate(db);
@@ -72,6 +86,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         // Inserting Row
         db.insert(TABLE_LOGIN, null, values);
+        Log.i("Added User","Successfully Added User in Login Table");
+        db.close(); // Closing database connection
+    }
+
+    /**
+     * Storing user details in database
+     */
+    public void addUser(String email, double latitude, double longitude) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_EMAIL, email); // Email
+        values.put(KEY_LATITUDE, latitude);
+        values.put(KEY_LONGITUDE, longitude);
+
+        // Inserting Row
+        db.insert(TABLE_LOCATION, null, values);
+        Log.i("Add User", "Succcessfully Added User in Location Table");
         db.close(); // Closing database connection
     }
 
@@ -81,7 +113,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public HashMap<String, String> getUserDetails() {
         HashMap<String, String> user = new HashMap<>();
         String selectQuery = "SELECT  * FROM " + TABLE_LOGIN;
-
+        Log.d("SIZE:", String.valueOf(this.getRowCount(TABLE_LOGIN)));
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         // Move to first row
@@ -104,8 +136,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      * Getting user login status
      * return true if rows are there in table
      */
-    public int getRowCount() {
-        String countQuery = "SELECT  * FROM " + TABLE_LOGIN;
+    public int getRowCount(String TABLE) {
+        String countQuery = "SELECT  * FROM " + TABLE;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
         int rowCount = cursor.getCount();
@@ -120,11 +152,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      * Re create database
      * Delete all tables and create them again
      */
-    public void resetTables() {
+    public void resetUserTables() {
         SQLiteDatabase db = this.getWritableDatabase();
         // Delete All Rows
         db.delete(TABLE_LOGIN, null, null);
+        db.delete(TABLE_LOCATION, null, null);
         db.close();
+    }
+
+    public boolean deleteDatabase(Context context) {
+        return context.deleteDatabase(DATABASE_NAME);
     }
 
 }

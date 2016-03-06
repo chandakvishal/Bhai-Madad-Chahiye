@@ -4,13 +4,13 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.net.Network;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -20,7 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.bhaimadadchahiye.club.MyMainActivity;
+import com.bhaimadadchahiye.club.NavigationMenu.MenuActivity;
 import com.bhaimadadchahiye.club.R;
 import com.bhaimadadchahiye.club.library.DatabaseHandler;
 import com.bhaimadadchahiye.club.library.UserFunctions;
@@ -135,27 +135,36 @@ public class Register extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(String... args) {
-
-/**
- * Gets current device state and checks for working internet connection by trying Google.
- **/
+            /**
+             * Gets current device state and checks for working internet connection by trying Google.
+             **/
             ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo netInfo = cm.getActiveNetworkInfo();
-            if (netInfo != null && netInfo.isConnected()) {
-                try {
-                    URL url = new URL("http://www.google.com");
-                    HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
-                    urlc.setConnectTimeout(3000);
-                    urlc.connect();
-                    if (urlc.getResponseCode() == 200) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Network[] networks = cm.getAllNetworks();
+                NetworkInfo networkInfo;
+                for (Network mNetwork : networks) {
+                    networkInfo = cm.getNetworkInfo(mNetwork);
+                    if (networkInfo.getState().equals(NetworkInfo.State.CONNECTED)) {
                         return true;
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                }
+            } else {
+                NetworkInfo netInfo = cm.getActiveNetworkInfo();
+                if (netInfo != null && netInfo.isConnected()) {
+                    try {
+                        URL url = new URL("http://www.google.com/");
+                        HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
+                        urlc.setConnectTimeout(3000);
+                        urlc.connect();
+                        if (urlc.getResponseCode() == 200) {
+                            return true;
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
             return false;
-
         }
 
         @Override
@@ -225,7 +234,7 @@ public class Register extends AppCompatActivity {
                          * Removes all the previous data in the SQlite database
                          **/
                         UserFunctions logout = new UserFunctions();
-                        logout.logoutUser(getApplicationContext());
+                        logout.logoutUser(getApplicationContext(), false);
                         db.addUser(json_user.getString(KEY_FULLNAME), json_user.getString(KEY_PHONE), json_user.getString(KEY_EMAIL), json_user.getString(KEY_USERNAME), json_user.getString(KEY_UID), json_user.getString(KEY_CREATED_AT));
                         /**
                          * Stores registered data in SQlite Database
@@ -233,7 +242,7 @@ public class Register extends AppCompatActivity {
                          **/
                         Thread.sleep(1000);
                         pDialog.dismiss();
-                        final Intent registered = new Intent(getApplicationContext(), MyMainActivity.class);
+                        final Intent registered = new Intent(getApplicationContext(), MenuActivity.class);
                         /**
                          * Close all views before launching Registered screen
                          **/

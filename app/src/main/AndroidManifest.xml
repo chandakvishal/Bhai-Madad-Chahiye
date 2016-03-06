@@ -46,15 +46,15 @@
             android:label="@string/app_name" />
 
         <activity
-            android:name=".MyMainActivity"
-            android:label="Bhai Madad Chahiye" />
-
-        <activity
             android:name="com.bhaimadadchahiye.club.login.PasswordReset"
             android:label="@string/forgot_password" />
 
         <activity
             android:name="com.bhaimadadchahiye.club.login.ChangePassword"
+            android:label="@string/change_password" />
+
+        <activity
+            android:name=".NavigationMenu.MenuActivity"
             android:label="@string/change_password" />
     </application>
 </manifest>

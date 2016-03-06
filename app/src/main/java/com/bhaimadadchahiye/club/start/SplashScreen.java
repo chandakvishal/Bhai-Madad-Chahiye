@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.bhaimadadchahiye.club.NavigationMenu.MenuActivity;
 import com.bhaimadadchahiye.club.R;
 import com.bhaimadadchahiye.club.library.DatabaseHandler;
-import com.bhaimadadchahiye.club.MyMainActivity;
+
+import static com.bhaimadadchahiye.club.constants.DB_Constants.TABLE_LOGIN;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -17,10 +19,10 @@ public class SplashScreen extends AppCompatActivity {
 
         DatabaseHandler localDB = new DatabaseHandler(SplashScreen.this);
         try {
-            int rowCount = localDB.getRowCount();
+            int rowCount = localDB.getRowCount(TABLE_LOGIN);
             if (rowCount != 0) {
                 finish();
-                Intent loggedIn = new Intent(SplashScreen.this, MyMainActivity.class);
+                Intent loggedIn = new Intent(SplashScreen.this, MenuActivity.class);
                 startActivity(loggedIn);
             } else {
                 finish();

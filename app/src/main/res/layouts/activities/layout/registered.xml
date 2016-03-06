@@ -5,35 +5,15 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_gravity="center"
-        android:singleLine="false"
-        android:text="Congratulations. You have Successfully Registered..."
-        android:textAlignment="center"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#000000"
-        android:textSize="18dp" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:layout_below="@+id/textView"
-        android:layout_centerHorizontal="true"
-        android:text="Your Registration Details"
-        android:textColor="#000000" />
-
-    <TextView
         android:id="@+id/textView3"
         android:layout_width="125dp"
         android:layout_height="40dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView2"
         android:text="Name"
         android:textColor="#2d2d2d"
-        android:textSize="20dp" />
+        android:textSize="20sp"
+        android:layout_marginTop="104dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:id="@+id/fullName"
@@ -52,7 +32,7 @@
         android:layout_below="@+id/textView3"
         android:text="Phone"
         android:textColor="#2d2d2d"
-        android:textSize="20dp" />
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/phoneNumber"
@@ -61,7 +41,7 @@
         android:layout_above="@+id/email"
         android:layout_alignParentEnd="true"
         android:textColor="#000000"
-        android:textSize="18dp" />
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/textView7"
@@ -71,7 +51,7 @@
         android:layout_toLeftOf="@+id/textView2"
         android:text="E-mail"
         android:textColor="#2d2d2d"
-        android:textSize="20dp" />
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/email"
@@ -80,7 +60,7 @@
         android:layout_alignLeft="@+id/fullName"
         android:layout_below="@+id/textView5"
         android:textColor="#000000"
-        android:textSize="18dp" />
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/textView9"
@@ -90,7 +70,7 @@
         android:text="Username"
         android:textColor="#2d2d2d"
         android:textIsSelectable="false"
-        android:textSize="20dp" />
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/username"
@@ -109,7 +89,7 @@
         android:layout_below="@+id/textView9"
         android:text="Registered at"
         android:textColor="#2d2d2d"
-        android:textSize="20dp" />
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/regat"
@@ -118,18 +98,7 @@
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/username"
         android:textColor="#000000"
-        android:textSize="15dp" />
-
-    <Button
-        android:id="@+id/backToLoginBtn"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView11"
-        android:backgroundTint="@color/CornflowerBlue"
-        android:text="Back to Login"
-        android:textColor="#000000"
-        android:textSize="13dp" />
+        android:textSize="15sp"
+        android:layout_alignStart="@+id/username" />
 
 </RelativeLayout>
