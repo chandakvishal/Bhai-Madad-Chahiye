@@ -1,4 +1,4 @@
-package com.bhaimadadchahiye.club.NavigationMenu;
+package com.bhaimadadchahiye.club.ActualMatter.NavigationMenu;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,33 +16,36 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bhaimadadchahiye.club.NavigationMenu.Fragments.CalendarFragment;
-import com.bhaimadadchahiye.club.NavigationMenu.Fragments.HomeFragment;
-import com.bhaimadadchahiye.club.NavigationMenu.Fragments.ProfileFragment;
-import com.bhaimadadchahiye.club.NavigationMenu.Fragments.SettingsFragment;
+import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.Fragments.CalendarFragment;
+import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.Fragments.HomeFragment;
+import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.Fragments.ProfileFragment;
+import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.Fragments.SettingsFragment;
 import com.bhaimadadchahiye.club.R;
 import com.bhaimadadchahiye.club.library.BackHandledFragment;
 import com.bhaimadadchahiye.club.location.GPSTracker;
 
 public class MenuActivity extends FragmentActivity implements View.OnClickListener, BackHandledFragment.BackHandlerInterface, ActivityCompat.OnRequestPermissionsResultCallback {
 
-    private ResideMenu resideMenu;
-
-    private static MenuActivity mContext;
-
-    private ResideMenuItem itemHome;
-
-    private ResideMenuItem itemProfile;
-
-    private ResideMenuItem itemCalendar;
-
-    private ResideMenuItem itemSettings;
-
-    private GPSTracker gpsTracker;
-
-    private BackHandledFragment selectedFragment;
-
     public static final int REQUEST_LOCATION = 199;
+    private static MenuActivity mContext;
+    private ResideMenu resideMenu;
+    private ResideMenuItem itemHome;
+    private ResideMenuItem itemProfile;
+    private ResideMenuItem itemCalendar;
+    private ResideMenuItem itemSettings;
+    private GPSTracker gpsTracker;
+    private BackHandledFragment selectedFragment;
+    private ResideMenu.OnMenuListener menuListener = new ResideMenu.OnMenuListener() {
+        @Override
+        public void openMenu() {
+            Toast.makeText(mContext, "Menu is opened!", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void closeMenu() {
+            Toast.makeText(mContext, "Menu is closed!", Toast.LENGTH_SHORT).show();
+        }
+    };
 
     public static Context getcontext() {
         return mContext;
@@ -123,18 +126,6 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
 
         resideMenu.closeMenu();
     }
-
-    private ResideMenu.OnMenuListener menuListener = new ResideMenu.OnMenuListener() {
-        @Override
-        public void openMenu() {
-            Toast.makeText(mContext, "Menu is opened!", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void closeMenu() {
-            Toast.makeText(mContext, "Menu is closed!", Toast.LENGTH_SHORT).show();
-        }
-    };
 
     public void changeFragment(Fragment targetFragment) {
         resideMenu.clearIgnoredViewList();

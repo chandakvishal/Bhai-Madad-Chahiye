@@ -21,7 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.bhaimadadchahiye.club.NavigationMenu.MenuActivity;
+import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.MenuActivity;
 import com.bhaimadadchahiye.club.R;
 import com.bhaimadadchahiye.club.library.DatabaseHandler;
 import com.bhaimadadchahiye.club.library.UserFunctions;
@@ -46,13 +46,11 @@ import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_USERNAME;
  */
 public class LoginActivity extends AppCompatActivity {
 
+    Button btnLogin;
+    Button passreset;
     // UI references.
     private AutoCompleteTextView inputEmail;
     private EditText inputPass;
-
-    Button btnLogin;
-    Button passreset;
-
     private Snackbar snackbar;
 
     @Override
@@ -131,6 +129,10 @@ public class LoginActivity extends AppCompatActivity {
                                            @NonNull int[] grantResults) {
     }
 
+    public void NetAsync(View view) {
+        new NetCheck().execute();
+    }
+
     /**
      * Async Task to check whether internet connection is working.
      **/
@@ -201,9 +203,8 @@ public class LoginActivity extends AppCompatActivity {
      **/
     private class ProcessLogin extends AsyncTask<String, Void, JSONObject> {
 
-        private ProgressDialog pDialog;
-
         String email, password;
+        private ProgressDialog pDialog;
 
         @Override
         protected void onPreExecute() {
@@ -273,9 +274,5 @@ public class LoginActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-    }
-
-    public void NetAsync(View view) {
-        new NetCheck().execute();
     }
 }

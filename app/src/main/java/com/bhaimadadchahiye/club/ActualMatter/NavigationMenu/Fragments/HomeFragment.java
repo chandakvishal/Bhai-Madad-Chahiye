@@ -1,17 +1,21 @@
-package com.bhaimadadchahiye.club.NavigationMenu.Fragments;
+package com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.Fragments;
 
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.bhaimadadchahiye.club.NavigationMenu.MenuActivity;
-import com.bhaimadadchahiye.club.NavigationMenu.ResideMenu;
+import com.bhaimadadchahiye.club.ActualMatter.Answers.DividerItemDecoration;
+import com.bhaimadadchahiye.club.ActualMatter.Answers.Movie;
+import com.bhaimadadchahiye.club.ActualMatter.Answers.MoviesAdapter;
+import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.MenuActivity;
+import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.ResideMenu;
 import com.bhaimadadchahiye.club.R;
 import com.bhaimadadchahiye.club.library.BackHandledFragment;
 import com.bhaimadadchahiye.club.location.GPSTracker;
@@ -20,9 +24,15 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HomeFragment extends BackHandledFragment implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
+
+    private List<Movie> movieList = new ArrayList<>();
+    private MoviesAdapter mAdapter;
 
     private View parentView;
     private ResideMenu resideMenu;
@@ -46,6 +56,18 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
                 .addOnConnectionFailedListener(this)
                 .build();
         gpsTracker = new GPSTracker(getActivity());
+
+        RecyclerView recyclerView = (RecyclerView) parentView.findViewById(R.id.recycler_view);
+
+        mAdapter = new MoviesAdapter(movieList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(mLayoutManager);
+        //recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL));
+        recyclerView.setAdapter(mAdapter);
+
+        prepareMovieData();
+
         setUpViews();
         return parentView;
     }
@@ -64,17 +86,6 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
     private void setUpViews() {
         MenuActivity parentActivity = (MenuActivity) getActivity();
         resideMenu = parentActivity.getResideMenu();
-
-        parentView.findViewById(R.id.btn_open_menu).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                resideMenu.openMenu(ResideMenu.DIRECTION_LEFT);
-            }
-        });
-
-        // add gesture operation's ignored views
-        FrameLayout ignored_view = (FrameLayout) parentView.findViewById(R.id.ignored_view);
-        resideMenu.addIgnoredView(ignored_view);
     }
 
     @Override
@@ -140,5 +151,57 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
             }, 3 * 1000);
         }
         return true;
+    }
+
+    private void prepareMovieData() {
+        Movie movie = new Movie("Mad Max: Fury Road", "Action & Adventure", "2015");
+        movieList.add(movie);
+
+        movie = new Movie("Inside Out", "Animation, Kids & Family", "2015");
+        movieList.add(movie);
+
+        movie = new Movie("Star Wars: Episode VII - The Force Awakens", "Action", "2015");
+        movieList.add(movie);
+
+        movie = new Movie("Shaun the Sheep", "Animation", "2015");
+        movieList.add(movie);
+
+        movie = new Movie("The Martian", "Science Fiction & Fantasy", "2015");
+        movieList.add(movie);
+
+        movie = new Movie("Mission: Impossible Rogue Nation", "Action", "2015");
+        movieList.add(movie);
+
+        movie = new Movie("Up", "Animation", "2009");
+        movieList.add(movie);
+
+        movie = new Movie("Star Trek", "Science Fiction", "2009");
+        movieList.add(movie);
+
+        movie = new Movie("The LEGO Movie", "Animation", "2014");
+        movieList.add(movie);
+
+        movie = new Movie("Iron Man", "Action & Adventure", "2008");
+        movieList.add(movie);
+
+        movie = new Movie("Aliens", "Science Fiction", "1986");
+        movieList.add(movie);
+
+        movie = new Movie("Chicken Run", "Animation", "2000");
+        movieList.add(movie);
+
+        movie = new Movie("Back to the Future", "Science Fiction", "1985");
+        movieList.add(movie);
+
+        movie = new Movie("Raiders of the Lost Ark", "Action & Adventure", "1981");
+        movieList.add(movie);
+
+        movie = new Movie("Goldfinger", "Action & Adventure", "1965");
+        movieList.add(movie);
+
+        movie = new Movie("Guardians of the Galaxy", "Science Fiction & Fantasy", "2014");
+        movieList.add(movie);
+
+        mAdapter.notifyDataSetChanged();
     }
 }

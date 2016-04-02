@@ -20,7 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.bhaimadadchahiye.club.NavigationMenu.MenuActivity;
+import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.MenuActivity;
 import com.bhaimadadchahiye.club.R;
 import com.bhaimadadchahiye.club.library.DatabaseHandler;
 import com.bhaimadadchahiye.club.library.UserFunctions;
@@ -115,6 +115,10 @@ public class Register extends AppCompatActivity {
         });
     }
 
+    public void NetAsync(View view) {
+        new NetCheck().execute();
+    }
+
     /**
      * Async Task to check whether internet connection is working
      **/
@@ -182,12 +186,11 @@ public class Register extends AppCompatActivity {
 
     private class ProcessRegister extends AsyncTask<String, Void, JSONObject> {
 
+        String email, password, fname, phone, uname;
         /**
          * Defining Process dialog
          **/
         private ProgressDialog pDialog;
-
-        String email, password, fname, phone, uname;
 
         @Override
         protected void onPreExecute() {
@@ -268,9 +271,5 @@ public class Register extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-    }
-
-    public void NetAsync(View view) {
-        new NetCheck().execute();
     }
 }

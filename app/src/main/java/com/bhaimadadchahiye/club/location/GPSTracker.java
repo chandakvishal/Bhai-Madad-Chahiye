@@ -14,7 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.bhaimadadchahiye.club.NavigationMenu.MenuActivity;
+import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.MenuActivity;
 import com.bhaimadadchahiye.club.library.DatabaseHandler;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -30,22 +30,30 @@ import static com.bhaimadadchahiye.club.constants.DB_Constants.TABLE_LOCATION;
 
 public class GPSTracker extends AppCompatActivity{
 
-    private Context mContext;
-
+    public static final int REQUEST_LOCATION = 199;
     // The minimum time between updates in milliseconds
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60; // 1 minute
-
+    // Declaring a Location Manager
+    protected LocationManager locationManager;
+    private Context mContext;
     private Location currentBestLocation = null;
     private ServiceLocationListener gpsLocationListener;
     private ServiceLocationListener networkLocationListener;
     private ServiceLocationListener passiveLocationListener;
-
-    public static final int REQUEST_LOCATION = 199;
-
     private Handler handler = new Handler();
+    private Runnable timerRunnable = new Runnable() {
 
-    // Declaring a Location Manager
-    protected LocationManager locationManager;
+        @Override
+        public void run() {
+            Intent intent = new Intent(mContext.getPackageName() + ".action.LOCATION_FOUND");
+            if (currentBestLocation != null) {
+                intent.putExtra(LocationManager.KEY_LOCATION_CHANGED, currentBestLocation);
+                locationManager.removeUpdates(gpsLocationListener);
+                locationManager.removeUpdates(networkLocationListener);
+                locationManager.removeUpdates(passiveLocationListener);
+            }
+        }
+    };
 
     public GPSTracker(Context context) {
         this.mContext = context;
@@ -217,20 +225,6 @@ public class GPSTracker extends AppCompatActivity{
         return false;
     }
 
-    private Runnable timerRunnable = new Runnable() {
-
-        @Override
-        public void run() {
-            Intent intent = new Intent(mContext.getPackageName() + ".action.LOCATION_FOUND");
-            if (currentBestLocation != null) {
-                intent.putExtra(LocationManager.KEY_LOCATION_CHANGED, currentBestLocation);
-                locationManager.removeUpdates(gpsLocationListener);
-                locationManager.removeUpdates(networkLocationListener);
-                locationManager.removeUpdates(passiveLocationListener);
-            }
-        }
-    };
-
     /**
      * Checks whether two providers are the same
      */
@@ -274,12 +268,12 @@ public class GPSTracker extends AppCompatActivity{
         public void onProviderDisabled(String s) {
         }
 
-        public void setLocation(Location finalLocation) {
-            this.finalLocation = finalLocation;
-        }
-
         public Location getLocation() {
             return finalLocation;
+        }
+
+        public void setLocation(Location finalLocation) {
+            this.finalLocation = finalLocation;
         }
 
         public void storeLocation() {

@@ -20,7 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.bhaimadadchahiye.club.NavigationMenu.MenuActivity;
+import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.MenuActivity;
 import com.bhaimadadchahiye.club.R;
 import com.bhaimadadchahiye.club.library.DatabaseHandler;
 import com.bhaimadadchahiye.club.library.UserFunctions;
@@ -99,6 +99,10 @@ public class ChangePassword extends Activity {
         });
     }
 
+    public void NetAsync(View view) {
+        new NetCheck().execute();
+    }
+
     private class NetCheck extends AsyncTask<String, Void, Boolean> {
         private ProgressDialog nDialog;
 
@@ -162,9 +166,8 @@ public class ChangePassword extends Activity {
 
     private class ProcessRegister extends AsyncTask<String, Void, JSONObject> {
 
-        private ProgressDialog pDialog;
-
         String newPass, email;
+        private ProgressDialog pDialog;
 
         @Override
         protected void onPreExecute() {
@@ -226,9 +229,5 @@ public class ChangePassword extends Activity {
             }
 
         }
-    }
-
-    public void NetAsync(View view) {
-        new NetCheck().execute();
     }
 }

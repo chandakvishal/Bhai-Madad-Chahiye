@@ -1,4 +1,4 @@
-package com.bhaimadadchahiye.club.NavigationMenu;
+package com.bhaimadadchahiye.club.ActualMatter.NavigationMenu;
 
 import android.app.Activity;
 import android.content.Context;
@@ -35,7 +35,7 @@ public class ResideMenu extends FrameLayout {
     private static final int PRESSED_DOWN = 3;
     private static final int PRESSED_DONE = 4;
     private static final int PRESSED_MOVE_VERTICAL = 5;
-
+    private static final int ROTATE_Y_ANGLE = 10;
     private ImageView imageViewShadow;
     private ImageView imageViewBackground;
     private LinearLayout layoutLeftMenu;
@@ -75,9 +75,50 @@ public class ResideMenu extends FrameLayout {
     private List<Integer> disabledSwipeDirection = new ArrayList<>();
     // Valid scale factor is between 0.0f and 1.0f.
     private float mScaleValue = 0.5f;
-
     private boolean mUse3D;
-    private static final int ROTATE_Y_ANGLE = 10;
+    private Animator.AnimatorListener animationListener = new Animator.AnimatorListener() {
+        @Override
+        public void onAnimationStart(Animator animation) {
+            if (isOpened()) {
+                showScrollViewMenu(scrollViewMenu);
+                if (menuListener != null)
+                    menuListener.openMenu();
+            }
+        }
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            // reset the view;
+            if (isOpened()) {
+                viewActivity.setTouchDisable(true);
+                viewActivity.setOnClickListener(viewActivityOnClickListener);
+            } else {
+                viewActivity.setTouchDisable(false);
+                viewActivity.setOnClickListener(null);
+                hideScrollViewMenu(scrollViewLeftMenu);
+                hideScrollViewMenu(scrollViewRightMenu);
+                if (menuListener != null)
+                    menuListener.closeMenu();
+            }
+        }
+
+        @Override
+        public void onAnimationCancel(Animator animation) {
+
+        }
+
+        @Override
+        public void onAnimationRepeat(Animator animation) {
+
+        }
+    };
+    private OnClickListener viewActivityOnClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (isOpened()) closeMenu();
+        }
+    };
+    private float lastActionDownX, lastActionDownY;
 
     public ResideMenu(Context context) {
         super(context);
@@ -113,7 +154,6 @@ public class ResideMenu extends FrameLayout {
         menuHolder.addView(scrollViewLeftMenu);
         menuHolder.addView(scrollViewRightMenu);
     }
-
 
     @Override
     @SuppressWarnings("deprecation")
@@ -291,50 +331,6 @@ public class ResideMenu extends FrameLayout {
         return isOpened;
     }
 
-    private OnClickListener viewActivityOnClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if (isOpened()) closeMenu();
-        }
-    };
-
-    private Animator.AnimatorListener animationListener = new Animator.AnimatorListener() {
-        @Override
-        public void onAnimationStart(Animator animation) {
-            if (isOpened()) {
-                showScrollViewMenu(scrollViewMenu);
-                if (menuListener != null)
-                    menuListener.openMenu();
-            }
-        }
-
-        @Override
-        public void onAnimationEnd(Animator animation) {
-            // reset the view;
-            if (isOpened()) {
-                viewActivity.setTouchDisable(true);
-                viewActivity.setOnClickListener(viewActivityOnClickListener);
-            } else {
-                viewActivity.setTouchDisable(false);
-                viewActivity.setOnClickListener(null);
-                hideScrollViewMenu(scrollViewLeftMenu);
-                hideScrollViewMenu(scrollViewRightMenu);
-                if (menuListener != null)
-                    menuListener.closeMenu();
-            }
-        }
-
-        @Override
-        public void onAnimationCancel(Animator animation) {
-
-        }
-
-        @Override
-        public void onAnimationRepeat(Animator animation) {
-
-        }
-    };
-
     /**
      * A helper method to build scale down animation;
      *
@@ -449,8 +445,6 @@ public class ResideMenu extends FrameLayout {
         return targetScale;
     }
 
-    private float lastActionDownX, lastActionDownY;
-
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         float currentActivityScaleX = ViewHelper.getScaleX(viewActivity);
@@ -553,6 +547,18 @@ public class ResideMenu extends FrameLayout {
         mUse3D = use3D;
     }
 
+    private void showScrollViewMenu(View scrollViewMenu) {
+        if (scrollViewMenu != null && scrollViewMenu.getParent() == null) {
+            addView(scrollViewMenu);
+        }
+    }
+
+    private void hideScrollViewMenu(View scrollViewMenu) {
+        if (scrollViewMenu != null && scrollViewMenu.getParent() != null) {
+            removeView(scrollViewMenu);
+        }
+    }
+
     public interface OnMenuListener {
 
         /**
@@ -564,17 +570,5 @@ public class ResideMenu extends FrameLayout {
          * This method will be called at the finished time of closing menu animations.
          */
         void closeMenu();
-    }
-
-    private void showScrollViewMenu(View scrollViewMenu) {
-        if (scrollViewMenu != null && scrollViewMenu.getParent() == null) {
-            addView(scrollViewMenu);
-        }
-    }
-
-    private void hideScrollViewMenu(View scrollViewMenu) {
-        if (scrollViewMenu != null && scrollViewMenu.getParent() != null) {
-            removeView(scrollViewMenu);
-        }
     }
 }

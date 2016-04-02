@@ -31,7 +31,7 @@
         <activity
             android:name="com.bhaimadadchahiye.club.start.SplashScr"
             android:label="Bhai Madad Chahiye"
-            android:theme="@android:style/Theme.WithActionBar"></activity>
+            android:theme="@android:style/Theme.WithActionBar" />
 
         <activity
             android:name="com.bhaimadadchahiye.club.login.LoginActivity"
@@ -54,7 +54,7 @@
             android:label="@string/change_password" />
 
         <activity
-            android:name=".NavigationMenu.MenuActivity"
+            android:name=".ActualMatter.NavigationMenu.MenuActivity"
             android:label="@string/change_password" />
     </application>
 </manifest>

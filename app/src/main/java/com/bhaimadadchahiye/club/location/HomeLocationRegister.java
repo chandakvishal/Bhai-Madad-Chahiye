@@ -3,7 +3,7 @@ package com.bhaimadadchahiye.club.location;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.bhaimadadchahiye.club.NavigationMenu.MenuActivity;
+import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.MenuActivity;
 import com.bhaimadadchahiye.club.library.DatabaseHandler;
 import com.bhaimadadchahiye.club.library.UserFunctions;
 

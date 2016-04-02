@@ -1,4 +1,4 @@
-package com.bhaimadadchahiye.club.NavigationMenu.Fragments;
+package com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.Fragments;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.bhaimadadchahiye.club.NavigationMenu.MenuActivity;
+import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.MenuActivity;
 import com.bhaimadadchahiye.club.R;
 import com.bhaimadadchahiye.club.library.BackHandledFragment;
 import com.bhaimadadchahiye.club.library.DatabaseHandler;
