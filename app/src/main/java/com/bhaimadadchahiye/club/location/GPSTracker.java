@@ -32,7 +32,7 @@ public class GPSTracker extends AppCompatActivity{
 
     public static final int REQUEST_LOCATION = 199;
     // The minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60; // 1 minute
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 3; // 1 minute
     // Declaring a Location Manager
     protected LocationManager locationManager;
     private Context mContext;
@@ -66,10 +66,9 @@ public class GPSTracker extends AppCompatActivity{
      * @param activity         Activity of parent method
      */
     public void locationChecker(GoogleApiClient mGoogleApiClient, final Activity activity) {
-        Log.d("Enter Location Checker", activity.getLocalClassName());
         LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(60 * 1000);
+        locationRequest.setInterval(MIN_TIME_BW_UPDATES);
         locationRequest.setFastestInterval(5 * 1000);
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(locationRequest);
@@ -111,7 +110,6 @@ public class GPSTracker extends AppCompatActivity{
 
     public void fetchLocation() {
         locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-        Log.d("Entered Loc Fetcher","Entered Loc Fetcher");
         try {
             LocationProvider gpsProvider = locationManager.getProvider(LocationManager.GPS_PROVIDER);
             LocationProvider networkProvider = locationManager.getProvider(LocationManager.NETWORK_PROVIDER);
@@ -164,7 +162,6 @@ public class GPSTracker extends AppCompatActivity{
             } else {
                 handler.post(timerRunnable);
             }
-            Log.d("Exited Location Fetcher","Exiting fetch Location Method");
         } catch (SecurityException se) {
             finish();
         }
@@ -188,8 +185,6 @@ public class GPSTracker extends AppCompatActivity{
         }
 
         // Check whether the new location fix is newer or older
-        Log.i("Location: ", location.toString());
-        Log.i("CurrentBestLocation: ", currentBestLocation.toString());
         long timeDelta = location.getTime() - currentBestLocation.getTime();
         boolean isSignificantlyNewer = timeDelta > MIN_TIME_BW_UPDATES;
         boolean isSignificantlyOlder = timeDelta < -MIN_TIME_BW_UPDATES;
@@ -277,11 +272,9 @@ public class GPSTracker extends AppCompatActivity{
         }
 
         public void storeLocation() {
-            Log.d("Entered Stored Location","");
             Location currentBestLocation = getLocation();
             DatabaseHandler localDB = new DatabaseHandler(MenuActivity.getcontext());
             //Check for home location
-            Log.d("localDB.getRowCount", String.valueOf(localDB.getRowCount(TABLE_LOCATION)));
             if (localDB.getRowCount(TABLE_LOCATION) == 0) {
                 new HomeLocationRegister().execute(currentBestLocation.getLatitude(), currentBestLocation.getLongitude());
             }

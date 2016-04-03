@@ -1,36 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?android:attr/selectableItemBackground"
-    android:clickable="true"
-    android:focusable="true"
-    android:orientation="vertical"
-    android:paddingBottom="10dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="10dp">
+    android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
+        android:id="@+id/serial"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:textColor="@color/CornflowerBlue"
-        android:textSize="16sp"
+        android:padding="25dp"
+        android:layout_margin="5dp"
+        android:layout_alignParentLeft="true"
+        android:textSize="20dp"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/genre"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/title" />
-
-    <TextView
-        android:id="@+id/year"
+        android:id="@+id/title"
+        android:layout_toRightOf="@id/serial"
+        android:layout_centerVertical="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:textColor="@color/GreenYellow" />
+        android:textStyle="bold"
+        android:paddingLeft="20dp"
+        android:textSize="18dp" />
 
 </RelativeLayout>

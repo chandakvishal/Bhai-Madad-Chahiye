@@ -57,7 +57,7 @@ public class SettingsFragment extends BackHandledFragment {
 
     @Override
     public boolean onBackPressed() {
-        ((MenuActivity)getActivity()).changeFragment(new HomeFragment());
+        ((MenuActivity)getActivity()).changeFragment(new HomeFragment(), "home");
         return true;
     }
 

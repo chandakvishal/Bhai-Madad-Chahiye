@@ -1,5 +1,7 @@
 package com.bhaimadadchahiye.club.ActualMatter.Answers;
 
+import android.app.Activity;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +15,13 @@ import java.util.List;
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MyViewHolder> {
 
     private List<Movie> moviesList;
+    private String[] bgColors;
 
-    public MoviesAdapter(List<Movie> moviesList) {
+
+    public MoviesAdapter(Activity activity, List<Movie> moviesList) {
         this.moviesList = moviesList;
+        bgColors = activity.getApplicationContext().getResources().getStringArray(R.array.movie_serial_bg);
+
     }
 
     @Override
@@ -29,9 +35,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MyViewHold
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Movie movie = moviesList.get(position);
-        holder.title.setText(movie.getTitle());
-        holder.genre.setText(movie.getGenre());
-        holder.year.setText(movie.getYear());
+        holder.title.setText(moviesList.get(position).title);
+        holder.serial.setText(String.valueOf(moviesList.get(position).id));
+
+        String color = bgColors[position % bgColors.length];
+        holder.serial.setBackgroundColor(Color.parseColor(color));
     }
 
     @Override
@@ -40,13 +48,24 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MyViewHold
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, year, genre;
+        public TextView title, serial;
 
         public MyViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
-            genre = (TextView) view.findViewById(R.id.genre);
-            year = (TextView) view.findViewById(R.id.year);
+            serial = (TextView) view.findViewById(R.id.serial);
         }
     }
+
+//    // Clean all elements of the recycler
+//    public void clear() {
+//        moviesList.clear();
+//        notifyDataSetChanged();
+//    }
+//
+//    // Add a list of items
+//    public void addAll(List<Movie> list) {
+//        moviesList.addAll(list);
+//        notifyDataSetChanged();
+//    }
 }

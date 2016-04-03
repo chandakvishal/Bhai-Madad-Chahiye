@@ -70,7 +70,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
         //noinspection deprecation
         textView.setTextColor(getResources().getColor(R.color.YellowGreen));
         if (savedInstanceState == null)
-            changeFragment(new HomeFragment());
+            changeFragment(new HomeFragment(), "home");
 
         gpsTracker = new GPSTracker(MenuActivity.this);
     }
@@ -115,24 +115,25 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
     public void onClick(View view) {
 
         if (view == itemHome) {
-            changeFragment(new HomeFragment());
+            changeFragment(new HomeFragment(), "home");
         } else if (view == itemProfile) {
-            changeFragment(new ProfileFragment());
+            changeFragment(new ProfileFragment(), "profile");
         } else if (view == itemCalendar) {
-            changeFragment(new CalendarFragment());
+            changeFragment(new CalendarFragment(), "calendar");
         } else if (view == itemSettings) {
-            changeFragment(new SettingsFragment());
+            changeFragment(new SettingsFragment(), "settings");
         }
 
         resideMenu.closeMenu();
     }
 
-    public void changeFragment(Fragment targetFragment) {
+    public void changeFragment(Fragment targetFragment, String tag) {
         resideMenu.clearIgnoredViewList();
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.main_fragment, targetFragment, "fragment")
+                .replace(R.id.main_fragment, targetFragment, tag)
                 .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .addToBackStack(tag)
                 .commit();
     }
 

@@ -1,21 +1,29 @@
 package com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.Fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.bhaimadadchahiye.club.ActualMatter.Answers.DividerItemDecoration;
 import com.bhaimadadchahiye.club.ActualMatter.Answers.Movie;
 import com.bhaimadadchahiye.club.ActualMatter.Answers.MoviesAdapter;
 import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.MenuActivity;
-import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.ResideMenu;
+import com.bhaimadadchahiye.club.MyApplication;
 import com.bhaimadadchahiye.club.R;
 import com.bhaimadadchahiye.club.library.BackHandledFragment;
 import com.bhaimadadchahiye.club.location.GPSTracker;
@@ -23,6 +31,10 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,11 +46,22 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
     private List<Movie> movieList = new ArrayList<>();
     private MoviesAdapter mAdapter;
 
-    private View parentView;
-    private ResideMenu resideMenu;
+    private String TAG = MenuActivity.class.getSimpleName();
+
+    // initially offset will be 0, later will be updated while parsing the json
+    private int offSet = 0;
+
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     private GoogleApiClient mGoogleApiClient;
     private GPSTracker gpsTracker;
     private Boolean exit = false;
+
+    private String savedJson;
+
+    public HomeFragment() {
+        setArguments(new Bundle());
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,7 +70,7 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        parentView = inflater.inflate(R.layout.home, container, false);
+        View parentView = inflater.inflate(R.layout.home, container, false);
 
         mGoogleApiClient = new GoogleApiClient
                 .Builder(getActivity().getApplicationContext())
@@ -59,16 +82,79 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
 
         RecyclerView recyclerView = (RecyclerView) parentView.findViewById(R.id.recycler_view);
 
-        mAdapter = new MoviesAdapter(movieList);
+        mAdapter = new MoviesAdapter(getActivity(), movieList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
-        //recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(mAdapter);
 
-        prepareMovieData();
+        swipeRefreshLayout = (SwipeRefreshLayout) parentView.findViewById(R.id.swipeContainer);
 
-        setUpViews();
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                fetchMovies();
+            }
+        });
+
+        /**
+         * Showing Swipe Refresh animation on activity create
+         * As animation won't start on onCreate, post runnable is used
+         */
+        SharedPreferences movieData = getActivity().getSharedPreferences("order", Context.MODE_APPEND);
+        Log.d("Value", String.valueOf(movieData.getBoolean("saved", false)));
+        Log.d("JSON", movieData.getString("movieList", ""));
+        if (movieData.getBoolean("saved", false)) {
+            JSONArray response = null;
+            String res = movieData.getString("movieList", "");
+            try {
+                response = new JSONArray(res);
+                savedJson = response.toString();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            for (int i = 0; i < (response != null ? response.length() : 0); i++) {
+                try {
+                    JSONObject movieObj = response.getJSONObject(i);
+
+                    int rank = movieObj.getInt("rank");
+                    String title = movieObj.getString("title");
+
+                    Movie m = new Movie(rank, title);
+
+                    movieList.add(0, m);
+
+                    // updating offset value to highest value
+                    if (rank >= offSet)
+                        offSet = rank;
+
+                } catch (JSONException e) {
+                    Log.e(TAG, "JSON Parsing error: " + e.getMessage());
+                }
+            }
+
+            mAdapter.notifyDataSetChanged();
+
+        } else {
+            swipeRefreshLayout.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            swipeRefreshLayout.setRefreshing(true);
+                                            fetchMovies();
+                                        }
+                                    }
+            );
+        }
+
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
         return parentView;
     }
 
@@ -81,11 +167,6 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
             LocationServices.FusedLocationApi.removeLocationUpdates(
                     mGoogleApiClient, this);
         }
-    }
-
-    private void setUpViews() {
-        MenuActivity parentActivity = (MenuActivity) getActivity();
-        resideMenu = parentActivity.getResideMenu();
     }
 
     @Override
@@ -106,12 +187,14 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
+        saveData();
         super.onStop();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        mAdapter.notifyDataSetChanged();
         startLocationUpdates();
     }
 
@@ -153,55 +236,76 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
         return true;
     }
 
-    private void prepareMovieData() {
-        Movie movie = new Movie("Mad Max: Fury Road", "Action & Adventure", "2015");
-        movieList.add(movie);
+    /**
+     * Fetching movies json by making http call
+     */
+    private void fetchMovies() {
 
-        movie = new Movie("Inside Out", "Animation, Kids & Family", "2015");
-        movieList.add(movie);
+        // showing refresh animation before making http call
+        swipeRefreshLayout.setRefreshing(true);
 
-        movie = new Movie("Star Wars: Episode VII - The Force Awakens", "Action", "2015");
-        movieList.add(movie);
+        // appending offset to url
+        String URL_TOP_250 = "http://api.androidhive.info/json/imdb_top_250.php?offset=";
+        String url = URL_TOP_250 + offSet;
 
-        movie = new Movie("Shaun the Sheep", "Animation", "2015");
-        movieList.add(movie);
+        // Volley's json array request object
+        JsonArrayRequest req = new JsonArrayRequest(url,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.d(TAG, response.toString());
+                        if (response.length() > 0) {
+                            savedJson = response.toString();
+                            // looping through json and adding to movies list
+                            for (int i = 0; i < response.length(); i++) {
+                                try {
+                                    JSONObject movieObj = response.getJSONObject(i);
 
-        movie = new Movie("The Martian", "Science Fiction & Fantasy", "2015");
-        movieList.add(movie);
+                                    int rank = movieObj.getInt("rank");
+                                    String title = movieObj.getString("title");
 
-        movie = new Movie("Mission: Impossible Rogue Nation", "Action", "2015");
-        movieList.add(movie);
+                                    Movie m = new Movie(rank, title);
 
-        movie = new Movie("Up", "Animation", "2009");
-        movieList.add(movie);
+                                    movieList.add(0, m);
 
-        movie = new Movie("Star Trek", "Science Fiction", "2009");
-        movieList.add(movie);
+                                    // updating offset value to highest value
+                                    if (rank >= offSet)
+                                        offSet = rank;
 
-        movie = new Movie("The LEGO Movie", "Animation", "2014");
-        movieList.add(movie);
+                                } catch (JSONException e) {
+                                    Log.e(TAG, "JSON Parsing error: " + e.getMessage());
+                                }
+                            }
 
-        movie = new Movie("Iron Man", "Action & Adventure", "2008");
-        movieList.add(movie);
+                            mAdapter.notifyDataSetChanged();
+                        }
 
-        movie = new Movie("Aliens", "Science Fiction", "1986");
-        movieList.add(movie);
+                        // stopping swipe refresh
+                        swipeRefreshLayout.setRefreshing(false);
 
-        movie = new Movie("Chicken Run", "Animation", "2000");
-        movieList.add(movie);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Server Error: " + error.getMessage());
 
-        movie = new Movie("Back to the Future", "Science Fiction", "1985");
-        movieList.add(movie);
+                Toast.makeText(getActivity().getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
 
-        movie = new Movie("Raiders of the Lost Ark", "Action & Adventure", "1981");
-        movieList.add(movie);
+                // stopping swipe refresh
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
-        movie = new Movie("Goldfinger", "Action & Adventure", "1965");
-        movieList.add(movie);
+        // Adding request to request queue
+        MyApplication.getInstance().addToRequestQueue(req);
+    }
 
-        movie = new Movie("Guardians of the Galaxy", "Science Fiction & Fantasy", "2014");
-        movieList.add(movie);
-
-        mAdapter.notifyDataSetChanged();
+    public void saveData() {
+        SharedPreferences.Editor outState = getActivity().getSharedPreferences("order", Context.MODE_APPEND).edit();
+        outState.putString("movieList", savedJson);
+        Log.d(TAG, "******SAVED******");
+        Log.d("SAVED JSON", savedJson);
+        outState.putBoolean("saved", true);
+        outState.apply();
     }
 }
