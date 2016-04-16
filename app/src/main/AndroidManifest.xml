@@ -56,6 +56,6 @@
 
         <activity
             android:name=".ActualMatter.NavigationMenu.MenuActivity"
-            android:label="@string/change_password" />
+            android:label="@string/toolbar" />
     </application>
 </manifest>

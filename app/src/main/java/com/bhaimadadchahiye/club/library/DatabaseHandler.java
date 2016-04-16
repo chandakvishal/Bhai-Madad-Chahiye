@@ -16,6 +16,7 @@ import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_PHONE;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_UID;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_ID;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_USERNAME;
+import static com.bhaimadadchahiye.club.constants.DB_Constants.TABLE_CURRENT;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.TABLE_LOCATION;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.TABLE_LOGIN;
 
@@ -29,7 +30,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // Database Name
     private static final String DATABASE_NAME = "bmc_local";
-
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -46,14 +46,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_USERNAME + " TEXT,"
                 + KEY_UID + " TEXT,"
                 + KEY_CREATED_AT + " TEXT" + ")";
-        Log.d("Enter DBHandler Class","");
         String CREATE_LOCATION_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_LOCATION + " ("
                 +  KEY_EMAIL + " TEXT NOT NULL,"
                 + KEY_LATITUDE + " REAL,"
                 + KEY_LONGITUDE + " REAL,"
                 + " FOREIGN KEY (" + KEY_EMAIL + ") REFERENCES " + TABLE_LOGIN + "(" + KEY_EMAIL + "))";
+        String CREATE_TABLE_CURRENT = "CREATE TABLE IF NOT EXISTS " + TABLE_CURRENT + " ("
+                + KEY_ID + " INTEGER PRIMARY KEY,"
+                + KEY_LATITUDE + " REAL,"
+                + KEY_LONGITUDE + " REAL" + ")";
         db.execSQL(CREATE_LOGIN_TABLE);
         db.execSQL(CREATE_LOCATION_TABLE);
+        db.execSQL(CREATE_TABLE_CURRENT);
     }
 
     // Upgrading database
@@ -108,6 +112,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     /**
+     * Storing user current location in database
+     */
+    public void addUser(double latitude, double longitude) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        Log.d("Latitude", String.valueOf(latitude));
+        Log.d("Longitude", String.valueOf(longitude));
+        values.put(KEY_LATITUDE, latitude);
+        values.put(KEY_LONGITUDE, longitude);
+
+        // Inserting Row
+        db.insert(TABLE_CURRENT, null, values);
+        Log.i("Add User", "Succcessfully Added User in Location Table");
+        db.close(); // Closing database connection
+    }
+
+    /**
      * Getting user data from database
      */
     public HashMap<String, String> getUserDetails() {
@@ -125,6 +147,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             user.put(KEY_USERNAME, cursor.getString(4));
             user.put(KEY_UID, cursor.getString(5));
             user.put(KEY_CREATED_AT, cursor.getString(6));
+        }
+        cursor.close();
+        db.close();
+        // return user
+        return user;
+    }
+
+    /**
+     * Getting user data from database
+     */
+    public HashMap<String, Double> getUserLocation() {
+        HashMap<String, Double> user = new HashMap<>();
+        String selectQuery = "SELECT  * FROM " + TABLE_CURRENT + " LIMIT 1";
+        Log.d("SIZE:", String.valueOf(this.getRowCount(TABLE_LOGIN)));
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        // Move to first row
+        cursor.moveToFirst();
+        if (cursor.getCount() > 0) {
+            user.put(KEY_LATITUDE, cursor.getDouble(1));
+            user.put(KEY_LONGITUDE, cursor.getDouble(2));
         }
         cursor.close();
         db.close();

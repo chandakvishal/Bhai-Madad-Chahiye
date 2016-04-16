@@ -16,14 +16,24 @@ import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_PASSWORD;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_PHONE;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_TAG;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_USERNAME;
+import static com.bhaimadadchahiye.club.constants.DB_Constants.GET_ANSWER;
+import static com.bhaimadadchahiye.club.constants.DB_Constants.POST_ANSWER;
+import static com.bhaimadadchahiye.club.constants.DB_Constants._ANSWER;
+import static com.bhaimadadchahiye.club.constants.DB_Constants._OFFSET;
+import static com.bhaimadadchahiye.club.constants.DB_Constants._QBODY;
+import static com.bhaimadadchahiye.club.constants.DB_Constants._QTAG;
+import static com.bhaimadadchahiye.club.constants.DB_Constants._QTITLE;
 import static com.bhaimadadchahiye.club.constants.URIs.chgpassURL;
 import static com.bhaimadadchahiye.club.constants.URIs.chgpass_tag;
 import static com.bhaimadadchahiye.club.constants.URIs.forpassURL;
 import static com.bhaimadadchahiye.club.constants.URIs.forpass_tag;
 import static com.bhaimadadchahiye.club.constants.URIs.home_location_tag;
+import static com.bhaimadadchahiye.club.constants.URIs.load_questions;
 import static com.bhaimadadchahiye.club.constants.URIs.locationUrl;
 import static com.bhaimadadchahiye.club.constants.URIs.loginURL;
 import static com.bhaimadadchahiye.club.constants.URIs.login_tag;
+import static com.bhaimadadchahiye.club.constants.URIs.post_question_tag;
+import static com.bhaimadadchahiye.club.constants.URIs.questionUrl;
 import static com.bhaimadadchahiye.club.constants.URIs.registerURL;
 import static com.bhaimadadchahiye.club.constants.URIs.register_tag;
 
@@ -99,11 +109,50 @@ public class UserFunctions {
     }
 
     public JSONObject storeUserHomeLocation(String email, double latitude, double longitude) {
-         HashMap<String, String> dataToSend = new HashMap<>();
+        HashMap<String, String> dataToSend = new HashMap<>();
         dataToSend.put(KEY_TAG, home_location_tag);
         dataToSend.put(KEY_EMAIL, email);
         dataToSend.put(KEY_LATITUDE, String.valueOf(latitude));
         dataToSend.put(KEY_LONGITUDE, String.valueOf(longitude));
         return jsonParser.getJSONFromUrl(locationUrl, dataToSend);
+    }
+
+    public JSONObject postQuestion(String qTag, String qTitle, String qBody, String email, double latitude, double longitude) {
+        HashMap<String, String> dataToSend = new HashMap<>();
+        dataToSend.put(KEY_TAG, post_question_tag);
+        dataToSend.put(KEY_EMAIL, email);
+        dataToSend.put(KEY_LATITUDE, String.valueOf(latitude));
+        dataToSend.put(KEY_LONGITUDE, String.valueOf(longitude));
+        dataToSend.put(_QTAG, qTag);
+        dataToSend.put(_QTITLE, qTitle);
+        dataToSend.put(_QBODY, qBody);
+        return jsonParser.getJSONFromUrl(questionUrl, dataToSend);
+    }
+
+    public JSONObject loadQuestions(double latitude, double longitude, int  offset) {
+        HashMap<String, String> dataToSend = new HashMap<>();
+        dataToSend.put(KEY_TAG, load_questions);
+        dataToSend.put(KEY_LATITUDE, String.valueOf(latitude));
+        dataToSend.put(KEY_LONGITUDE, String.valueOf(longitude));
+        dataToSend.put(_OFFSET, String.valueOf(offset));
+        return jsonParser.getJSONFromUrl(questionUrl, dataToSend);
+    }
+
+    public JSONObject loadAnswers(double latitude, double longitude, String questionTitle) {
+        HashMap<String, String> dataToSend = new HashMap<>();
+        dataToSend.put(KEY_TAG, GET_ANSWER);
+        dataToSend.put(_QTITLE, questionTitle);
+        dataToSend.put(KEY_LATITUDE, String.valueOf(latitude));
+        dataToSend.put(KEY_LONGITUDE, String.valueOf(longitude));
+        return jsonParser.getJSONFromUrl(questionUrl, dataToSend);
+    }
+
+    public JSONObject postAnswer(String email, String answer, String questionTitle) {
+        HashMap<String, String> dataToSend = new HashMap<>();
+        dataToSend.put(KEY_TAG, POST_ANSWER);
+        dataToSend.put(KEY_EMAIL, email);
+        dataToSend.put(_ANSWER, answer);
+        dataToSend.put(_QTITLE, questionTitle);
+        return jsonParser.getJSONFromUrl(questionUrl, dataToSend);
     }
 }

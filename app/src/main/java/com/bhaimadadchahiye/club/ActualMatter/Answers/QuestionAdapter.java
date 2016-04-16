@@ -12,14 +12,14 @@ import com.bhaimadadchahiye.club.R;
 
 import java.util.List;
 
-public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MyViewHolder> {
+public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyViewHolder> {
 
-    private List<Movie> moviesList;
+    private List<Question> questionList;
     private String[] bgColors;
 
 
-    public MoviesAdapter(Activity activity, List<Movie> moviesList) {
-        this.moviesList = moviesList;
+    public QuestionAdapter(Activity activity, List<Question> questionList) {
+        this.questionList = questionList;
         bgColors = activity.getApplicationContext().getResources().getStringArray(R.array.movie_serial_bg);
 
     }
@@ -27,16 +27,15 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MyViewHold
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.movie_list_row, parent, false);
+                .inflate(R.layout.question_list_row, parent, false);
 
         return new MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Movie movie = moviesList.get(position);
-        holder.title.setText(moviesList.get(position).title);
-        holder.serial.setText(String.valueOf(moviesList.get(position).id));
+        holder.title.setText(questionList.get(position).title);
+        holder.serial.setText(String.valueOf(questionList.get(position).id));
 
         String color = bgColors[position % bgColors.length];
         holder.serial.setBackgroundColor(Color.parseColor(color));
@@ -44,7 +43,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MyViewHold
 
     @Override
     public int getItemCount() {
-        return moviesList.size();
+        return questionList.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -56,16 +55,4 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MyViewHold
             serial = (TextView) view.findViewById(R.id.serial);
         }
     }
-
-//    // Clean all elements of the recycler
-//    public void clear() {
-//        moviesList.clear();
-//        notifyDataSetChanged();
-//    }
-//
-//    // Add a list of items
-//    public void addAll(List<Movie> list) {
-//        moviesList.addAll(list);
-//        notifyDataSetChanged();
-//    }
 }

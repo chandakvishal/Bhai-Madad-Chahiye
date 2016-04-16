@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_for_answers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical" />
+
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/post_answer_fab"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            fab:menu_backgroundColor="#ccffffff"
+            fab:menu_colorNormal="#1565C0"
+            fab:menu_colorPressed="#2272CD"
+            fab:menu_colorRipple="#62B2FF"
+            fab:menu_fab_label="Menu label"
+            fab:menu_labels_ellipsize="end"
+            fab:menu_labels_singleLine="true">
+
+        </com.github.clans.fab.FloatingActionMenu>
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

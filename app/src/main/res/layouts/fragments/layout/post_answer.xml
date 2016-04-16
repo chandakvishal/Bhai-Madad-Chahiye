@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinatorLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:text="@string/post_answer"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <EditText
+            android:id="@+id/answer_received"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@android:drawable/editbox_background_normal"
+            android:hint="@string/answer"
+            android:inputType="textCapSentences|textAutoCorrect"
+            android:layout_marginTop="57dp"
+            android:layout_below="@+id/textView6"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            android:id="@+id/postAnswerBtn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/answer_received"
+            android:backgroundTint="@color/RoyalBlue"
+            android:text="@string/post_answer"
+            android:textStyle="bold"
+            tools:targetApi="lollipop" />
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

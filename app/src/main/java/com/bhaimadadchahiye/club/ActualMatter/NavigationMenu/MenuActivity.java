@@ -8,8 +8,9 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,7 +25,7 @@ import com.bhaimadadchahiye.club.R;
 import com.bhaimadadchahiye.club.library.BackHandledFragment;
 import com.bhaimadadchahiye.club.location.GPSTracker;
 
-public class MenuActivity extends FragmentActivity implements View.OnClickListener, BackHandledFragment.BackHandlerInterface, ActivityCompat.OnRequestPermissionsResultCallback {
+public class MenuActivity extends AppCompatActivity implements View.OnClickListener, BackHandledFragment.BackHandlerInterface, ActivityCompat.OnRequestPermissionsResultCallback {
 
     public static final int REQUEST_LOCATION = 199;
     private static MenuActivity mContext;
@@ -35,17 +36,6 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
     private ResideMenuItem itemSettings;
     private GPSTracker gpsTracker;
     private BackHandledFragment selectedFragment;
-    private ResideMenu.OnMenuListener menuListener = new ResideMenu.OnMenuListener() {
-        @Override
-        public void openMenu() {
-            Toast.makeText(mContext, "Menu is opened!", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void closeMenu() {
-            Toast.makeText(mContext, "Menu is closed!", Toast.LENGTH_SHORT).show();
-        }
-    };
 
     public static Context getcontext() {
         return mContext;
@@ -60,6 +50,10 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
         setContentView(R.layout.main);
         mContext = this;
         setUpMenu();
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         CoordinatorLayout mLayout = (CoordinatorLayout) findViewById(R.id
                 .coordinatorLayout);
         Snackbar snackbar = Snackbar.make(mLayout, "Invalid Credentials", Snackbar.LENGTH_LONG);
@@ -73,6 +67,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
             changeFragment(new HomeFragment(), "home");
 
         gpsTracker = new GPSTracker(MenuActivity.this);
+
     }
 
     private void setUpMenu() {
@@ -82,7 +77,6 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
         resideMenu.setBackground(R.drawable.menu_background);
         resideMenu.attachToActivity(this);
         resideMenu.setUse3D(true);
-        resideMenu.setMenuListener(menuListener);
         //valid scale factor is between 0.0f and 1.0f. leftmenu'width is 150dip.
         resideMenu.setScaleValue(0.6f);
 
@@ -137,11 +131,6 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
                 .commit();
     }
 
-    // What good method is to access resideMenu？
-    public ResideMenu getResideMenu() {
-        return resideMenu;
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d("onActivityResult()", Integer.toString(resultCode));
@@ -176,7 +165,7 @@ public class MenuActivity extends FragmentActivity implements View.OnClickListen
     @Override
     public void onBackPressed() {
 
-        if(selectedFragment == null || !selectedFragment.onBackPressed()) {
+        if (selectedFragment == null || !selectedFragment.onBackPressed()) {
             // Selected fragment did not consume the back press event.
             super.onBackPressed();
         }

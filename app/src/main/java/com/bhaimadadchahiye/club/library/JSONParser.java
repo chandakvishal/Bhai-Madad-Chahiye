@@ -59,6 +59,7 @@ public class JSONParser {
         }
         // try parse the string to a JSON object
         try {
+            Log.e("JSON", response);
             jObj = new JSONObject(response);
         } catch (JSONException e) {
             Log.e("JSON Parser", "Error parsing data " + e.toString());
@@ -82,6 +83,8 @@ public class JSONParser {
             result.append("=");
             result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
         }
+
+        Log.d("POST DATA: ", "getPostDataString: " + result.toString());
 
         return result.toString();
     }

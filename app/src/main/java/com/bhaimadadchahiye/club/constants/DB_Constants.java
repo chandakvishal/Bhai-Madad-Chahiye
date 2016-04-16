@@ -35,7 +35,25 @@ public class DB_Constants {
 
     public static final String KEY_LONGITUDE = "longitude";
 
+    public static final String KEY_TIME = "timestamp";
+
     public static final String TABLE_LOGIN = "login";
 
     public static final String TABLE_LOCATION = "location";
+
+    public static final String TABLE_CURRENT = "currentLoc";
+
+    public static final String _QTAG = "qTag";
+
+    public static final String _QTITLE = "qTitle";
+
+    public static final String _QBODY = "qBody";
+
+    public static final String _OFFSET = "offset";
+
+    public static final String GET_ANSWER = "getAnswer";
+
+    public static final String POST_ANSWER = "postAnswer";
+
+    public static final String _ANSWER = "answer";
 }

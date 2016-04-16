@@ -208,12 +208,9 @@ public class ChangePassword extends Activity {
                     String red = json.getString(KEY_ERROR);
 
                     if (Integer.parseInt(res) == 1) {
-                        /**
-                         * Dismiss the process dialog
-                         **/
+                        //Dismiss the process dialog
                         pDialog.dismiss();
                         snackbar.setText("Your Password is successfully changed.").show();
-
                     } else if (Integer.parseInt(red) == 2) {
                         pDialog.dismiss();
                         snackbar.setText("Invalid old Password.").show();
@@ -221,13 +218,10 @@ public class ChangePassword extends Activity {
                         pDialog.dismiss();
                         snackbar.setText("Error occurred in changing Password.").show();
                     }
-
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-
             }
-
         }
     }
 }

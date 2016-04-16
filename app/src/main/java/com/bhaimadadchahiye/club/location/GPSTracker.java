@@ -12,7 +12,6 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.MenuActivity;
 import com.bhaimadadchahiye.club.library.DatabaseHandler;
@@ -36,7 +35,7 @@ public class GPSTracker extends AppCompatActivity{
     // Declaring a Location Manager
     protected LocationManager locationManager;
     private Context mContext;
-    private Location currentBestLocation = null;
+    public Location currentBestLocation = null;
     private ServiceLocationListener gpsLocationListener;
     private ServiceLocationListener networkLocationListener;
     private ServiceLocationListener passiveLocationListener;
@@ -146,15 +145,15 @@ public class GPSTracker extends AppCompatActivity{
             passiveLocationListener = new ServiceLocationListener();
 
             if (gpsProvider != null) {
-                locationManager.requestLocationUpdates(gpsProvider.getName(), 0l, 0.0f, gpsLocationListener);
+                locationManager.requestLocationUpdates(gpsProvider.getName(), 0L, 0.0f, gpsLocationListener);
             }
 
             if (networkProvider != null) {
-                locationManager.requestLocationUpdates(networkProvider.getName(), 0l, 0.0f, networkLocationListener);
+                locationManager.requestLocationUpdates(networkProvider.getName(), 0L, 0.0f, networkLocationListener);
             }
 
             if (passiveProvider != null) {
-                locationManager.requestLocationUpdates(passiveProvider.getName(), 0l, 0.0f, passiveLocationListener);
+                locationManager.requestLocationUpdates(passiveProvider.getName(), 0L, 0.0f, passiveLocationListener);
             }
 
             if (gpsProvider != null || networkProvider != null || passiveProvider != null) {
@@ -232,17 +231,17 @@ public class GPSTracker extends AppCompatActivity{
 
     public class ServiceLocationListener implements android.location.LocationListener {
 
-        private Location finalLocation;
+        public Location finalLocation;
 
         @Override
         public void onLocationChanged(Location newLocation) {
             synchronized (this) {
                 if (isBetterLocation(newLocation, currentBestLocation)) {
                     currentBestLocation = newLocation;
-                    Log.d("Current Best Location: ", currentBestLocation.toString());
+                    Log.d("Best Location: ", String.valueOf(currentBestLocation.getLatitude()));
                     setLocation(currentBestLocation);
                     storeLocation();
-                    Toast.makeText(MenuActivity.getcontext(), " Your Location is " + currentBestLocation.getLatitude(), Toast.LENGTH_LONG).show();
+                    saveLocation();
                     if (currentBestLocation.hasAccuracy() && currentBestLocation.getAccuracy() <= 100) {
                         Log.d("Executed...", "");
                         finish();
@@ -278,6 +277,9 @@ public class GPSTracker extends AppCompatActivity{
             if (localDB.getRowCount(TABLE_LOCATION) == 0) {
                 new HomeLocationRegister().execute(currentBestLocation.getLatitude(), currentBestLocation.getLongitude());
             }
+        }
+        public void saveLocation() {
+            new CurrentLocationRegister().execute(currentBestLocation.getLatitude(), currentBestLocation.getLongitude());
         }
     }
 }

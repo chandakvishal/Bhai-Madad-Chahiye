@@ -1,13 +1,11 @@
 package com.bhaimadadchahiye.club.ActualMatter.Answers;
 
-public class Movie {
+public class Answer {
+
     public int id;
     public String title;
 
-    public Movie() {
-    }
-
-    public Movie(int id, String title) {
+    public Answer(int id, String title) {
         this.title = title;
         this.id = id;
     }

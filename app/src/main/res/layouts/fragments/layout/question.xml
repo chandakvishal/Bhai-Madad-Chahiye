@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinatorLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:text="@string/post_question"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <EditText
+            android:id="@+id/questionTitle"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:background="@android:drawable/editbox_background_normal"
+            android:hint="@string/title"
+            android:inputType="textCapSentences|textAutoCorrect"
+            android:layout_below="@+id/questionTags"
+            android:layout_alignParentStart="true" />
+
+        <EditText
+            android:id="@+id/questionBody"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_below="@+id/questionTitle"
+            android:background="@android:drawable/editbox_background_normal"
+            android:hint="@string/body"
+            android:inputType="textCapSentences|textAutoCorrect" />
+
+        <EditText
+            android:id="@+id/questionTags"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@android:drawable/editbox_background_normal"
+            android:hint="@string/tags"
+            android:inputType="textCapSentences|textAutoCorrect"
+            android:layout_below="@+id/textView6"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/questionBody"
+            android:id="@+id/postQuestionBtn"
+            android:backgroundTint="@color/RoyalBlue"
+            android:text="@string/post_question"
+            android:textStyle="bold"
+            tools:targetApi="lollipop"/>
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

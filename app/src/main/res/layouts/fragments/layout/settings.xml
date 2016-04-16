@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -19,7 +17,7 @@
             android:layout_height="40dp"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/changePassBtn"
-            android:text="Logout"
+            android:text="@string/logout"
             android:textColor="#000000"
             android:textSize="13sp" />
 
@@ -29,9 +27,9 @@
             android:layout_height="40dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
-            android:text="Change Password"
+            android:text="@string/change_password"
             android:textColor="#000000"
-            android:textSize="13dp" />
+            android:textSize="13sp" />
 
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
