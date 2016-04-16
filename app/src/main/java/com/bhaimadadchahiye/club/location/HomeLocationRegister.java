@@ -39,6 +39,7 @@ public class HomeLocationRegister extends AsyncTask<Double, Void, JSONObject> {
         Log.d("JSONObject", String.valueOf(json));
         DatabaseHandler db = new DatabaseHandler(MenuActivity.getcontext());
         try {
+            Log.d("HomeRegister", "onPostExecute: " + db.getRowCount(TABLE_LOCATION));
             if (db.getRowCount(TABLE_LOCATION) == 0) {
                 JSONObject json_user = json.getJSONObject("homelocal");
                 db.addUser(json_user.getString(KEY_EMAIL), json_user.getDouble(KEY_LATITUDE), json_user.getDouble(KEY_LONGITUDE));

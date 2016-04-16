@@ -107,7 +107,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         // Inserting Row
         db.insert(TABLE_LOCATION, null, values);
-        Log.i("Add User", "Succcessfully Added User in Location Table");
+        Log.i("Add User", "Successfully Added User in Location Table");
         db.close(); // Closing database connection
     }
 
@@ -125,7 +125,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         // Inserting Row
         db.insert(TABLE_CURRENT, null, values);
-        Log.i("Add User", "Succcessfully Added User in Location Table");
+        Log.i("Add User", "Successfully Added User in Current Location Table");
         db.close(); // Closing database connection
     }
 

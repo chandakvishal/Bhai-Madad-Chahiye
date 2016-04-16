@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 Intent myIntent = new Intent(view.getContext(), PasswordReset.class);
                 startActivityForResult(myIntent, 0);
-                overridePendingTransition(R.animator.animation1, R.animator.animation3);
+                overridePendingTransition(R.anim.animation1, R.anim.animation3);
 
                 //finish();
             }

@@ -46,7 +46,6 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.MyViewHo
 
         int viewType = getItemViewType(position);
         if (viewType == VIEW_TYPE_FILLED) {
-            Log.d("HHHHHHHHHH", "onBindViewHolder: Wrong Flow");
             holder.title.setText(questionList.get(position).title);
             holder.serial.setText(String.valueOf(questionList.get(position).id));
 
@@ -57,9 +56,9 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.MyViewHo
 
     @Override
     public int getItemCount() {
-        if(questionList.size() == 0){
+        if (questionList.size() == 0) {
             return 1;
-        }else {
+        } else {
             return questionList.size();
         }
     }
@@ -68,7 +67,7 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.MyViewHo
     public int getItemViewType(int position) {
         if (questionList.size() == 0) {
             return VIEW_TYPE_EMPTY;
-        }else{
+        } else {
             return VIEW_TYPE_FILLED;
         }
     }

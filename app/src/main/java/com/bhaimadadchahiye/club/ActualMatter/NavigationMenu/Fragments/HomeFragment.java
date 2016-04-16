@@ -179,6 +179,11 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        fab1.setOnClickListener(clickListener);
+        fab2.setOnClickListener(clickListener);
+        fab3.setOnClickListener(clickListener);
+
         mUiHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -188,11 +193,7 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
         menuFAB.setOnMenuButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (menuFAB.isOpened()) {
-                    fab1.setOnClickListener(clickListener);
-                    fab2.setOnClickListener(clickListener);
-                    fab3.setOnClickListener(clickListener);
-                }
+
                 menuFAB.toggle(true);
             }
         });
@@ -226,6 +227,7 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
     public void onStop() {
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
+            stopLocationUpdates();
         }
         saveData();
         super.onStop();

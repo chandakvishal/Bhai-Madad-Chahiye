@@ -31,7 +31,7 @@ public class GPSTracker extends AppCompatActivity{
 
     public static final int REQUEST_LOCATION = 199;
     // The minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 3; // 1 minute
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 3; // 3 minute
     // Declaring a Location Manager
     protected LocationManager locationManager;
     private Context mContext;
@@ -274,6 +274,7 @@ public class GPSTracker extends AppCompatActivity{
             Location currentBestLocation = getLocation();
             DatabaseHandler localDB = new DatabaseHandler(MenuActivity.getcontext());
             //Check for home location
+            Log.d("STORE LOCATION", "storeLocation: " + localDB.getRowCount(TABLE_LOCATION));
             if (localDB.getRowCount(TABLE_LOCATION) == 0) {
                 new HomeLocationRegister().execute(currentBestLocation.getLatitude(), currentBestLocation.getLongitude());
             }
