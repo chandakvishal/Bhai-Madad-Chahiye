@@ -12,12 +12,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.Fragments.CalendarFragment;
+import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.Fragments.Feedback;
 import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.Fragments.HomeFragment;
 import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.Fragments.ProfileFragment;
 import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.Fragments.SettingsFragment;
@@ -32,10 +34,12 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     private ResideMenu resideMenu;
     private ResideMenuItem itemHome;
     private ResideMenuItem itemProfile;
-    private ResideMenuItem itemCalendar;
+    private ResideMenuItem itemFeedback;
+    //    private ResideMenuItem itemCalendar;
     private ResideMenuItem itemSettings;
     private GPSTracker gpsTracker;
     private BackHandledFragment selectedFragment;
+    Snackbar snackbar;
 
     public static Context getcontext() {
         return mContext;
@@ -53,10 +57,15 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
 
         CoordinatorLayout mLayout = (CoordinatorLayout) findViewById(R.id
                 .coordinatorLayout);
-        Snackbar snackbar = Snackbar.make(mLayout, "Invalid Credentials", Snackbar.LENGTH_LONG);
+        snackbar = Snackbar.make(mLayout, "Invalid Credentials", Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
         //noinspection deprecation
         snackBarView.setBackgroundColor(getResources().getColor(R.color.Black));
@@ -68,6 +77,32 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
         gpsTracker = new GPSTracker(MenuActivity.this);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_user) {
+            changeFragment(new ProfileFragment(), "profile");
+        } else if (id == R.id.action_help) {
+            changeFragment(new Feedback(), "feedback");
+        } else if (id == R.id.notification) {
+            snackbar.setText("This function is not available in free version.").show();
+            return false;
+        }
+        return false;
     }
 
     private void setUpMenu() {
@@ -83,17 +118,17 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         // create menu items;
         itemHome = new ResideMenuItem(this, R.drawable.icon_home, "Home");
         itemProfile = new ResideMenuItem(this, R.drawable.icon_profile, "Profile");
-        itemCalendar = new ResideMenuItem(this, R.drawable.icon_calendar, "Calendar");
-        itemSettings = new ResideMenuItem(this, R.drawable.icon_settings, "Settings");
+        itemFeedback = new ResideMenuItem(this, R.drawable.ic_feedback, "About Us");
+        itemSettings = new ResideMenuItem(this, R.drawable.ic_build, "Settings");
 
         itemHome.setOnClickListener(this);
         itemProfile.setOnClickListener(this);
-        itemCalendar.setOnClickListener(this);
+        itemFeedback.setOnClickListener(this);
         itemSettings.setOnClickListener(this);
 
         resideMenu.addMenuItem(itemHome, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemProfile, ResideMenu.DIRECTION_LEFT);
-        resideMenu.addMenuItem(itemCalendar, ResideMenu.DIRECTION_LEFT);
+        resideMenu.addMenuItem(itemFeedback, ResideMenu.DIRECTION_LEFT);
         resideMenu.addMenuItem(itemSettings, ResideMenu.DIRECTION_LEFT);
 
         // You can disable a direction by setting ->
@@ -112,10 +147,10 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
             changeFragment(new HomeFragment(), "home");
         } else if (view == itemProfile) {
             changeFragment(new ProfileFragment(), "profile");
-        } else if (view == itemCalendar) {
-            changeFragment(new CalendarFragment(), "calendar");
         } else if (view == itemSettings) {
             changeFragment(new SettingsFragment(), "settings");
+        } else if (view == itemFeedback) {
+            changeFragment(new Feedback(), "settings");
         }
 
         resideMenu.closeMenu();

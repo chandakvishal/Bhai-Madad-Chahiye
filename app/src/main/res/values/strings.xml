@@ -50,4 +50,20 @@
     <string name="toolbar">Bhai...</string>
 
 
+    <string name="button_feedback">Send feedback</string>
+    <string name="title_send_feedback">Send feedback</string>
+    <string name="mail_feedback_email">bhai@bhaimadadchahie.club</string>
+    <string name="mail_feedback_subject">Feedback on your app</string>
+    <string name="mail_feedback_message">Hi, \n\n I would like to give you some feedback:</string>
+
+    <string name="about_us">This is th official Bhai Madad Chahiye App.\n\nIt is still
+        evolving and we are committed to making it better each day.</string>
+
+    <string name="user_profile">User Profile</string>
+    <string name="action">Action</string>
+    <string name="notifications">Notifications</string>
+    <string name="help">Help</string>
+    <string name="feedback">Feel free to give a Feedback!</string>
+    <string name="developed_by">Developed By:\n\n Vishal Chandak</string>
+
 </resources>

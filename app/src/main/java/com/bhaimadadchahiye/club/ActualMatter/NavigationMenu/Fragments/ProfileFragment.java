@@ -3,6 +3,7 @@ package com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.Fragments;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -33,6 +34,8 @@ public class ProfileFragment extends BackHandledFragment {
 
         Log.d("Details: ", String.valueOf(user.values()));
 
+        setHasOptionsMenu(true);
+
         /**
          * Displays the registration details in Text view
          **/
@@ -54,5 +57,20 @@ public class ProfileFragment extends BackHandledFragment {
     public boolean onBackPressed() {
         ((MenuActivity) getActivity()).changeFragment(new HomeFragment(), "home");
         return true;
+    }
+
+    /**
+     * react to the user tapping the back/up icon in the action bar
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        } else if (id == R.id.action_user) {
+            return false;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

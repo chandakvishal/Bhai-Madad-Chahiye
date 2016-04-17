@@ -3,6 +3,7 @@ package com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.Fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -21,8 +22,11 @@ public class SettingsFragment extends BackHandledFragment {
 
         View inflatedView = inflater.inflate(R.layout.settings, container, false);
 
+        setHasOptionsMenu(true);
+
         Button changePassBtn = (Button) inflatedView.findViewById(R.id.changePassBtn);
         Button btnLogout = (Button) inflatedView.findViewById(R.id.logout);
+
 
         /**
          * Change Password Activity Started
@@ -57,8 +61,20 @@ public class SettingsFragment extends BackHandledFragment {
 
     @Override
     public boolean onBackPressed() {
-        ((MenuActivity)getActivity()).changeFragment(new HomeFragment(), "home");
+        ((MenuActivity) getActivity()).changeFragment(new HomeFragment(), "home");
         return true;
     }
 
+    /**
+     * react to the user tapping the back/up icon in the action bar
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

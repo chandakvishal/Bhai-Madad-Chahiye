@@ -19,6 +19,7 @@ import com.bhaimadadchahiye.club.R;
 import com.bhaimadadchahiye.club.library.BackHandledFragment;
 import com.bhaimadadchahiye.club.library.DatabaseHandler;
 import com.bhaimadadchahiye.club.library.UserFunctions;
+import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
 import org.json.JSONArray;
@@ -43,7 +44,7 @@ public class Answers extends BackHandledFragment {
 
     private String TAG = MenuActivity.class.getSimpleName();
 
-    private FloatingActionMenu menuFAB;
+    private FloatingActionButton menuFAB;
 
     private Handler mUiHandler = new Handler();
 
@@ -54,9 +55,7 @@ public class Answers extends BackHandledFragment {
         RecyclerView recyclerView = (RecyclerView) parentView.findViewById(R.id.recycler_view_for_answers);
 
         //Floating Action Button Menu Configuration
-        menuFAB = (FloatingActionMenu) parentView.findViewById(R.id.post_answer_fab);
-        menuFAB.setClosedOnTouchOutside(true);
-        menuFAB.hideMenuButton(false);
+        menuFAB = (FloatingActionButton) parentView.findViewById(R.id.post_answer_fab);
 
         mAdapter = new AnswersAdapter(getActivity(), questionList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -88,13 +87,8 @@ public class Answers extends BackHandledFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mUiHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                menuFAB.showMenuButton(true);
-            }
-        });
-        menuFAB.setOnMenuButtonClickListener(new View.OnClickListener() {
+
+        menuFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PostAnswer postAnswer = new PostAnswer();

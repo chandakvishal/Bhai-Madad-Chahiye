@@ -18,24 +18,19 @@
             android:layout_height="wrap_content"
             android:scrollbars="vertical" />
 
-        <com.github.clans.fab.FloatingActionMenu
+        <com.github.clans.fab.FloatingActionButton
             android:id="@+id/post_answer_fab"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:paddingRight="10dp"
             android:paddingBottom="10dp"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            fab:menu_backgroundColor="#ccffffff"
-            fab:menu_colorNormal="#1565C0"
-            fab:menu_colorPressed="#2272CD"
-            fab:menu_colorRipple="#62B2FF"
-            fab:menu_fab_label="Menu label"
-            fab:menu_labels_ellipsize="end"
-            fab:menu_labels_singleLine="true">
-
-        </com.github.clans.fab.FloatingActionMenu>
+            android:src="@drawable/ic_edit"
+            fab:fab_size="mini"
+            fab:fab_label="Search"
+            style="@style/MenuButtonsSmall.Green"/>
 
     </RelativeLayout>
 

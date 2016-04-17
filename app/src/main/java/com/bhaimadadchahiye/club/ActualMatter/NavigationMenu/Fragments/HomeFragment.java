@@ -14,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -58,7 +59,6 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
     private FloatingActionMenu menuFAB;
     private FloatingActionButton fab1;
     private FloatingActionButton fab2;
-    private FloatingActionButton fab3;
     private Handler mUiHandler = new Handler();
 
     private List<Question> questionList = new ArrayList<>();
@@ -99,6 +99,8 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
                 .build();
         gpsTracker = new GPSTracker(getActivity());
 
+        setHasOptionsMenu(true);
+
         //Floating Action Button Menu Configuration
         menuFAB = (FloatingActionMenu) parentView.findViewById(R.id.menu_red);
         menuFAB.setClosedOnTouchOutside(true);
@@ -127,7 +129,6 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
 
         fab1 = (FloatingActionButton) parentView.findViewById(R.id.fab1);
         fab2 = (FloatingActionButton) parentView.findViewById(R.id.fab2);
-        fab3 = (FloatingActionButton) parentView.findViewById(R.id.fab3);
 
         /**
          * Showing Swipe Refresh animation on activity create
@@ -175,14 +176,12 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
         return parentView;
     }
 
-    //TODO: Dirty code fix required
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         fab1.setOnClickListener(clickListener);
         fab2.setOnClickListener(clickListener);
-        fab3.setOnClickListener(clickListener);
 
         mUiHandler.post(new Runnable() {
             @Override
@@ -279,6 +278,19 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
     }
 
     /**
+     * react to the user tapping the back/up icon in the action bar
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
      * Fetching answers from Database
      */
     public void fetchAnswers() {
@@ -335,9 +347,6 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
                     break;
                 case R.id.fab2:
                     ((MenuActivity) getActivity()).changeFragment(new PostQuestion(), "home");
-                    break;
-                case R.id.fab3:
-                    Toast.makeText(getActivity(), "FAB 3", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
