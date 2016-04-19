@@ -16,8 +16,8 @@
         android:gravity="center"
         android:paddingLeft="32dp"
         android:paddingRight="32dp"
-        android:text="Slide 2 title"
-        android:textColor="#ffffff"
+        android:text="@string/intro2"
+        android:textColor="@color/Black"
         android:textSize="28sp" />
 
     <LinearLayout
@@ -33,7 +33,7 @@
             android:layout_gravity="center"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:src="@drawable/ic_slide2" />
+            android:src="@drawable/intro2_img" />
     </LinearLayout>
 
     <TextView
@@ -44,7 +44,7 @@
         android:gravity="center"
         android:paddingLeft="64dp"
         android:paddingRight="64dp"
-        android:text="Loooooooooooooooo[...]ooooooooong descreption here"
+        android:text=""
         android:textColor="#ffffff"
         android:textSize="16sp" />
 

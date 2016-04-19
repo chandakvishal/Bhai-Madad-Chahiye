@@ -3,7 +3,6 @@ package com.bhaimadadchahiye.club.ActualMatter.Answers;
 import android.app.Activity;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,7 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.MyViewHo
 
     public AnswersAdapter(Activity activity, List<Answer> questionList) {
         this.questionList = questionList;
-        bgColors = activity.getApplicationContext().getResources().getStringArray(R.array.movie_serial_bg);
+        bgColors = activity.getApplicationContext().getResources().getStringArray(R.array.answer_email_color);
 
     }
 
@@ -33,7 +32,7 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.MyViewHo
         View itemView;
         if (viewType == VIEW_TYPE_FILLED) {
             itemView = LayoutInflater.from(parent.getContext()).inflate(
-                    R.layout.question_list_row, parent, false);
+                    R.layout.answer_list_row, parent, false);
         } else {
             itemView = LayoutInflater.from(parent.getContext()).inflate(
                     R.layout.empty_layout, parent, false);
@@ -47,7 +46,7 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.MyViewHo
         int viewType = getItemViewType(position);
         if (viewType == VIEW_TYPE_FILLED) {
             holder.title.setText(questionList.get(position).title);
-            holder.serial.setText(String.valueOf(questionList.get(position).id));
+            holder.serial.setText(String.valueOf(questionList.get(position).email));
 
             String color = bgColors[position % bgColors.length];
             holder.serial.setBackgroundColor(Color.parseColor(color));

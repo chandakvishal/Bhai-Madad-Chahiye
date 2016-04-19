@@ -16,7 +16,7 @@
         android:gravity="center"
         android:paddingLeft="32dp"
         android:paddingRight="32dp"
-        android:text="Slide 4 title"
+        android:text="@string/intro4"
         android:textColor="#ffffff"
         android:textSize="28sp" />
 
@@ -33,7 +33,7 @@
             android:layout_gravity="center"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:src="@drawable/ic_slide4" />
+            android:src="@drawable/intro4_img" />
     </LinearLayout>
 
     <TextView

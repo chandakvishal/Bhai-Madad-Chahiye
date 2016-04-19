@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.MenuActivity;
 import com.bhaimadadchahiye.club.R;
@@ -18,6 +19,8 @@ public class Feedback extends BackHandledFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View parentView = inflater.inflate(R.layout.feedback, container, false);
+
+        setHasOptionsMenu(true);
 
         parentView.findViewById(R.id.github_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +69,7 @@ public class Feedback extends BackHandledFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        Toast.makeText(getActivity(), String.valueOf(id), Toast.LENGTH_SHORT).show();
         if (id == android.R.id.home) {
             onBackPressed();
             return true;

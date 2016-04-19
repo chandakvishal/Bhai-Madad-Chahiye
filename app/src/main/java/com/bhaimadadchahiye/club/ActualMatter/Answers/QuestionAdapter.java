@@ -20,7 +20,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
 
     public QuestionAdapter(Activity activity, List<Question> questionList) {
         this.questionList = questionList;
-        bgColors = activity.getApplicationContext().getResources().getStringArray(R.array.movie_serial_bg);
+        bgColors = activity.getApplicationContext().getResources().getStringArray(R.array.question_count_color);
 
     }
 

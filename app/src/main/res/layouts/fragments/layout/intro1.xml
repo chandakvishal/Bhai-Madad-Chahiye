@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_weight="10"
-    android:background="#222222"
+    android:background="@color/Black"
     android:orientation="vertical">
 
     <TextView
@@ -16,7 +16,7 @@
         android:gravity="center"
         android:paddingLeft="32dp"
         android:paddingRight="32dp"
-        android:text="Slide 1 title"
+        android:text="New to a place?\nNeed Help?"
         android:textColor="#ffffff"
         android:textSize="28sp" />
 
@@ -33,7 +33,7 @@
             android:layout_gravity="center"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:src="@drawable/ic_slide1" />
+            android:src="@drawable/intro1_img" />
     </LinearLayout>
 
     <TextView
@@ -43,7 +43,7 @@
         android:gravity="center"
         android:paddingLeft="64dp"
         android:paddingRight="64dp"
-        android:text="Loooooooooooooooo[...]ooooooooong descreption here"
+        android:text=""
         android:textColor="#ffffff"
         android:textSize="16sp" />
 

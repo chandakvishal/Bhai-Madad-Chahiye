@@ -25,7 +25,8 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -47,9 +48,5 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:8.4.0'
     compile 'com.github.scottyab:showhidepasswordedittext:0.5.1'
     compile 'io.reactivex:rxjava:1.0.14'
-    compile 'com.github.clans:fab:1.6.2'
-    compile 'com.loopj.android:android-async-http:1.4.9'
-    compile 'com.android.volley:volley:1.0.0'
-    compile 'com.google.code.gson:gson:2.4'
     compile 'com.github.clans:fab:1.6.2'
 }

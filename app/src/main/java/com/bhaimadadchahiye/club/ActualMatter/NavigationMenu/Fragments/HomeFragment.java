@@ -112,7 +112,7 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(mAdapter);
 
         swipeRefreshLayout = (SwipeRefreshLayout) parentView.findViewById(R.id.swipeContainer);
@@ -157,7 +157,7 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
-        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity().getApplicationContext(), recyclerView, new ClickListener() {
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 Question question = questionList.get(position);

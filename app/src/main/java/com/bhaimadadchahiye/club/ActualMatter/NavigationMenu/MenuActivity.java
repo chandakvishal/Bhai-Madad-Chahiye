@@ -102,7 +102,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
             snackbar.setText("This function is not available in free version.").show();
             return false;
         }
-        return false;
+        return super.onOptionsItemSelected(item);
     }
 
     private void setUpMenu() {

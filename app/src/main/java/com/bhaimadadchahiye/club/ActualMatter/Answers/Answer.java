@@ -2,11 +2,11 @@ package com.bhaimadadchahiye.club.ActualMatter.Answers;
 
 public class Answer {
 
-    public int id;
+    public String email;
     public String title;
 
-    public Answer(int id, String title) {
+    public Answer(String email, String title) {
         this.title = title;
-        this.id = id;
+        this.email = email;
     }
 }

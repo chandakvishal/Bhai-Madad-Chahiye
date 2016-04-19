@@ -66,4 +66,10 @@
     <string name="feedback">Feel free to give a Feedback!</string>
     <string name="developed_by">Developed By:\n\n Vishal Chandak</string>
 
+
+    <string name="intro1">New to a place?\nNeed Help?</string>
+    <string name="intro2">Are you confused?</string>
+    <string name="intro3">No need to panic..\nWe are here to help</string>
+    <string name="intro4">Find Help Instantly</string>
+
 </resources>

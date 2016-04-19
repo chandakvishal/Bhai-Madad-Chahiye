@@ -2,13 +2,13 @@ package com.bhaimadadchahiye.club.ActualMatter.Answers;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -20,7 +20,6 @@ import com.bhaimadadchahiye.club.library.BackHandledFragment;
 import com.bhaimadadchahiye.club.library.DatabaseHandler;
 import com.bhaimadadchahiye.club.library.UserFunctions;
 import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -46,8 +45,6 @@ public class Answers extends BackHandledFragment {
 
     private FloatingActionButton menuFAB;
 
-    private Handler mUiHandler = new Handler();
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View parentView = inflater.inflate(R.layout.answers, container, false);
@@ -61,8 +58,21 @@ public class Answers extends BackHandledFragment {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL));
-        recyclerView.setAdapter(mAdapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
+        //recyclerView.setAdapter(mAdapter);
+
+        List<SimpleSectionedRecyclerViewAdapter.Section> sections = new ArrayList<>();
+
+        sections.add(new SimpleSectionedRecyclerViewAdapter.Section(0, questionTitle));
+
+        //Add your adapter to the sectionAdapter
+        SimpleSectionedRecyclerViewAdapter.Section[] dummy = new SimpleSectionedRecyclerViewAdapter.Section[sections.size()];
+        SimpleSectionedRecyclerViewAdapter mSectionedAdapter = new
+                SimpleSectionedRecyclerViewAdapter(getActivity(), R.layout.section, R.id.section_text, mAdapter);
+        mSectionedAdapter.setSections(sections.toArray(dummy));
+
+        //Apply this adapter to the RecyclerView
+        recyclerView.setAdapter(mSectionedAdapter);
 
         getAnswer();
 
@@ -73,6 +83,19 @@ public class Answers extends BackHandledFragment {
     public boolean onBackPressed() {
         ((MenuActivity) getActivity()).changeFragment(new HomeFragment(), "home");
         return true;
+    }
+
+    /**
+     * react to the user tapping the back/up icon in the action bar
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void setQuestionTitle(String questionTitle) {
@@ -155,8 +178,12 @@ public class Answers extends BackHandledFragment {
 
                                 JSONObject questionTitlesJsonObject = response.getJSONObject(i);
                                 String title = String.valueOf(questionTitlesJsonObject.get("answer"));
-                                int rank = questionTitlesJsonObject.getInt("rank");
-                                Answer m = new Answer(rank, title);
+                                String email = String.valueOf(questionTitlesJsonObject.get("email"));
+
+//                                Might be useful at a later stage, thus not removing
+//                                int rank = questionTitlesJsonObject.getInt("rank");
+
+                                Answer m = new Answer(email, title);
 
                                 questionList.add(0, m);
                             }

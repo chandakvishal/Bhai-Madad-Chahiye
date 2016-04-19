@@ -16,7 +16,7 @@
         android:gravity="center"
         android:paddingLeft="32dp"
         android:paddingRight="32dp"
-        android:text="Slide 3 title"
+        android:text="@string/intro3"
         android:textColor="#ffffff"
         android:textSize="28sp" />
 
@@ -33,7 +33,8 @@
             android:layout_gravity="center"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:src="@drawable/ic_slide3" />
+            android:src="@drawable/intro3_img"
+            android:contentDescription="@string/don_t_panic_button" />
     </LinearLayout>
 
     <TextView
@@ -44,7 +45,7 @@
         android:gravity="center"
         android:paddingLeft="64dp"
         android:paddingRight="64dp"
-        android:text="Loooooooooooooooo[...]ooooooooong descreption here"
+        android:text=""
         android:textColor="#ffffff"
         android:textSize="16sp" />
 
