@@ -13,7 +13,7 @@ public abstract class BackHandledFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(!(getActivity()  instanceof BackHandlerInterface)) {
+        if (!(getActivity() instanceof BackHandlerInterface)) {
             throw new ClassCastException("Hosting activity must implement BackHandlerInterface");
         } else {
             backHandlerInterface = (BackHandlerInterface) getActivity();

@@ -10,20 +10,19 @@
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
     </style>
-    <style name="fragment_text">
-        <item name="android:textColor">#ffacacac</item>
-        <item name="android:textSize">25sp</item>
-    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:colorBackground">@color/SteelBlue</item>
         <item name="android:textColor">@color/White</item>
         <item name="android:textColorPrimary">@color/White</item>
     </style>
+
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
         <item name="android:colorBackground">@color/SteelBlue</item>
         <item name="android:textColor">@color/White</item>
         <item name="android:textColorPrimary">@color/White</item>
     </style>
+
     <style name="MenuButtonsSmall">
         <item name="fab_size">mini</item>
         <item name="fab_colorNormal">#1565C0</item>

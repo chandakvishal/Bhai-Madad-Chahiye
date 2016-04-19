@@ -19,16 +19,16 @@
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/post_answer_fab"
+            style="@style/MenuButtonsSmall.Green"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:paddingRight="10dp"
             android:paddingBottom="10dp"
             android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:src="@drawable/ic_edit"
-            fab:fab_label="Search"
-            style="@style/MenuButtonsSmall.Green"/>
+            fab:fab_label="Search" />
 
     </RelativeLayout>
 

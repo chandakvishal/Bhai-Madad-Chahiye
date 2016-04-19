@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
 
     <item
         android:id="@+id/action_user"
+        android:icon="@drawable/ic_user"
         android:orderInCategory="300"
         android:title="@string/user_profile"
-        android:icon="@drawable/ic_user"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/notification"
+        android:icon="@drawable/ic_notification"
         android:orderInCategory="200"
         android:title="@string/notifications"
-        android:icon="@drawable/ic_notification"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_help"
+        android:icon="@drawable/ic_help"
         android:orderInCategory="200"
         android:title="@string/help"
-        android:icon="@drawable/ic_help"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
 
 </menu>

@@ -31,10 +31,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:contentDescription="@string/don_t_panic_button"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:src="@drawable/intro3_img"
-            android:contentDescription="@string/don_t_panic_button" />
+            android:src="@drawable/intro3_img" />
     </LinearLayout>
 
     <TextView

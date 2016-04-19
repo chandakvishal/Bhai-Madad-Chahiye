@@ -129,7 +129,7 @@ public class UserFunctions {
         return jsonParser.getJSONFromUrl(questionUrl, dataToSend);
     }
 
-    public JSONObject loadQuestions(double latitude, double longitude, int  offset) {
+    public JSONObject loadQuestions(double latitude, double longitude, int offset) {
         HashMap<String, String> dataToSend = new HashMap<>();
         dataToSend.put(KEY_TAG, load_questions);
         dataToSend.put(KEY_LATITUDE, String.valueOf(latitude));

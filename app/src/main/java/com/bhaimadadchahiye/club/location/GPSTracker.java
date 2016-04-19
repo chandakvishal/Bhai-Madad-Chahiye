@@ -27,7 +27,7 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 
 import static com.bhaimadadchahiye.club.constants.DB_Constants.TABLE_LOCATION;
 
-public class GPSTracker extends AppCompatActivity{
+public class GPSTracker extends AppCompatActivity {
 
     public static final int REQUEST_LOCATION = 199;
     // The minimum time between updates in milliseconds
@@ -279,6 +279,7 @@ public class GPSTracker extends AppCompatActivity{
                 new HomeLocationRegister().execute(currentBestLocation.getLatitude(), currentBestLocation.getLongitude());
             }
         }
+
         public void saveLocation() {
             new CurrentLocationRegister().execute(currentBestLocation.getLatitude(), currentBestLocation.getLongitude());
         }

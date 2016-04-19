@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_weight="10"
-    android:background="@color/Black"
+    android:background="#00BCD4"
     android:orientation="vertical">
 
     <TextView
@@ -16,8 +16,8 @@
         android:gravity="center"
         android:paddingLeft="32dp"
         android:paddingRight="32dp"
-        android:text="New to a place?\nNeed Help?"
-        android:textColor="#ffffff"
+        android:text="@string/intro1"
+        android:textColor="@color/Black"
         android:textSize="28sp" />
 
     <LinearLayout
@@ -33,7 +33,7 @@
             android:layout_gravity="center"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:src="@drawable/intro1_img" />
+            android:src="@drawable/intro2_img" />
     </LinearLayout>
 
     <TextView

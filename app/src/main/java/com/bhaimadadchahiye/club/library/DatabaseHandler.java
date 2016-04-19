@@ -47,7 +47,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_UID + " TEXT,"
                 + KEY_CREATED_AT + " TEXT" + ")";
         String CREATE_LOCATION_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_LOCATION + " ("
-                +  KEY_EMAIL + " TEXT NOT NULL,"
+                + KEY_EMAIL + " TEXT NOT NULL,"
                 + KEY_LATITUDE + " REAL,"
                 + KEY_LONGITUDE + " REAL,"
                 + " FOREIGN KEY (" + KEY_EMAIL + ") REFERENCES " + TABLE_LOGIN + "(" + KEY_EMAIL + "))";
@@ -90,7 +90,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         // Inserting Row
         db.insert(TABLE_LOGIN, null, values);
-        Log.i("Added User","Successfully Added User in Login Table");
+        Log.i("Added User", "Successfully Added User in Login Table");
         db.close(); // Closing database connection
     }
 

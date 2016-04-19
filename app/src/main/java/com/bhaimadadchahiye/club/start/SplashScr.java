@@ -28,8 +28,8 @@ public class SplashScr extends AppIntro {
     public void loadLoginActivity() {
         Intent loginIntent = new Intent(this, LoginActivity.class);
         startActivity(loginIntent);
-        overridePendingTransition(R.anim.animation1,R.anim.animation3);
-            }
+        overridePendingTransition(R.anim.animation1, R.anim.animation3);
+    }
 
     public void loadRegisterActivity() {
         Intent registerIntent = new Intent(this, Register.class);

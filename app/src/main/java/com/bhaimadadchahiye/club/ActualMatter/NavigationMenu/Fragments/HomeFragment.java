@@ -306,7 +306,8 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
         SharedPreferences.Editor outState = getActivity().getSharedPreferences("order", Context.MODE_APPEND).edit();
         outState.putString("questionTitleList", savedJson);
         Log.d(TAG, "******SAVED******");
-        Log.d("SAVED JSON", savedJson);
+        if (savedJson != null)
+            Log.d("SAVED JSON", savedJson);
         outState.putBoolean("saved", true);
         outState.apply();
     }

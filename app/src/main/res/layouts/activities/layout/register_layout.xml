@@ -83,7 +83,7 @@
                         android:layout_below="@+id/register_email"
                         android:ems="10"
                         android:hint="@string/username"
-                        android:inputType="textPersonName"/>
+                        android:inputType="textPersonName" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -100,7 +100,7 @@
                         android:layout_below="@+id/phoneNumber"
                         android:ems="10"
                         android:hint="@string/prompt_password"
-                        android:inputType="textPassword"/>
+                        android:inputType="textPassword" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -117,7 +117,7 @@
                         android:layout_below="@+id/username"
                         android:ems="10"
                         android:hint="@string/phoneNumber"
-                        android:inputType="phone"/>
+                        android:inputType="phone" />
 
                 </android.support.design.widget.TextInputLayout>
 

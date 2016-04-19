@@ -24,12 +24,12 @@
             android:id="@+id/questionTitle"
             android:layout_width="match_parent"
             android:layout_height="75dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/questionTags"
             android:background="@android:drawable/editbox_background_normal"
             android:hint="@string/title"
-            android:maxLength="120"
             android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
-            android:layout_below="@+id/questionTags"
-            android:layout_alignParentStart="true" />
+            android:maxLength="120" />
 
         <EditText
             android:id="@+id/questionBody"
@@ -44,22 +44,22 @@
             android:id="@+id/questionTags"
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView6"
             android:background="@android:drawable/editbox_background_normal"
             android:hint="@string/tags"
-            android:maxLength="50"
             android:inputType="textCapSentences|textAutoCorrect"
-            android:layout_below="@+id/textView6"
-            android:layout_alignParentStart="true" />
+            android:maxLength="50" />
 
         <Button
+            android:id="@+id/postQuestionBtn"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_below="@+id/questionBody"
-            android:id="@+id/postQuestionBtn"
             android:backgroundTint="@color/RoyalBlue"
             android:text="@string/post_question"
             android:textStyle="bold"
-            tools:targetApi="lollipop"/>
+            tools:targetApi="lollipop" />
 
     </RelativeLayout>
 

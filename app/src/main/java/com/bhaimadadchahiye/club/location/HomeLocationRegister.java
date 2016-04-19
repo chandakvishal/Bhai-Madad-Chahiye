@@ -46,7 +46,7 @@ public class HomeLocationRegister extends AsyncTask<Double, Void, JSONObject> {
             } else {
                 //User is already registered. Thus, leaving the else a No-Op.
                 //This else is just a handler for async operations.
-                Log.i("Home Location","User's Home location already set");
+                Log.i("Home Location", "User's Home location already set");
             }
         } catch (JSONException e) {
             e.printStackTrace();

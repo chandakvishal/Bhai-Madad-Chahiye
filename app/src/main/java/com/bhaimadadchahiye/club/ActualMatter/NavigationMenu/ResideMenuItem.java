@@ -40,7 +40,6 @@ public class ResideMenuItem extends LinearLayout {
 
     /**
      * set the icon color;
-     *
      */
     public void setIcon(int icon) {
         iv_icon.setImageResource(icon);
@@ -48,8 +47,6 @@ public class ResideMenuItem extends LinearLayout {
 
     /**
      * set the title with resource
-     *
-     *
      */
     public void setTitle(int title) {
         tv_title.setText(title);
@@ -57,7 +54,6 @@ public class ResideMenuItem extends LinearLayout {
 
     /**
      * set the title with string;
-     *
      */
     public void setTitle(String title) {
         tv_title.setText(title);

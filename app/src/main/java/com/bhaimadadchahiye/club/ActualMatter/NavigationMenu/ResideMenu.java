@@ -255,14 +255,6 @@ public class ResideMenu extends FrameLayout {
     }
 
     /**
-     * If you need to do something on closing or opening menu,
-     * set a listener here.
-     */
-    public void setMenuListener(OnMenuListener menuListener) {
-        this.menuListener = menuListener;
-    }
-
-    /**
      * Show the menu;
      */
     public void openMenu(int direction) {
@@ -391,17 +383,6 @@ public class ResideMenu extends FrameLayout {
 
         alphaAnimation.setDuration(250);
         return alphaAnimation;
-    }
-
-    /**
-     * If there were some view you don't want reside menu
-     * to intercept their touch event, you could add it to
-     * ignored views.
-     *
-     * @param v View to ignore
-     */
-    public void addIgnoredView(View v) {
-        ignoredViews.add(v);
     }
 
     /**
