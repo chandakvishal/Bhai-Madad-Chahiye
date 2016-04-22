@@ -5,20 +5,18 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.bhaimadadchahiye.club.R;
-
-import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_EMAIL;
-import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_CREATED_AT;
-import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_FULLNAME;
-import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_PHONE;
-import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_USERNAME;
-
 import com.bhaimadadchahiye.club.library.DatabaseHandler;
 
 import java.util.HashMap;
+
+import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_CREATED_AT;
+import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_EMAIL;
+import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_FULLNAME;
+import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_PHONE;
+import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_USERNAME;
 
 public class Registered extends AppCompatActivity {
 
@@ -53,7 +51,7 @@ public class Registered extends AppCompatActivity {
         email.setText((CharSequence) user.get(KEY_EMAIL));
         created_at.setText((CharSequence) user.get(KEY_CREATED_AT));
 
-        Button login = (Button) findViewById(R.id.backToLoginBtn);
+        TextView login = (TextView) findViewById(R.id.backToLoginBtn);
         login.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent myIntent = new Intent(view.getContext(), LoginActivity.class);

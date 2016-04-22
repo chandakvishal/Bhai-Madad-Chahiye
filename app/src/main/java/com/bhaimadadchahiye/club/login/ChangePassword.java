@@ -16,7 +16,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -40,8 +39,8 @@ import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_SUCCESS;
 public class ChangePassword extends Activity {
 
     EditText newPass;
-    Button changePass;
-    Button cancel;
+    TextView changePass;
+    TextView cancel;
 
     private Snackbar snackbar;
 
@@ -66,7 +65,7 @@ public class ChangePassword extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        cancel = (Button) findViewById(R.id.cancelBtn);
+        cancel = (TextView) findViewById(R.id.cancelBtn);
         cancel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
 
@@ -78,7 +77,7 @@ public class ChangePassword extends Activity {
         });
 
         newPass = (EditText) findViewById(R.id.newPass);
-        changePass = (Button) findViewById(R.id.changePassBtn);
+        changePass = (TextView) findViewById(R.id.changePassBtn);
 
         changePass.setOnClickListener(new View.OnClickListener() {
             @Override

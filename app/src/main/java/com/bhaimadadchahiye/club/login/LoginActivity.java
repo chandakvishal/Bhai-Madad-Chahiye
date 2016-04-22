@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -46,8 +45,8 @@ import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_USERNAME;
  */
 public class LoginActivity extends AppCompatActivity {
 
-    Button btnLogin;
-    Button passreset;
+    TextView btnLogin;
+    TextView passreset;
     // UI references.
     private AutoCompleteTextView inputEmail;
     private EditText inputPass;
@@ -73,8 +72,8 @@ public class LoginActivity extends AppCompatActivity {
 
         // Set up the login form.
         inputEmail = (AutoCompleteTextView) findViewById(R.id.email);
-        btnLogin = (Button) findViewById(R.id.email_sign_in_button);
-        passreset = (Button) findViewById(R.id.forgotPass);
+        btnLogin = (TextView) findViewById(R.id.email_sign_in_button);
+        passreset = (TextView) findViewById(R.id.forgotPass);
         inputPass = (EditText) findViewById(R.id.password);
         //populateAutoComplete();
 

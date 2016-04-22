@@ -7,20 +7,20 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_EMAIL;
+import java.util.HashMap;
+
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_CREATED_AT;
+import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_EMAIL;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_FULLNAME;
+import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_ID;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_LATITUDE;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_LONGITUDE;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_PHONE;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_UID;
-import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_ID;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_USERNAME;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.TABLE_CURRENT;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.TABLE_LOCATION;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.TABLE_LOGIN;
-
-import java.util.HashMap;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
@@ -159,7 +159,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      */
     public HashMap<String, Double> getUserLocation() {
         HashMap<String, Double> user = new HashMap<>();
-        String selectQuery = "SELECT  * FROM " + TABLE_CURRENT + " LIMIT 1";
+        String selectQuery = "SELECT  * FROM " + TABLE_CURRENT + " ORDER BY id DESC LIMIT 1";
         Log.d("SIZE:", String.valueOf(this.getRowCount(TABLE_LOGIN)));
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);

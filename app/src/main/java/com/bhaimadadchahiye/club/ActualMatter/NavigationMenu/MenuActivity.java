@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,17 +57,18 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-//        ((Toolbar) findViewById(R.id.toolbar)).setLogo(R.drawable.ic_launcher);
-
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
+        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.main_fragment);
+        frameLayout.getForeground().setAlpha(0);
+
         CoordinatorLayout mLayout = (CoordinatorLayout) findViewById(R.id
                 .coordinatorLayout);
-        snackbar = Snackbar.make(mLayout, "Invalid Credentials", Snackbar.LENGTH_LONG);
+        snackbar = Snackbar.make(mLayout, "Invalid Credentials", Snackbar.LENGTH_SHORT);
         View snackBarView = snackbar.getView();
         //noinspection deprecation
         snackBarView.setBackgroundColor(getResources().getColor(R.color.Black));
@@ -95,13 +97,15 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_user) {
-            changeFragment(new ProfileFragment(), "profile");
-        } else if (id == R.id.action_help) {
-            changeFragment(new Feedback(), "feedback");
-        } else if (id == R.id.notification) {
-            snackbar.setText("No new notifications to show").show();
-            return false;
+        if (selectedFragment == null || !selectedFragment.onOptionsItemSelected(item)) {
+            if (id == R.id.action_user) {
+                changeFragment(new ProfileFragment(), "profile");
+            } else if (id == R.id.action_help) {
+                changeFragment(new Feedback(), "feedback");
+            } else if (id == R.id.notification) {
+                snackbar.setText("No new notifications to show").show();
+                return false;
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -155,7 +159,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         } else if (view == itemSettings) {
             changeFragment(new SettingsFragment(), "settings");
         } else if (view == itemFeedback) {
-            changeFragment(new Feedback(), "settings");
+            changeFragment(new Feedback(), "feedback");
         }
 
         resideMenu.closeMenu();
@@ -165,6 +169,18 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         resideMenu.clearIgnoredViewList();
         getSupportFragmentManager()
                 .beginTransaction()
+                .setCustomAnimations(R.anim.animation2, R.anim.animation4)
+                .replace(R.id.main_fragment, targetFragment, tag)
+                .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .addToBackStack(tag)
+                .commit();
+    }
+
+    public void changeFragment(Fragment targetFragment, String tag, int animation1, int animation2) {
+        resideMenu.clearIgnoredViewList();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(animation1, animation2)
                 .replace(R.id.main_fragment, targetFragment, tag)
                 .setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                 .addToBackStack(tag)

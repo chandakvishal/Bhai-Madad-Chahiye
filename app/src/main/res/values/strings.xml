@@ -25,10 +25,10 @@
     <string name="back_to_login">Back to Login</string>
 
     <!-- Strings related to Questions -->
-    <string name="tags">Tags</string>
-    <string name="title">Title</string>
-    <string name="answer">Provide your Answer here</string>
-    <string name="body">Body</string>
+    <string name="tags">\t\t\tKeywords for better visibility</string>
+    <string name="title">\t\t\tBrief Description</string>
+    <string name="answer">\t\t\tProvide your Answer here</string>
+    <string name="body">\t\t\tDescribe your needs in detail here.</string>
     <string name="post_question">Post Question</string>
     <string name="post_answer">Post Answer</string>
     <string name="questionBy">Posted by: </string>

@@ -8,12 +8,14 @@ public class Question implements Parcelable{
     public String title;
     public String email;
     public String body;
+    public int imageId;
 
-    public Question(int id, String title, String email, String body) {
+    public Question(int id, String title, String email, String body, int imageId) {
         this.title = title;
         this.id = id;
         this.email = email;
         this.body = body;
+        this.imageId = imageId;
     }
 
     public static final Creator<Question> CREATOR = new Creator<Question>() {
@@ -39,6 +41,7 @@ public class Question implements Parcelable{
         dest.writeString(email);
         dest.writeString(title);
         dest.writeString(body);
+        dest.writeInt(imageId);
     }
 
     public Question(Parcel source) {
@@ -46,5 +49,6 @@ public class Question implements Parcelable{
         email = source.readString();
         title = source.readString();
         body = source.readString();
+        imageId = source.readInt();
     }
 }

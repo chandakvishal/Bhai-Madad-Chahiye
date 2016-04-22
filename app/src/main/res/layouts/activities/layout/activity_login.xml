@@ -13,12 +13,15 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
+        android:background="@drawable/background_purple_texture"
         tools:context=".login.LoginActivity">
 
         <ScrollView
             android:id="@+id/login_form"
             android:layout_width="match_parent"
-            android:layout_height="202dp">
+            android:layout_height="202dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true">
 
             <LinearLayout
                 android:id="@+id/email_login_form"
@@ -35,10 +38,13 @@
                         android:id="@+id/email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/Wheat"
                         android:hint="@string/prompt_email"
+                        android:backgroundTint="@color/Aqua"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        tools:targetApi="lollipop" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -52,16 +58,22 @@
                         android:hint="@string/prompt_password"
                         android:imeActionId="@+id/login"
                         android:imeActionLabel="@string/action_sign_in_short"
+                        android:textColor="@color/Wheat"
+                        android:backgroundTint="@color/Aqua"
                         android:imeOptions="actionUnspecified"
                         android:inputType="textPassword"
                         android:maxLines="1"
-                        android:singleLine="true" />
+                        android:singleLine="true"
+                        tools:targetApi="lollipop" />
 
                 </android.support.design.widget.TextInputLayout>
 
-                <Button
+                <TextView
                     android:id="@+id/email_sign_in_button"
-                    style="?android:textAppearanceSmall"
+                    android:gravity="right"
+                    android:paddingRight="20dp"
+                    android:textColor="@color/White"
+                    android:textSize="20sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -72,17 +84,18 @@
             </LinearLayout>
         </ScrollView>
 
-        <Button
+        <TextView
             android:id="@+id/forgotPass"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/login_form"
             android:backgroundTint="@color/White"
             android:gravity="center"
             android:text="@string/forgot_password"
             android:textColor="#0b84aa"
-            tools:targetApi="lollipop" />
+            tools:targetApi="lollipop"
+            android:textSize="20sp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

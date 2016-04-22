@@ -1,26 +1,36 @@
 package com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.Fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bhaimadadchahiye.club.ActualMatter.Answers.Answers;
@@ -50,6 +60,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -88,20 +100,23 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
 
     private Boolean exit = false;
 
-    private String savedJson;
+    public static String savedJson;
 
     private ResideMenu resideMenu;
 
     public Answers ans = new Answers();
+
+    private View parentView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    @SuppressWarnings({"ConstantConditions", "deprecation"})
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View parentView = inflater.inflate(R.layout.home, container, false);
+        parentView = inflater.inflate(R.layout.home, container, false);
 
         mGoogleApiClient = new GoogleApiClient
                 .Builder(getActivity().getApplicationContext())
@@ -111,8 +126,17 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
                 .build();
         gpsTracker = new GPSTracker(getActivity());
 
-        //noinspection ConstantConditions
+        final CoordinatorLayout coordinatorLayout =
+                (CoordinatorLayout) parentView.findViewById(R.id.coordinatorLayoutHome);
+        Snackbar snackbar = Snackbar.make(coordinatorLayout, "Invalid Credentials", Snackbar.LENGTH_LONG);
+        View snackBarView = snackbar.getView();
+        snackBarView.setBackgroundColor(getResources().getColor(R.color.Black));
+        TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(getResources().getColor(R.color.YellowGreen));
+
         ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setElevation(15.0f);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Questions");
 
         setHasOptionsMenu(true);
 
@@ -132,7 +156,13 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
+        registerForContextMenu(recyclerView);
         recyclerView.setAdapter(mAdapter);
+
+        //Swipe to dismiss functionality
+        ItemTouchHelper.Callback callback = new QuestionTouchHelper(mAdapter, recyclerView);
+        ItemTouchHelper helper = new ItemTouchHelper(callback);
+        helper.attachToRecyclerView(recyclerView);
 
         swipeRefreshLayout = (SwipeRefreshLayout) parentView.findViewById(R.id.swipeContainer);
 
@@ -315,7 +345,7 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
     public void fetchAnswers() {
         swipeRefreshLayout.setRefreshing(true);
         Log.d(TAG, "fetchAnswers: Trying to load Answers");
-        new LoadQuestions().execute();
+        new NetCheck().execute();
     }
 
     /**
@@ -324,7 +354,7 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
     public void saveData() {
         SharedPreferences.Editor outState = getActivity().getSharedPreferences("order", Context.MODE_APPEND).edit();
         outState.putString("questionTitleList", savedJson);
-        Log.d(TAG, "******SAVED******");
+        Log.d(TAG, "******STATE SAVED******");
         if (savedJson != null)
             Log.d("SAVED JSON", savedJson);
         outState.putBoolean("saved", true);
@@ -336,6 +366,8 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
         String res = questionData.getString("questionTitleList", "");
         try {
             response = new JSONArray(res);
+            //This is used to save the data when the
+            // activity is loaded after being closed for a while
             savedJson = response.toString();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -348,7 +380,8 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
                 String title = savedQuestionObject.getString("questionTitle");
                 String body = savedQuestionObject.getString("questionBody");
                 String email = savedQuestionObject.getString("email");
-                Question m = new Question(rank, title, email, body);
+                int imageId = savedQuestionObject.getInt("imageId");
+                Question m = new Question(rank, title, email, body, imageId);
                 questionList.add(0, m);
             } catch (JSONException e) {
                 Log.e(TAG, "JSON Parsing error: " + e.getMessage());
@@ -374,6 +407,103 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
             }
         }
     };
+
+    public void setSavedJson(List<Question> questionList) {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Question q : questionList) {
+            try {
+                JSONObject jObject = new JSONObject();
+
+                jObject.put("questionTitle", q.title);
+                jObject.put("questionBody", q.body);
+                jObject.put("rank", q.id);
+                jObject.put("imageId", q.imageId);
+                jObject.put("email", q.email);
+
+                jsonArray.put(jObject);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        savedJson = jsonArray.toString();
+    }
+
+    /**
+     * Async Task to check whether internet connection is working
+     **/
+
+    private class NetCheck extends AsyncTask<String, Void, Boolean> {
+        private ProgressDialog nDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            nDialog = new ProgressDialog(getActivity());
+            nDialog.setMessage("Loading..");
+            nDialog.setTitle("Checking Network");
+            nDialog.setIndeterminate(false);
+            nDialog.setCancelable(true);
+            nDialog.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... args) {
+            /**
+             * Gets current device state and checks for working internet connection by trying Google.
+             **/
+            ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Network[] networks = cm.getAllNetworks();
+                NetworkInfo networkInfo;
+                for (Network mNetwork : networks) {
+                    networkInfo = cm.getNetworkInfo(mNetwork);
+                    if (networkInfo.getState().equals(NetworkInfo.State.CONNECTED)) {
+                        return true;
+                    }
+                }
+            } else {
+                NetworkInfo netInfo = cm.getActiveNetworkInfo();
+                if (netInfo != null && netInfo.isConnected()) {
+                    try {
+                        URL url = new URL("http://www.google.com/");
+                        HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
+                        urlc.setConnectTimeout(3000);
+                        urlc.connect();
+                        if (urlc.getResponseCode() == 200) {
+                            return true;
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return false;
+        }
+
+        @SuppressWarnings("deprecation")
+        @Override
+        protected void onPostExecute(Boolean th) {
+
+            if (th) {
+                nDialog.dismiss();
+                new LoadQuestions().execute();
+            } else {
+                nDialog.dismiss();
+                Snackbar snackbar = Snackbar.make(parentView, "Error in Network Connection", Snackbar.LENGTH_LONG)
+                        .setActionTextColor(getResources().getColor(R.color.IndianRed))
+                        .setAction("Retry", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                new NetCheck().execute();
+                            }
+                        });
+                snackbar.show();
+            }
+            swipeRefreshLayout.setRefreshing(false);
+        }
+    }
 
     private class LoadQuestions extends AsyncTask<String, Void, JSONObject> {
 
@@ -435,11 +565,18 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
                         //Dismiss the process dialogs
                         JSONArray response = (JSONArray) json.get("questions");
 
+                        JSONArray savedResponse = new JSONArray();
+
                         if (response.length() > 0) {
-                            savedJson = response.toString();
                             Log.d(TAG, "onPostExecute: " + response.toString());
 
+                            final TypedArray imgs = getActivity().getApplicationContext().getResources().obtainTypedArray(R.array.userArray);
+
                             for (int i = 0; i < response.length(); i++) {
+
+                                int j = i <= imgs.length() ? i : 1;
+                                @SuppressWarnings("ResourceType")
+                                final int resID = imgs.getResourceId(j, 1);
 
                                 JSONObject questionTitlesJsonObject = response.getJSONObject(i);
                                 String title = questionTitlesJsonObject.getString("questionTitle");
@@ -447,28 +584,30 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
                                 String email = questionTitlesJsonObject.getString("email");
                                 int rank = questionTitlesJsonObject.getInt("rank");
                                 offset = rank > offset ? rank : offset;
-                                Question m = new Question(rank, title, email, body);
+
+                                questionTitlesJsonObject.put("imageId", resID);
+
+                                Question m = new Question(i, title, email, body, resID);
+                                savedResponse.put(questionTitlesJsonObject);
 
                                 questionList.add(0, m);
                             }
+                            savedJson = savedResponse.toString();
                             mAdapter.notifyDataSetChanged();
                         }
-                        // stopping swipe refresh
-                        swipeRefreshLayout.setRefreshing(false);
-
                     } else if (Integer.parseInt(red) == 2) {
 
                         String error_msg = json.getString("error_msg");
                         Toast.makeText(getActivity().getApplicationContext(), error_msg, Toast.LENGTH_LONG).show();
 
-                        // stopping swipe refresh
-                        swipeRefreshLayout.setRefreshing(false);
                     } else {
                         Log.d(TAG, "onPostExecute: LOG2");
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+            } finally {
+                swipeRefreshLayout.setRefreshing(false);
             }
         }
     }

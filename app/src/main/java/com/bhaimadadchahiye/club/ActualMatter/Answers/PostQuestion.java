@@ -4,15 +4,22 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,12 +30,15 @@ import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.MenuActivity;
 import com.bhaimadadchahiye.club.R;
 import com.bhaimadadchahiye.club.library.BackHandledFragment;
 import com.bhaimadadchahiye.club.library.DatabaseHandler;
+import com.bhaimadadchahiye.club.library.HideKeyboard;
 import com.bhaimadadchahiye.club.library.UserFunctions;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -44,8 +54,9 @@ public class PostQuestion extends BackHandledFragment {
     private EditText qTag, qTitle, qBody;
     protected Button postQuestionBtn;
     private Snackbar snackbar;
+    private View inflated;
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({"deprecation", "ConstantConditions"})
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -53,9 +64,12 @@ public class PostQuestion extends BackHandledFragment {
         final String[] title = new String[1];
         final String[] body = new String[1];
 
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Post Question");
+
         setHasOptionsMenu(true);
 
-        View inflated = inflater.inflate(R.layout.question, container, false);
+        inflated = inflater.inflate(R.layout.question, container, false);
         //Asks the user for input i.e the question to be posted
         qTag = (EditText) inflated.findViewById(R.id.questionTags);
         qTitle = (EditText) inflated.findViewById(R.id.questionTitle);
@@ -71,6 +85,16 @@ public class PostQuestion extends BackHandledFragment {
         textView.setTextColor(getResources().getColor(R.color.YellowGreen));
 
         postQuestionBtn = (Button) inflated.findViewById(R.id.postQuestionBtn);
+        qBody.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    postQuestionBtn.performClick();
+                    return true;
+                }
+                return false;
+            }
+        });
 
         postQuestionBtn.setOnClickListener
                 (new View.OnClickListener() {
@@ -97,7 +121,7 @@ public class PostQuestion extends BackHandledFragment {
                              snackBarView.setBackgroundColor(getResources().getColor(R.color.Red));
                              snackbar.setText("Please fill all fields").show();
                          } else {
-                             new PostData().execute();
+                             new NetCheck().execute();
                          }
                      }
                  }
@@ -108,7 +132,9 @@ public class PostQuestion extends BackHandledFragment {
 
     @Override
     public boolean onBackPressed() {
-        ((MenuActivity) getActivity()).changeFragment(new HomeFragment(), "home");
+        HideKeyboard.hideKeyboard(getActivity());
+        ((MenuActivity) getActivity()).changeFragment(new HomeFragment(), "home",
+                R.anim.enter_anim, R.anim.exit_anim);
         return true;
     }
 
@@ -123,6 +149,81 @@ public class PostQuestion extends BackHandledFragment {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    /**
+     * Async Task to check whether internet connection is working
+     **/
+
+    private class NetCheck extends AsyncTask<String, Void, Boolean> {
+        private ProgressDialog nDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            nDialog = new ProgressDialog(getActivity());
+            nDialog.setMessage("Loading..");
+            nDialog.setTitle("Checking Network");
+            nDialog.setIndeterminate(false);
+            nDialog.setCancelable(true);
+            nDialog.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... args) {
+            /**
+             * Gets current device state and checks for working internet connection by trying Google.
+             **/
+            ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                Network[] networks = cm.getAllNetworks();
+                NetworkInfo networkInfo;
+                for (Network mNetwork : networks) {
+                    networkInfo = cm.getNetworkInfo(mNetwork);
+                    if (networkInfo.getState().equals(NetworkInfo.State.CONNECTED)) {
+                        return true;
+                    }
+                }
+            } else {
+                NetworkInfo netInfo = cm.getActiveNetworkInfo();
+                if (netInfo != null && netInfo.isConnected()) {
+                    try {
+                        URL url = new URL("http://www.google.com/");
+                        HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
+                        urlc.setConnectTimeout(3000);
+                        urlc.connect();
+                        if (urlc.getResponseCode() == 200) {
+                            return true;
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return false;
+        }
+
+        @SuppressWarnings("deprecation")
+        @Override
+        protected void onPostExecute(Boolean th) {
+
+            if (th) {
+                nDialog.dismiss();
+                new PostData().execute();
+            } else {
+                nDialog.dismiss();
+                Snackbar snackbar = Snackbar.make(inflated, "Error in Network Connection", Snackbar.LENGTH_LONG)
+                        .setActionTextColor(getResources().getColor(R.color.IndianRed))
+                        .setAction("Retry", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                new NetCheck().execute();
+                            }
+                        });
+                snackbar.show();
+            }
+        }
     }
 
     private class PostData extends AsyncTask<String, Void, JSONObject> {

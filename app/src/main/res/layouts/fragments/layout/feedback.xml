@@ -2,7 +2,9 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@drawable/background_light">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -10,57 +12,82 @@
         android:orientation="vertical"
         android:weightSum="1">
 
-        <TextView
-            android:id="@+id/feedback_txt"
+        <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="137dp"
-            android:layout_marginTop="38dp"
-            android:gravity="center"
-            android:text="@string/about_us"
-            android:textSize="18sp" />
+            android:layout_height="wrap_content">
 
-        <TextView
+            <TextView
+                android:id="@+id/feedback_txt"
+                android:layout_width="match_parent"
+                android:layout_height="137dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:textColor="@color/Wheat"
+                android:text="@string/about_us"
+                android:textSize="18sp" />
+
+        </TableLayout>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:paddingBottom="25dp"
+            android:background="@drawable/round_button">
+
+
+            <TextView
             android:id="@+id/textView10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/developed"
+                android:textColor="@color/WhiteSmoke"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textSize="20sp" />
 
-        <LinearLayout
-            android:id="@+id/LinearLayout02"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:padding="20dp">
+            <TableRow>
 
             <ImageButton
                 android:id="@+id/github_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/White"
+                android:layout_weight="0.75"
+                android:background="#00FFFFFF"
                 android:src="@drawable/github_logo" />
 
             <ImageButton
                 android:id="@+id/linkedin_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/White"
+                android:layout_weight="0.75"
+                android:background="#00FFFFFF"
                 android:src="@drawable/linkedin_logo" />
+            </TableRow>
 
-        </LinearLayout>
+        </TableLayout>
 
-        <Button
-            android:id="@+id/btn_feedback"
+        <RelativeLayout
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="20dp">
+
+            <Button
+            android:id="@+id/btn_feedback"
+                android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
             android:drawableLeft="@drawable/ic_feedback"
             android:padding="16dp"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/round_button"
             android:text="@string/feedback"
+                android:bottomRightRadius="10dp"
+                android:bottomLeftRadius="10dp"
+                android:topLeftRadius="10dp"
+                android:topRightRadius="10dp"
             android:textSize="18sp" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 </ScrollView>

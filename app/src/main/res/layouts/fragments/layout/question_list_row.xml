@@ -2,36 +2,48 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:background="#80FFFFFF">
 
-    <TextView
-        android:id="@+id/serial"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_margin="5dp"
-        android:padding="7.5dp"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/serial"
-        android:paddingLeft="20dp"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/email"
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/title"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/serial"
-        android:gravity="right"
-        android:textSize="10sp"
-        android:textStyle="italic" />
+        android:id="@+id/tableQuestion">
+
+        <TableRow android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/userImage"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/userimage" />
+
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:paddingTop="15dp"
+                android:paddingLeft="20dp"
+                android:textSize="12sp"
+                android:textStyle="italic" />
+
+        </TableRow>
+
+    </TableLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tableQuestion">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingBottom="10dp"
+            android:textSize="18sp" />
+
+    </LinearLayout>
 
 </RelativeLayout>

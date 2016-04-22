@@ -25,10 +25,83 @@
 
     </LinearLayout>
 
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/round_button">
+
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:text="@string/notifications"
+                android:textSize="15sp"
+                android:paddingLeft="20dp"
+                android:textColor="@color/Wheat"
+                android:textStyle="bold" />
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:buttonTint="@color/Wheat"
+                android:theme="@style/checkBoxStyle"
+                android:checked="true"
+                android:layout_gravity="right"
+                android:layout_marginRight="5dp"
+                tools:targetApi="lollipop" />
+        </TableRow>
+
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:text="@string/download_images_only_on_wifi"
+                android:textSize="15sp"
+                android:paddingLeft="20dp"
+                android:textColor="@color/Wheat"
+                android:textStyle="bold" />
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:buttonTint="@color/Wheat"
+                android:theme="@style/checkBoxStyle"
+                android:checked="true"
+                android:layout_gravity="right"
+                android:layout_marginRight="5dp"
+                tools:targetApi="lollipop" />
+        </TableRow>
+
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:text="@string/auto_sync_on_start"
+                android:textSize="15sp"
+                android:paddingLeft="20dp"
+                android:textColor="@color/Wheat"
+                android:textStyle="bold" />
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:buttonTint="@color/Wheat"
+                android:theme="@style/checkBoxStyle"
+                android:checked="true"
+                android:layout_gravity="right"
+                android:layout_marginRight="5dp"
+                tools:targetApi="lollipop" />
+        </TableRow>
+    </TableLayout>
+
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="right|top"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
         android:orientation="vertical">
 
         <Button
@@ -40,6 +113,8 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="96dp"
             android:text="@string/change_password"
+            android:background="@drawable/round_button"
+            android:layout_marginBottom="10dp"
             android:textColor="#000000"
             android:textSize="13sp" />
 
@@ -49,9 +124,11 @@
             android:layout_height="40dp"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/changePassBtn"
+            android:background="@drawable/no_fade"
             android:backgroundTint="@color/Crimson"
             android:text="@string/logout"
             android:textColor="#000000"
+            android:layout_marginBottom="10dp"
             android:textSize="13sp"
             tools:targetApi="lollipop" />
 

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="userimage">userImage</string>
+    <string name="add_to_favourite">Add to favourite</string>
+    <string name="delete">Delete</string>
+    <string name="share">Share</string>
+    <string name="download_images_only_on_wifi">Download Images only on Wifi</string>
+    <string name="auto_sync_on_start">Auto-Sync on Start</string>
+    <string name="copy_to_clipboard">Copy to Clipboard</string>
+</resources>

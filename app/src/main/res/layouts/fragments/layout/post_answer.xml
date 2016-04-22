@@ -11,7 +11,8 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_margin="10dp">
 
         <TextView
             android:id="@+id/textView6"
@@ -28,19 +29,25 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/textView6"
             android:layout_marginTop="57dp"
-            android:background="@android:drawable/editbox_background_normal"
+            android:background="@drawable/edittext_post"
             android:hint="@string/answer"
+            android:paddingLeft="10dp"
+            android:imeOptions="actionDone"
+            android:imeActionLabel="Submit"
             android:inputType="textCapSentences|textAutoCorrect|textMultiLine" />
 
         <Button
             android:id="@+id/postAnswerBtn"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_below="@+id/answer_received"
-            android:backgroundTint="@color/RoyalBlue"
+            android:backgroundTint="@color/DarkGray"
+            android:background="@drawable/round_button"
             android:text="@string/post_answer"
             android:textStyle="bold"
-            tools:targetApi="lollipop" />
+            tools:targetApi="lollipop"
+            android:layout_below="@+id/answer_received"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="91dp" />
 
     </RelativeLayout>
 

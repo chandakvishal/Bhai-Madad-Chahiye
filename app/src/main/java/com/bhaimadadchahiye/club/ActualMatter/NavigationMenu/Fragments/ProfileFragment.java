@@ -24,6 +24,7 @@ import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_USERNAME;
 
 public class ProfileFragment extends BackHandledFragment {
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -35,8 +36,8 @@ public class ProfileFragment extends BackHandledFragment {
 
         Log.d("Details: ", String.valueOf(user.values()));
 
-        //noinspection ConstantConditions
         ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Profile");
 
         setHasOptionsMenu(true);
 
@@ -59,7 +60,8 @@ public class ProfileFragment extends BackHandledFragment {
 
     @Override
     public boolean onBackPressed() {
-        ((MenuActivity) getActivity()).changeFragment(new HomeFragment(), "home");
+        ((MenuActivity) getActivity()).changeFragment(new HomeFragment(), "home",
+                R.anim.enter_anim, R.anim.exit_anim);
         return true;
     }
 
@@ -73,7 +75,7 @@ public class ProfileFragment extends BackHandledFragment {
             onBackPressed();
             return true;
         } else if (id == R.id.action_user) {
-            return false;
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

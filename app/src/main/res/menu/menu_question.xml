@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/album_overflow_fav"
+        android:icon="@drawable/ic_heart"
+        android:title="@string/add_to_favourite" />
+
+    <item
+        android:id="@+id/album_overflow_share"
+        android:icon="@drawable/ic_share"
+        tools:actionProviderClass="android.support.v7.widget.ShareActionProvider"
+        android:title="@string/share" />
+
+    <item
+        android:id="@+id/album_overflow_delete"
+        android:icon="@drawable/ic_copy"
+        android:title="@string/copy_to_clipboard" />
+
+</menu>

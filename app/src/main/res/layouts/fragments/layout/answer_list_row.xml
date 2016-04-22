@@ -4,24 +4,50 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/serial"
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp"
-        android:textSize="12sp"
-        android:textStyle="italic" />
+        android:id="@+id/tableQuestion"
+        android:background="#8CFFFFFF">
 
-    <TextView
-        android:id="@+id/questionBodyAnswer"
+        <TableRow android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/userImageAnswer"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/userimage" />
+
+            <TextView
+                android:id="@+id/emailAnswer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:paddingTop="15dp"
+                android:paddingLeft="20dp"
+                android:textSize="12sp"
+                android:textStyle="italic" />
+
+        </TableRow>
+
+    </TableLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/serial"
-        android:minHeight="48dp"
-        android:paddingLeft="20dp"
-        android:textSize="18sp" />
+        android:layout_below="@+id/tableQuestion"
+        android:background="#66FFFFFF">
+
+        <TextView
+            android:id="@+id/questionBodyAnswer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:paddingLeft="20dp"
+            android:textSize="18sp"
+            android:textIsSelectable="true"
+            android:autoLink="web" />
+
+    </LinearLayout>
+
 </RelativeLayout>

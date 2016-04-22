@@ -18,13 +18,14 @@ import com.bhaimadadchahiye.club.start.SplashScreen;
 
 public class SettingsFragment extends BackHandledFragment {
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View inflatedView = inflater.inflate(R.layout.settings, container, false);
 
-        //noinspection ConstantConditions
         ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Settings");
 
         setHasOptionsMenu(true);
 
@@ -65,7 +66,8 @@ public class SettingsFragment extends BackHandledFragment {
 
     @Override
     public boolean onBackPressed() {
-        ((MenuActivity) getActivity()).changeFragment(new HomeFragment(), "home");
+        ((MenuActivity) getActivity()).changeFragment(new HomeFragment(), "home",
+                R.anim.enter_anim, R.anim.exit_anim);
         return true;
     }
 

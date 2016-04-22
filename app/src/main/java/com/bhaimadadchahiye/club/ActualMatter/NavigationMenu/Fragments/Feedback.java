@@ -15,12 +15,14 @@ import com.bhaimadadchahiye.club.library.BackHandledFragment;
 
 public class Feedback extends BackHandledFragment {
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View parentView = inflater.inflate(R.layout.feedback, container, false);
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Feedback");
 
         setHasOptionsMenu(true);
 
@@ -61,7 +63,8 @@ public class Feedback extends BackHandledFragment {
 
     @Override
     public boolean onBackPressed() {
-        ((MenuActivity) getActivity()).changeFragment(new HomeFragment(), "home");
+        ((MenuActivity) getActivity()).changeFragment(new HomeFragment(), "home",
+                R.anim.enter_anim, R.anim.exit_anim);
         return true;
     }
 
@@ -73,6 +76,8 @@ public class Feedback extends BackHandledFragment {
         int id = item.getItemId();
         if (id == android.R.id.home) {
             onBackPressed();
+            return true;
+        } else if (id == R.id.action_help) {
             return true;
         }
         return super.onOptionsItemSelected(item);

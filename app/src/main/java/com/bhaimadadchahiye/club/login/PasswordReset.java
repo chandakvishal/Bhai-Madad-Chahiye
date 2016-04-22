@@ -14,7 +14,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -34,7 +33,7 @@ import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_SUCCESS;
 public class PasswordReset extends AppCompatActivity {
 
     EditText email;
-    Button resetPass;
+    TextView resetPass;
 
     private Snackbar snackbar;
 
@@ -60,7 +59,7 @@ public class PasswordReset extends AppCompatActivity {
         TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
         textView.setTextColor(getResources().getColor(R.color.YellowGreen));
 
-        Button login = (Button) findViewById(R.id.backToLoginBtn);
+        TextView login = (TextView) findViewById(R.id.backToLoginBtn);
         login.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent myIntent = new Intent(view.getContext(), LoginActivity.class);
@@ -70,7 +69,7 @@ public class PasswordReset extends AppCompatActivity {
         });
 
         email = (EditText) findViewById(R.id.passResetEmail);
-        resetPass = (Button) findViewById(R.id.resetPassBtn);
+        resetPass = (TextView) findViewById(R.id.resetPassBtn);
         resetPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

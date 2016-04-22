@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.Fragments.AnswerTouchHelper;
 import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.Fragments.HomeFragment;
 import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.MenuActivity;
 import com.bhaimadadchahiye.club.R;
@@ -48,14 +50,15 @@ public class Answers extends BackHandledFragment {
 
     private FloatingActionButton menuFAB;
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View parentView = inflater.inflate(R.layout.answers, container, false);
 
         RecyclerView recyclerView = (RecyclerView) parentView.findViewById(R.id.recycler_view_for_answers);
 
-        //noinspection ConstantConditions
         ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Answers");
 
         setHasOptionsMenu(true);
 
@@ -82,6 +85,10 @@ public class Answers extends BackHandledFragment {
         //Apply this adapter to the RecyclerView
         recyclerView.setAdapter(mSectionedAdapter);
 
+        ItemTouchHelper.Callback callback = new AnswerTouchHelper(mAdapter, recyclerView);
+        ItemTouchHelper helper = new ItemTouchHelper(callback);
+        helper.attachToRecyclerView(recyclerView);
+
         getAnswer();
 
         return parentView;
@@ -89,7 +96,8 @@ public class Answers extends BackHandledFragment {
 
     @Override
     public boolean onBackPressed() {
-        ((MenuActivity) getActivity()).changeFragment(new HomeFragment(), "home");
+        ((MenuActivity) getActivity()).changeFragment(new HomeFragment(), "home",
+                R.anim.enter_anim, R.anim.exit_anim);
         return true;
     }
 

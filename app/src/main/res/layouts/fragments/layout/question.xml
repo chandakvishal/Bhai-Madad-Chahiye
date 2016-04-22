@@ -10,6 +10,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/question_answer_fade"
         android:orientation="vertical">
 
         <TextView
@@ -26,19 +28,25 @@
             android:layout_height="75dp"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/questionTags"
-            android:background="@android:drawable/editbox_background_normal"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/edittext_post"
             android:hint="@string/title"
             android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
-            android:maxLength="120" />
+            android:maxLength="120"
+            android:paddingLeft="10dp" />
 
         <EditText
             android:id="@+id/questionBody"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="225dp"
             android:layout_below="@+id/questionTitle"
-            android:background="@android:drawable/editbox_background_normal"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/edittext_post"
             android:hint="@string/body"
-            android:inputType="textCapSentences|textAutoCorrect|textMultiLine" />
+            android:imeActionLabel="Submit"
+            android:imeOptions="actionDone"
+            android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
+            android:paddingLeft="10dp" />
 
         <EditText
             android:id="@+id/questionTags"
@@ -46,17 +54,20 @@
             android:layout_height="40dp"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/textView6"
-            android:background="@android:drawable/editbox_background_normal"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/edittext_post"
             android:hint="@string/tags"
             android:inputType="textCapSentences|textAutoCorrect"
-            android:maxLength="50" />
+            android:maxLength="50"
+            android:paddingLeft="10dp" />
 
         <Button
             android:id="@+id/postQuestionBtn"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_below="@+id/questionBody"
-            android:backgroundTint="@color/RoyalBlue"
+            android:background="@drawable/round_button"
+            android:backgroundTint="@color/DarkGray"
             android:text="@string/post_question"
             android:textStyle="bold"
             tools:targetApi="lollipop" />

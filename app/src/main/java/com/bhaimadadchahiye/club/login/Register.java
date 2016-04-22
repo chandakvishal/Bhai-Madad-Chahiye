@@ -16,7 +16,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -48,7 +47,7 @@ public class Register extends AppCompatActivity {
     EditText inputUsername;
     EditText inputEmail;
     EditText inputPassword;
-    Button btnRegister;
+    TextView btnRegister;
     private Snackbar snackbar;
 
     /**
@@ -76,7 +75,7 @@ public class Register extends AppCompatActivity {
         inputUsername = (EditText) findViewById(R.id.username);
         inputEmail = (EditText) findViewById(R.id.register_email);
         inputPassword = (EditText) findViewById(R.id.register_password);
-        btnRegister = (Button) findViewById(R.id.registerBtn);
+        btnRegister = (TextView) findViewById(R.id.registerBtn);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
