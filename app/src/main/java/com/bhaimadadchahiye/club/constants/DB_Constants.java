@@ -35,6 +35,8 @@ public class DB_Constants {
 
     public static final String KEY_LONGITUDE = "longitude";
 
+    public static final String KEY_LOCALITY = "locality";
+
     public static final String KEY_TIME = "timestamp";
 
     public static final String TABLE_LOGIN = "login";

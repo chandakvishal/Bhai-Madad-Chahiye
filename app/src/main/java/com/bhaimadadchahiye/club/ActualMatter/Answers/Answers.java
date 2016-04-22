@@ -3,6 +3,7 @@ package com.bhaimadadchahiye.club.ActualMatter.Answers;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -39,6 +40,8 @@ public class Answers extends BackHandledFragment {
 
     private static String questionTitle = null;
 
+    private static String questionBody = null;
+
     private List<Answer> questionList = new ArrayList<>();
 
     private String TAG = MenuActivity.class.getSimpleName();
@@ -50,6 +53,11 @@ public class Answers extends BackHandledFragment {
         View parentView = inflater.inflate(R.layout.answers, container, false);
 
         RecyclerView recyclerView = (RecyclerView) parentView.findViewById(R.id.recycler_view_for_answers);
+
+        //noinspection ConstantConditions
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
+
+        setHasOptionsMenu(true);
 
         //Floating Action Button Menu Configuration
         menuFAB = (FloatingActionButton) parentView.findViewById(R.id.post_answer_fab);
@@ -63,7 +71,7 @@ public class Answers extends BackHandledFragment {
 
         List<SimpleSectionedRecyclerViewAdapter.Section> sections = new ArrayList<>();
 
-        sections.add(new SimpleSectionedRecyclerViewAdapter.Section(0, questionTitle));
+        sections.add(new SimpleSectionedRecyclerViewAdapter.Section(0, questionBody));
 
         //Add your adapter to the sectionAdapter
         SimpleSectionedRecyclerViewAdapter.Section[] dummy = new SimpleSectionedRecyclerViewAdapter.Section[sections.size()];
@@ -98,9 +106,9 @@ public class Answers extends BackHandledFragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public void setQuestionTitle(String questionTitle) {
-        Answers.questionTitle = questionTitle;
-        Log.d(TAG, "setQuestionTitle: " + questionTitle);
+    public void setQuestion(Question question) {
+        Answers.questionTitle = question.title;
+        Answers.questionBody = question.body;
     }
 
     public void getAnswer() {
@@ -183,6 +191,7 @@ public class Answers extends BackHandledFragment {
 //                                Might be useful at a later stage, thus not removing
 //                                int rank = questionTitlesJsonObject.getInt("rank");
 
+                                Log.d(TAG, "onPostExecute: " + title + " " + email);
                                 Answer m = new Answer(email, title);
 
                                 questionList.add(0, m);

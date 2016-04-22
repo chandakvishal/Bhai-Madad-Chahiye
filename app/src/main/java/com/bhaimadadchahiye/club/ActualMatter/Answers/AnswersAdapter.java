@@ -3,6 +3,7 @@ package com.bhaimadadchahiye.club.ActualMatter.Answers;
 import android.app.Activity;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,8 +46,10 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.MyViewHo
 
         int viewType = getItemViewType(position);
         if (viewType == VIEW_TYPE_FILLED) {
+            Log.d("TAG", "onBindViewHolder: " + questionList.size());
             holder.title.setText(questionList.get(position).title);
-            holder.serial.setText(String.valueOf(questionList.get(position).email));
+            String email = "Answered By: " + String.valueOf(questionList.get(position).email);
+            holder.serial.setText(email);
 
             String color = bgColors[position % bgColors.length];
             holder.serial.setBackgroundColor(Color.parseColor(color));
@@ -55,11 +58,7 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.MyViewHo
 
     @Override
     public int getItemCount() {
-        if (questionList.size() == 0) {
-            return 1;
-        } else {
-            return questionList.size();
-        }
+        return questionList.size();
     }
 
     @Override
@@ -76,7 +75,7 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.MyViewHo
 
         public MyViewHolder(View view) {
             super(view);
-            title = (TextView) view.findViewById(R.id.title);
+            title = (TextView) view.findViewById(R.id.questionBodyAnswer);
             serial = (TextView) view.findViewById(R.id.serial);
         }
     }

@@ -56,5 +56,10 @@
         <activity
             android:name=".ActualMatter.NavigationMenu.MenuActivity"
             android:label="@string/toolbar" />
+
+        <activity
+            android:name=".ActualMatter.Search.Search"
+            android:label="@string/place_autocomplete_search_hint"
+            android:windowSoftInputMode="stateHidden"/>
     </application>
 </manifest>

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_margin="5dp"
-        android:padding="25dp"
+        android:padding="7.5dp"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -21,7 +21,17 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/serial"
         android:paddingLeft="20dp"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/title"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/serial"
+        android:gravity="right"
+        android:textSize="10sp"
+        android:textStyle="italic" />
 
 </RelativeLayout>

@@ -36,6 +36,8 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.title.setText(questionList.get(position).title);
         holder.serial.setText(String.valueOf(questionList.get(position).id));
+        String email = "Posted by: " + String.valueOf(questionList.get(position).email);
+        holder.email.setText(email);
 
         String color = bgColors[position % bgColors.length];
         holder.serial.setBackgroundColor(Color.parseColor(color));
@@ -47,12 +49,13 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, serial;
+        public TextView title, serial, email;
 
         public MyViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
             serial = (TextView) view.findViewById(R.id.serial);
+            email = (TextView) view.findViewById(R.id.email);
         }
     }
 }

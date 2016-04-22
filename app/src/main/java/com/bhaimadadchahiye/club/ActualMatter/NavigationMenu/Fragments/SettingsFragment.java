@@ -2,6 +2,7 @@ package com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,9 @@ public class SettingsFragment extends BackHandledFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View inflatedView = inflater.inflate(R.layout.settings, container, false);
+
+        //noinspection ConstantConditions
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
 
         setHasOptionsMenu(true);
 

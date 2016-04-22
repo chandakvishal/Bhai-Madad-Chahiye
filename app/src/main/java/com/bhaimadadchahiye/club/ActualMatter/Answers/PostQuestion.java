@@ -2,12 +2,15 @@ package com.bhaimadadchahiye.club.ActualMatter.Answers;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -25,7 +28,10 @@ import com.bhaimadadchahiye.club.library.UserFunctions;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_EMAIL;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_ERROR;
@@ -46,6 +52,8 @@ public class PostQuestion extends BackHandledFragment {
         final String[] tags = new String[1];
         final String[] title = new String[1];
         final String[] body = new String[1];
+
+        setHasOptionsMenu(true);
 
         View inflated = inflater.inflate(R.layout.question, container, false);
         //Asks the user for input i.e the question to be posted
@@ -104,10 +112,23 @@ public class PostQuestion extends BackHandledFragment {
         return true;
     }
 
+    /**
+     * react to the user tapping the back/up icon in the action bar
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private class PostData extends AsyncTask<String, Void, JSONObject> {
 
         private ProgressDialog pDialog;
-        String tags, title, body, email;
+        String tags, title, body, email, locality;
         Double latitude, longitude;
 
         @Override
@@ -125,6 +146,16 @@ public class PostQuestion extends BackHandledFragment {
             //Getting users current location (Kyu....mat puchna!!!)
             latitude = locationData.get(KEY_LATITUDE);
             longitude = locationData.get(KEY_LONGITUDE);
+            Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+            try {
+                List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                locality = addresses.get(0).getFeatureName();
+                if (locality == null) {
+                    locality = addresses.get(0).getLocality();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             tags = qTag.getText().toString();
             title = qTitle.getText().toString();
@@ -142,7 +173,7 @@ public class PostQuestion extends BackHandledFragment {
         protected JSONObject doInBackground(String... params) {
             UserFunctions userFunction = new UserFunctions();
             Log.d("PostQuestion: ", "doInBackground: Sent the question to store");
-            return userFunction.postQuestion(tags, title, body, email, latitude, longitude);
+            return userFunction.postQuestion(tags, title, body, email, latitude, longitude, locality);
         }
 
         @Override
@@ -158,6 +189,9 @@ public class PostQuestion extends BackHandledFragment {
                         //Dismiss the process dialogs
                         pDialog.dismiss();
                         snackbar.setText("Your Question has been successfully posted").show();
+                        qTag.setText("");
+                        qTitle.setText("");
+                        qBody.setText("");
                     } else if (Integer.parseInt(red) == 2) {
                         pDialog.dismiss();
                         snackbar.setText("Sorry, some glitch occurred at our end.").show();

@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">Bhai Madad Chahiye</string>
 
     <!-- Strings required for App -->
@@ -31,6 +31,8 @@
     <string name="body">Body</string>
     <string name="post_question">Post Question</string>
     <string name="post_answer">Post Answer</string>
+    <string name="questionBy">Posted by: </string>
+    <string name="answerBy">Answered By: </string>
 
     <!-- Strings related to Users -->
     <string name="registered_at">Registered at</string>
@@ -46,7 +48,7 @@
 
 
     <string name="title_send_feedback">Send feedback</string>
-    <string name="mail_feedback_email">bhai@bhaimadadchahie.club</string>
+    <string name="mail_feedback_email">bhai@bhaimadadchahiye.club</string>
     <string name="mail_feedback_subject">Feedback on your app</string>
     <string name="mail_feedback_message">Hi, \n\n I would like to give you some feedback:</string>
 
@@ -59,7 +61,6 @@
     <string name="feedback">Feel free to give a Feedback!</string>
     <string name="settings">Settings</string>
     <string name="developed">Developed By:\n\n Vishal Chandak</string>
-
 
     <string name="intro1">New to a place?\nConfused?</string>
     <string name="intro2">Looking for help?</string>

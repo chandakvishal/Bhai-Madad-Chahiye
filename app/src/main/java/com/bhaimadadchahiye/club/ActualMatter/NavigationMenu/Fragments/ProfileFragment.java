@@ -1,6 +1,7 @@
 package com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.Fragments;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -33,6 +34,9 @@ public class ProfileFragment extends BackHandledFragment {
         View inflated = inflater.inflate(R.layout.registered, container, false);
 
         Log.d("Details: ", String.valueOf(user.values()));
+
+        //noinspection ConstantConditions
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back);
 
         setHasOptionsMenu(true);
 

@@ -1,7 +1,10 @@
 package com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,6 +12,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +31,8 @@ import com.bhaimadadchahiye.club.ActualMatter.Answers.Question;
 import com.bhaimadadchahiye.club.ActualMatter.Answers.QuestionAdapter;
 import com.bhaimadadchahiye.club.ActualMatter.Answers.RecyclerTouchListener;
 import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.MenuActivity;
+import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.ResideMenu;
+import com.bhaimadadchahiye.club.ActualMatter.Search.Search;
 import com.bhaimadadchahiye.club.R;
 import com.bhaimadadchahiye.club.library.BackHandledFragment;
 import com.bhaimadadchahiye.club.library.DatabaseHandler;
@@ -43,9 +49,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_ERROR;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_LATITUDE;
@@ -57,30 +65,34 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
         LocationListener {
 
     private FloatingActionMenu menuFAB;
+
     private FloatingActionButton fab1;
+
     private FloatingActionButton fab2;
+
     private Handler mUiHandler = new Handler();
 
-    private List<Question> questionList = new ArrayList<>();
+    public ArrayList<Question> questionList = new ArrayList<>();
+
     private QuestionAdapter mAdapter;
 
     private String TAG = MenuActivity.class.getSimpleName();
-
-    public Answers ans = new Answers();
 
     private int offset;
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
     private GoogleApiClient mGoogleApiClient;
+
     private GPSTracker gpsTracker;
+
     private Boolean exit = false;
 
     private String savedJson;
 
-    public HomeFragment() {
-        setArguments(new Bundle());
-    }
+    private ResideMenu resideMenu;
+
+    public Answers ans = new Answers();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,7 +111,14 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
                 .build();
         gpsTracker = new GPSTracker(getActivity());
 
+        //noinspection ConstantConditions
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
+
         setHasOptionsMenu(true);
+
+        MenuActivity parentActivity = (MenuActivity) getActivity();
+
+        resideMenu = parentActivity.getResideMenu();
 
         //Floating Action Button Menu Configuration
         menuFAB = (FloatingActionMenu) parentView.findViewById(R.id.menu_red);
@@ -162,7 +181,7 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
             public void onClick(View view, int position) {
                 Question question = questionList.get(position);
 
-                ans.setQuestionTitle(question.title);
+                ans.setQuestion(question);
 
                 ((MenuActivity) getActivity()).changeFragment(new Answers(), "home");
             }
@@ -284,7 +303,7 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            onBackPressed();
+            resideMenu.openMenu(ResideMenu.DIRECTION_LEFT);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -327,14 +346,12 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
 
                 int rank = savedQuestionObject.getInt("rank");
                 String title = savedQuestionObject.getString("questionTitle");
-
-                Question m = new Question(rank, title);
-
+                String body = savedQuestionObject.getString("questionBody");
+                String email = savedQuestionObject.getString("email");
+                Question m = new Question(rank, title, email, body);
                 questionList.add(0, m);
-
             } catch (JSONException e) {
-                Log.e(TAG, "JSON Parsing error: " + e.getMessage
-                        ());
+                Log.e(TAG, "JSON Parsing error: " + e.getMessage());
             }
         }
     }
@@ -344,7 +361,12 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.fab1:
-                    ((MenuActivity) getActivity()).changeFragment(new PostQuestion(), "home");
+                    Intent myIntent = new Intent(getActivity(), Search.class);
+                    Bundle b = new Bundle();
+                    b.putParcelableArrayList("data", questionList);
+                    myIntent.putExtras(b);
+                    startActivityForResult(myIntent, 0);
+                    getActivity().overridePendingTransition(R.anim.animation1, R.anim.animation3);
                     break;
                 case R.id.fab2:
                     ((MenuActivity) getActivity()).changeFragment(new PostQuestion(), "home");
@@ -356,6 +378,8 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
     private class LoadQuestions extends AsyncTask<String, Void, JSONObject> {
 
         Double latitude, longitude;
+
+        String locality;
 
         @Override
         protected void onPreExecute() {
@@ -374,6 +398,17 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
                 latitude = 12.827561378;
                 longitude = 80.050422668;
             }
+            Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+            try {
+                List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                Log.d(TAG, "onPreExecute: " + addresses.get(0));
+                locality = addresses.get(0).getFeatureName();
+                if (locality == null) {
+                    locality = addresses.get(0).getLocality();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             super.onPreExecute();
         }
 
@@ -381,7 +416,7 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
         protected JSONObject doInBackground(String... params) {
             UserFunctions userFunction = new UserFunctions();
             Log.d("PostQuestion: ", "doInBackground: Sent the question to store");
-            return userFunction.loadQuestions(latitude, longitude, offset);
+            return userFunction.loadQuestions(latitude, longitude, offset, locality);
         }
 
         @Override
@@ -395,6 +430,7 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
                     String red = json.getString(KEY_ERROR);
 
                     if (Integer.parseInt(res) == 1) {
+                        questionList.clear();
 
                         //Dismiss the process dialogs
                         JSONArray response = (JSONArray) json.get("questions");
@@ -406,10 +442,12 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
                             for (int i = 0; i < response.length(); i++) {
 
                                 JSONObject questionTitlesJsonObject = response.getJSONObject(i);
-                                String title = String.valueOf(questionTitlesJsonObject.get("questionTitle"));
+                                String title = questionTitlesJsonObject.getString("questionTitle");
+                                String body = questionTitlesJsonObject.getString("questionBody");
+                                String email = questionTitlesJsonObject.getString("email");
                                 int rank = questionTitlesJsonObject.getInt("rank");
                                 offset = rank > offset ? rank : offset;
-                                Question m = new Question(rank, title);
+                                Question m = new Question(rank, title, email, body);
 
                                 questionList.add(0, m);
                             }

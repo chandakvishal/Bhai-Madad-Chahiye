@@ -1,11 +1,50 @@
 package com.bhaimadadchahiye.club.ActualMatter.Answers;
 
-public class Question {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Question implements Parcelable{
     public int id;
     public String title;
+    public String email;
+    public String body;
 
-    public Question(int id, String title) {
+    public Question(int id, String title, String email, String body) {
         this.title = title;
         this.id = id;
+        this.email = email;
+        this.body = body;
+    }
+
+    public static final Creator<Question> CREATOR = new Creator<Question>() {
+        @Override
+        public Question createFromParcel(Parcel in) {
+            return new Question(in);
+        }
+
+        @Override
+        public Question[] newArray(int size) {
+            return new Question[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(email);
+        dest.writeString(title);
+        dest.writeString(body);
+    }
+
+    public Question(Parcel source) {
+        id = source.readInt();
+        email = source.readString();
+        title = source.readString();
+        body = source.readString();
     }
 }

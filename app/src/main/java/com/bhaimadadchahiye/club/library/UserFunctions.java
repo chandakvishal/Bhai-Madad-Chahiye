@@ -6,17 +6,18 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import static com.bhaimadadchahiye.club.constants.DB_Constants.GET_ANSWER;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_EMAIL;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_FORGOT_PASS;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_FULLNAME;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_LATITUDE;
+import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_LOCALITY;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_LONGITUDE;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_NEW_PASS;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_PASSWORD;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_PHONE;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_TAG;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_USERNAME;
-import static com.bhaimadadchahiye.club.constants.DB_Constants.GET_ANSWER;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.POST_ANSWER;
 import static com.bhaimadadchahiye.club.constants.DB_Constants._ANSWER;
 import static com.bhaimadadchahiye.club.constants.DB_Constants._OFFSET;
@@ -117,23 +118,26 @@ public class UserFunctions {
         return jsonParser.getJSONFromUrl(locationUrl, dataToSend);
     }
 
-    public JSONObject postQuestion(String qTag, String qTitle, String qBody, String email, double latitude, double longitude) {
+    public JSONObject postQuestion(String qTag, String qTitle, String qBody, String email,
+                                   double latitude, double longitude, String locality) {
         HashMap<String, String> dataToSend = new HashMap<>();
         dataToSend.put(KEY_TAG, post_question_tag);
         dataToSend.put(KEY_EMAIL, email);
         dataToSend.put(KEY_LATITUDE, String.valueOf(latitude));
         dataToSend.put(KEY_LONGITUDE, String.valueOf(longitude));
+        dataToSend.put(KEY_LOCALITY, locality);
         dataToSend.put(_QTAG, qTag);
         dataToSend.put(_QTITLE, qTitle);
         dataToSend.put(_QBODY, qBody);
         return jsonParser.getJSONFromUrl(questionUrl, dataToSend);
     }
 
-    public JSONObject loadQuestions(double latitude, double longitude, int offset) {
+    public JSONObject loadQuestions(double latitude, double longitude, int offset, String locality) {
         HashMap<String, String> dataToSend = new HashMap<>();
         dataToSend.put(KEY_TAG, load_questions);
         dataToSend.put(KEY_LATITUDE, String.valueOf(latitude));
         dataToSend.put(KEY_LONGITUDE, String.valueOf(longitude));
+        dataToSend.put(KEY_LOCALITY, locality);
         dataToSend.put(_OFFSET, String.valueOf(offset));
         return jsonParser.getJSONFromUrl(questionUrl, dataToSend);
     }

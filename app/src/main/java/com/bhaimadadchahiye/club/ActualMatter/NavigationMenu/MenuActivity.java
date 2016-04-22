@@ -35,7 +35,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     private ResideMenuItem itemHome;
     private ResideMenuItem itemProfile;
     private ResideMenuItem itemFeedback;
-    //    private ResideMenuItem itemCalendar;
     private ResideMenuItem itemSettings;
     private GPSTracker gpsTracker;
     private BackHandledFragment selectedFragment;
@@ -56,12 +55,14 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         setUpMenu();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+//        ((Toolbar) findViewById(R.id.toolbar)).setLogo(R.drawable.ic_launcher);
+
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-
 
         CoordinatorLayout mLayout = (CoordinatorLayout) findViewById(R.id
                 .coordinatorLayout);
@@ -99,7 +100,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         } else if (id == R.id.action_help) {
             changeFragment(new Feedback(), "feedback");
         } else if (id == R.id.notification) {
-            snackbar.setText("This function is not available in free version.").show();
+            snackbar.setText("No new notifications to show").show();
             return false;
         }
         return super.onOptionsItemSelected(item);
@@ -133,6 +134,10 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
         // You can disable a direction by setting ->
         resideMenu.setSwipeDirectionDisable(ResideMenu.DIRECTION_RIGHT);
+    }
+
+    public ResideMenu getResideMenu() {
+        return resideMenu;
     }
 
     @Override

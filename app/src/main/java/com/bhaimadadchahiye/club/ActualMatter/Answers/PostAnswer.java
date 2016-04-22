@@ -8,6 +8,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -48,6 +49,8 @@ public class PostAnswer extends BackHandledFragment {
         View inflated = inflater.inflate(R.layout.post_answer, container, false);
         //Asks the user for input i.e the question to be posted
         answer_received = (EditText) inflated.findViewById(R.id.answer_received);
+
+        setHasOptionsMenu(true);
 
         //Snackbar Configuration
         final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) inflated.findViewById(R.id
@@ -90,11 +93,23 @@ public class PostAnswer extends BackHandledFragment {
         PostAnswer.questionTitle = questionTitle;
     }
 
-    //// TODO: 14-04-2016 Change back button behaviour
     @Override
     public boolean onBackPressed() {
         ((MenuActivity) getActivity()).changeFragment(new HomeFragment(), "home");
         return true;
+    }
+
+    /**
+     * react to the user tapping the back/up icon in the action bar
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private class PostData extends AsyncTask<String, Void, JSONObject> {
