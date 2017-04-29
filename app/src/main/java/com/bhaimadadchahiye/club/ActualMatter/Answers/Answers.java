@@ -97,7 +97,7 @@ public class Answers extends BackHandledFragment {
     @Override
     public boolean onBackPressed() {
         ((MenuActivity) getActivity()).changeFragment(new HomeFragment(), "home",
-                R.anim.enter_anim, R.anim.exit_anim);
+                                                      R.anim.enter_anim, R.anim.exit_anim);
         return true;
     }
 

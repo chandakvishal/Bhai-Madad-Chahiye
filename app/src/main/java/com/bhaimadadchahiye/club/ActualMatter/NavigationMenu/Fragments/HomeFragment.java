@@ -73,8 +73,8 @@ import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_LONGITUDE;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_SUCCESS;
 
 public class HomeFragment extends BackHandledFragment implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+                                                                 GoogleApiClient.OnConnectionFailedListener,
+                                                                 LocationListener {
 
     private FloatingActionMenu menuFAB;
 
@@ -198,13 +198,13 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
                                             fetchAnswers();
                                         }
                                     }
-            );
+                                   );
         }
 
         swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
+                                                   android.R.color.holo_green_light,
+                                                   android.R.color.holo_orange_light,
+                                                   android.R.color.holo_red_light);
 
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
             @Override
@@ -247,6 +247,9 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
         });
     }
 
+    /**
+     * Check for the location, as soon as the app starts.
+     */
     protected void startLocationUpdates() {
         gpsTracker.locationChecker(mGoogleApiClient, getActivity());
     }
@@ -261,8 +264,9 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
     @Override
     public void onStart() {
         super.onStart();
-        if (mGoogleApiClient != null)
+        if (mGoogleApiClient != null) {
             mGoogleApiClient.connect();
+        }
     }
 
     @Override
@@ -281,6 +285,9 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
         super.onStop();
     }
 
+    /**
+     * Get location if the app is resumed from Background
+     */
     @Override
     public void onResume() {
         super.onResume();
@@ -308,13 +315,19 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
 
     }
 
+    /**
+     * This method just handled the back button so that the use get's a prompt like:
+     * "Press Back again to exit.."
+     *
+     * @return is back pressed twice consecutively
+     */
     @Override
     public boolean onBackPressed() {
         if (exit) {
             getActivity().finish(); // finish activity
         } else {
             Toast.makeText(getActivity().getApplicationContext(), "Press Back again to Exit.",
-                    Toast.LENGTH_SHORT).show();
+                           Toast.LENGTH_SHORT).show();
             exit = true;
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -355,12 +368,19 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
         SharedPreferences.Editor outState = getActivity().getSharedPreferences("order", Context.MODE_APPEND).edit();
         outState.putString("questionTitleList", savedJson);
         Log.d(TAG, "******STATE SAVED******");
-        if (savedJson != null)
+        if (savedJson != null) {
             Log.d("SAVED JSON", savedJson);
+        }
         outState.putBoolean("saved", true);
         outState.apply();
     }
 
+    /**
+     * In case when the user is traversing between the views, we save the data locally
+     * in SharedPreferences and load it back when the fragment changes back to current
+     *
+     * @param questionData questions to load
+     */
     public void loadSavedData(SharedPreferences questionData) {
         JSONArray response = null;
         String res = questionData.getString("questionTitleList", "");
@@ -389,6 +409,11 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
         }
     }
 
+    /**
+     * Handle Floating Action button clicks
+     * 1. Search
+     * 2. Post a Question
+     */
     private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -408,6 +433,11 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
         }
     };
 
+    /**
+     * Save Questions as JSON
+     *
+     * @param questionList
+     */
     public void setSavedJson(List<Question> questionList) {
         JSONArray jsonArray = new JSONArray();
 
@@ -433,7 +463,6 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
     /**
      * Async Task to check whether internet connection is working
      **/
-
     private class NetCheck extends AsyncTask<String, Void, Boolean> {
         private ProgressDialog nDialog;
 
@@ -492,13 +521,13 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
             } else {
                 nDialog.dismiss();
                 Snackbar snackbar = Snackbar.make(parentView, "Error in Network Connection", Snackbar.LENGTH_LONG)
-                        .setActionTextColor(getResources().getColor(R.color.IndianRed))
-                        .setAction("Retry", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                new NetCheck().execute();
-                            }
-                        });
+                                            .setActionTextColor(getResources().getColor(R.color.IndianRed))
+                                            .setAction("Retry", new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    new NetCheck().execute();
+                                                }
+                                            });
                 snackbar.show();
             }
             swipeRefreshLayout.setRefreshing(false);
@@ -513,18 +542,13 @@ public class HomeFragment extends BackHandledFragment implements GoogleApiClient
 
         @Override
         protected void onPreExecute() {
-
-//            Date date = new Date();
-//            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
-//            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-//            formattedDate = sdf.format(date);
-
             DatabaseHandler db = new DatabaseHandler(getActivity().getApplicationContext());
             HashMap<String, Double> locationData = db.getUserLocation();
             //Getting users current location (Kyu....mat puchna!!!)
             latitude = locationData.get(KEY_LATITUDE);
             longitude = locationData.get(KEY_LONGITUDE);
             if (latitude == null || longitude == null) {
+                // Magic Number - Location where the App was made
                 latitude = 12.827561378;
                 longitude = 80.050422668;
             }

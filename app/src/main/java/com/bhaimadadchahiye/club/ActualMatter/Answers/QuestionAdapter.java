@@ -31,8 +31,8 @@ import java.util.List;
 public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyViewHolder> {
 
     private String TAG = QuestionAdapter.class.getSimpleName();
-    public List<Question> questionList;
-    HomeFragment hm = new HomeFragment();
+    private List<Question> questionList;
+    private HomeFragment hm = new HomeFragment();
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private List<Question> questionListToDelete = new ArrayList<>();
     private Activity activity;
@@ -46,7 +46,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.question_list_row, parent, false);
+                                      .inflate(R.layout.question_list_row, parent, false);
 
         return new MyViewHolder(itemView);
     }
@@ -65,14 +65,14 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
         return questionList.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
+    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener {
         public TextView title;
-        public ImageView image;
+        ImageView image;
         public TextView email;
         private FrameLayout frameLayout;
         private ShareActionProvider mShareActionProvider;
 
-        public MyViewHolder(View view) {
+        MyViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
             image = (ImageView) view.findViewById(R.id.userImage);
@@ -150,7 +150,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
                 //Blur background
 //                frameLayout.getForeground().setAlpha(100);
 
-                frameLayout.setAlpha((float)0.3);
+                frameLayout.setAlpha((float) 0.3);
 
                 // Invoke setHorizontalOffset() with the negative width to move left by that distance
                 listPopupClass.getDeclaredMethod("setHorizontalOffset", argTypes).invoke(listPopup, 17);
@@ -166,7 +166,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.MyView
             popupMenu.setOnDismissListener(new PopupMenu.OnDismissListener() {
                 @Override
                 public void onDismiss(PopupMenu popupMenu) {
-                    frameLayout.setAlpha((float)1);
+                    frameLayout.setAlpha((float) 1);
                 }
             });
 

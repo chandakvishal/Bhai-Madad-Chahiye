@@ -34,7 +34,7 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.MyViewHo
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     private List<Answer> answerListToDelete = new ArrayList<>();
 
-    public AnswersAdapter(Activity activity, List<Answer> questionList) {
+    AnswersAdapter(Activity activity, List<Answer> questionList) {
         this.questionList = questionList;
         ctx = activity.getApplicationContext();
         this.activity = activity;
@@ -128,17 +128,15 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.MyViewHo
                 public boolean onMenuItemClick(MenuItem item) {
                     switch (item.getItemId()) {
                         case R.id.album_overflow_delete:
-                            Toast.makeText(view.getContext(), "Position is " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(view.getContext(), "Copied to Clipboard", Toast.LENGTH_SHORT).show();
                             return true;
 
                         case R.id.album_overflow_share:
-                            Toast.makeText(view.getContext(), "Position is " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
-
+                            Toast.makeText(view.getContext(), "Shared on Facebook", Toast.LENGTH_SHORT).show();
                             return true;
 
                         case R.id.album_overflow_fav:
-                            Toast.makeText(view.getContext(), "Position is " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
-
+                            Toast.makeText(view.getContext(), "Stored as Favourite", Toast.LENGTH_SHORT).show();
                             return true;
 
                         default:
@@ -185,21 +183,23 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.MyViewHo
     public void onItemRemove(final RecyclerView.ViewHolder viewHolder, final RecyclerView recyclerView) {
         final int adapterPosition = viewHolder.getAdapterPosition();
         Log.d(TAG, "onItemRemove: " + adapterPosition);
-        final Answer answer = questionList.get(adapterPosition);
+        // Doing -1 as adapterPosition gives count from 1 and list uses from 0
+        final Answer answer = questionList.get(adapterPosition - 1);
         Snackbar snackbar = Snackbar
                 .make(recyclerView, "Question Removed", Snackbar.LENGTH_LONG)
                 .setAction("UNDO", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        questionList.add(adapterPosition, answer);
+                        questionList.add(adapterPosition - 1, answer);
                         notifyItemInserted(adapterPosition);
                         recyclerView.scrollToPosition(adapterPosition);
                         answerListToDelete.remove(answer);
                     }
                 });
         snackbar.show();
-        questionList.remove(adapterPosition);
+        questionList.remove(adapterPosition - 1);
         notifyItemRemoved(adapterPosition);
+//        notifyItemRangeChanged(adapterPosition,questionList.size());
         answerListToDelete.add(answer);
     }
 }
