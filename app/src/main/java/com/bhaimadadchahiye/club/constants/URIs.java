@@ -5,17 +5,17 @@ package com.bhaimadadchahiye.club.constants;
  */
 public class URIs {
 
-    public static String loginURL = "http://localhost/bhaiMadadChahiye/";
+    public static String loginURL = "http://bhaimadadchahiye.xyz/bhaiMadadChahiye/";
 
-    public static String registerURL = "http://localhost/bhaiMadadChahiye/";
+    public static String registerURL = "http://bhaimadadchahiye.xyz/bhaiMadadChahiye/";
 
-    public static String forpassURL = "http://localhost/bhaiMadadChahiye/";
+    public static String forpassURL = "http://bhaimadadchahiye.xyz/bhaiMadadChahiye/";
 
-    public static String chgpassURL = "http://localhost/bhaiMadadChahiye/";
+    public static String chgpassURL = "http://bhaimadadchahiye.xyz/bhaiMadadChahiye/";
 
-    public static String locationUrl = "http://localhost/bhaiMadadChahiye/location/";
+    public static String locationUrl = "http://bhaimadadchahiye.xyz/bhaiMadadChahiye/location/";
 
-    public static String questionUrl = "http://localhost/bhaiMadadChahiye/question/";
+    public static String questionUrl = "http://bhaimadadchahiye.xyz/bhaiMadadChahiye/question/";
 
     public static String login_tag = "login";
 

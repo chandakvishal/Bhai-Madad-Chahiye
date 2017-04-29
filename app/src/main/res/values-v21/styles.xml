@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/SteelBlue</item>
         <item name="colorPrimaryDark">@color/SteelBlue</item>
         <item name="colorAccent">@color/CornflowerBlue</item>
-        <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="lollipop">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds" tools:targetApi="lollipop">false</item>
         <item name="android:statusBarColor" tools:targetApi="lollipop">@color/SteelBlueDark</item>
 
         <item name="popupMenuStyle">@style/PopupMenu</item>

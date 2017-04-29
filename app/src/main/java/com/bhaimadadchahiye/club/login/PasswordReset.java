@@ -48,10 +48,10 @@ public class PasswordReset extends AppCompatActivity {
         setContentView(R.layout.password_reset);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                             WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id
-                .coordinatorLayout);
+                                                                                             .coordinatorLayout);
 
         snackbar = Snackbar.make(coordinatorLayout, "Invalid Credentials", Snackbar.LENGTH_LONG);
         View snackBarView = snackbar.getView();
@@ -97,7 +97,7 @@ public class PasswordReset extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(String... args) {
 
-            /**
+            /*
              * Gets current device state and checks for working internet connection by trying Google.
              **/
             ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -171,25 +171,29 @@ public class PasswordReset extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(JSONObject json) {
-            /**
+            /*
              * Checks if the Password Change Process is sucesss
              **/
             try {
-                if (json.getString(KEY_SUCCESS) != null) {
-                    String res = json.getString(KEY_SUCCESS);
-                    String red = json.getString(KEY_ERROR);
+                if (json != null) {
+                    if (json.getString(KEY_SUCCESS) != null) {
+                        String res = json.getString(KEY_SUCCESS);
+                        String red = json.getString(KEY_ERROR);
 
-                    if (Integer.parseInt(res) == 1) {
-                        pDialog.dismiss();
-                        snackbar.setText("A recovery email is sent to you, see it for more details.").show();
+                        if (Integer.parseInt(res) == 1) {
+                            pDialog.dismiss();
+                            snackbar.setText("A recovery email is sent to you, see it for more details.").show();
 
-                    } else if (Integer.parseInt(red) == 2) {
-                        pDialog.dismiss();
-                        snackbar.setText("Your email does not exist in our database.").show();
-                    } else {
-                        pDialog.dismiss();
-                        snackbar.setText("Error occured in changing Password").show();
+                        } else if (Integer.parseInt(red) == 2) {
+                            pDialog.dismiss();
+                            snackbar.setText("Your email does not exist in our database.").show();
+                        } else {
+                            pDialog.dismiss();
+                            snackbar.setText("Error occured in changing Password").show();
+                        }
                     }
+                } else {
+                    snackbar.setText("An error occurred. Please try after sometime").show();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
