@@ -7,6 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import com.bhaimadadchahiye.club.NavigationMenu.MenuActivity;
 import com.bhaimadadchahiye.club.R;
 import com.bhaimadadchahiye.club.utils.DatabaseHandler;
+import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.answers.Answers;
+import io.fabric.sdk.android.Fabric;
 
 import static com.bhaimadadchahiye.club.constants.DB_Constants.TABLE_LOGIN;
 
@@ -15,6 +18,7 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics(), new Answers());
         setContentView(R.layout.splash_screen);
 
         DatabaseHandler localDB = new DatabaseHandler(SplashScreen.this);
