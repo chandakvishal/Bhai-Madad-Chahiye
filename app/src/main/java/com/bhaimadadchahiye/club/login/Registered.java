@@ -8,7 +8,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.bhaimadadchahiye.club.R;
-import com.bhaimadadchahiye.club.library.DatabaseHandler;
+import com.bhaimadadchahiye.club.utils.DatabaseHandler;
 
 import java.util.HashMap;
 
@@ -36,10 +36,7 @@ public class Registered extends AppCompatActivity {
         HashMap user;
         user = db.getUserDetails();
 
-        /**
-         * Displays the registration details in Text view
-         **/
-
+         // Displays the registration details in Text view
         final TextView fname = (TextView) findViewById(R.id.fullName);
         final TextView lname = (TextView) findViewById(R.id.phoneNumber);
         final TextView uname = (TextView) findViewById(R.id.username);

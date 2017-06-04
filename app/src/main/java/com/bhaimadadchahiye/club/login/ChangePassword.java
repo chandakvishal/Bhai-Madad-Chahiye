@@ -19,10 +19,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.MenuActivity;
+import com.bhaimadadchahiye.club.NavigationMenu.MenuActivity;
 import com.bhaimadadchahiye.club.R;
-import com.bhaimadadchahiye.club.library.DatabaseHandler;
-import com.bhaimadadchahiye.club.library.UserFunctions;
+import com.bhaimadadchahiye.club.utils.DatabaseHandler;
+import com.bhaimadadchahiye.club.utils.UserFunctions;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -118,9 +118,7 @@ public class ChangePassword extends Activity {
 
         @Override
         protected Boolean doInBackground(String... args) {
-            /**
-             * Gets current device state and checks for working internet connection by trying Google.
-             **/
+             // Gets current device state and checks for working internet connection by trying Google.
             ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 Network[] networks = cm.getAllNetworks();

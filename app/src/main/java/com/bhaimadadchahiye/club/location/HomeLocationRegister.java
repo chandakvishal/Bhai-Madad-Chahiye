@@ -3,9 +3,9 @@ package com.bhaimadadchahiye.club.location;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.MenuActivity;
-import com.bhaimadadchahiye.club.library.DatabaseHandler;
-import com.bhaimadadchahiye.club.library.UserFunctions;
+import com.bhaimadadchahiye.club.NavigationMenu.MenuActivity;
+import com.bhaimadadchahiye.club.utils.DatabaseHandler;
+import com.bhaimadadchahiye.club.utils.UserFunctions;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,7 +17,7 @@ import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_LATITUDE;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.KEY_LONGITUDE;
 import static com.bhaimadadchahiye.club.constants.DB_Constants.TABLE_LOCATION;
 
-public class HomeLocationRegister extends AsyncTask<Double, Void, JSONObject> {
+class HomeLocationRegister extends AsyncTask<Double, Void, JSONObject> {
 
     @Override
     protected void onPreExecute() {

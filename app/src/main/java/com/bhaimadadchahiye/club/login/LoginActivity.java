@@ -20,10 +20,10 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.MenuActivity;
+import com.bhaimadadchahiye.club.NavigationMenu.MenuActivity;
 import com.bhaimadadchahiye.club.R;
-import com.bhaimadadchahiye.club.library.DatabaseHandler;
-import com.bhaimadadchahiye.club.library.UserFunctions;
+import com.bhaimadadchahiye.club.utils.DatabaseHandler;
+import com.bhaimadadchahiye.club.utils.UserFunctions;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -77,9 +77,7 @@ public class LoginActivity extends AppCompatActivity {
         inputPass = (EditText) findViewById(R.id.password);
         //populateAutoComplete();
 
-        /**
-         * To change the activity to reset password activity
-         */
+         //To change the activity to reset password activity
         passreset.setOnClickListener(new View.OnClickListener() {
             @SuppressWarnings("ConstantConditions")
             public void onClick(View view) {
@@ -88,15 +86,11 @@ public class LoginActivity extends AppCompatActivity {
                 Intent myIntent = new Intent(view.getContext(), PasswordReset.class);
                 startActivityForResult(myIntent, 0);
                 overridePendingTransition(R.anim.animation1, R.anim.animation3);
-
                 //finish();
             }
         });
 
-        /**
-         * To change the activity to register new id activity
-         */
-
+        // To change the activity to register new id activity
         btnLogin.setOnClickListener(new View.OnClickListener() {
 
             @SuppressWarnings("ConstantConditions")
@@ -152,9 +146,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(String... args) {
 
-            /**
-             * Gets current device state and checks for working internet connection by trying Google.
-             **/
+             // Gets current device state and checks for working internet connection by trying Google.
             ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 Network[] networks = cm.getAllNetworks();
@@ -198,7 +190,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Async Task to get and send data to My Sql database through JSON respone.
+     * Async Task to get and send JSON data to server.
      **/
     private class ProcessLogin extends AsyncTask<String, Void, JSONObject> {
 
@@ -242,15 +234,13 @@ public class LoginActivity extends AppCompatActivity {
                             pDialog.setTitle("Getting Data");
                             DatabaseHandler db = new DatabaseHandler(getApplicationContext());
                             JSONObject json_user = json.getJSONObject("user");
-                            /**
-                             * Clear all previous data in SQlite database.
-                             **/
+
+                            // Clear all previous data in SQlite database.
                             UserFunctions logout = new UserFunctions();
                             logout.logoutUser(getApplicationContext(), false);
                             db.addUser(json_user.getString(KEY_FULLNAME), json_user.getString(KEY_PHONE), json_user.getString(KEY_EMAIL), json_user.getString(KEY_USERNAME), json_user.getString(KEY_UID), json_user.getString(KEY_CREATED_AT));
-                            /**
-                             *If JSON array details are stored in SQlite it launches the User Panel.
-                             **/
+
+                            //If JSON array details are stored in SQlite it launches the User Panel.
                             Intent registered = new Intent(getApplicationContext(), MenuActivity.class);
                             registered.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             registered.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -258,9 +248,7 @@ public class LoginActivity extends AppCompatActivity {
                             registered.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             pDialog.dismiss();
                             startActivity(registered);
-                            /**
-                             * Close Login Screen
-                             **/
+                             //Close Login Screen
                             finish();
                         } else {
 

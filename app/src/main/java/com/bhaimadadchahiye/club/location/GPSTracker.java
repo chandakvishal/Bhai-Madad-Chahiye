@@ -13,8 +13,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.MenuActivity;
-import com.bhaimadadchahiye.club.library.DatabaseHandler;
+import com.bhaimadadchahiye.club.NavigationMenu.MenuActivity;
+import com.bhaimadadchahiye.club.utils.DatabaseHandler;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
@@ -29,13 +29,13 @@ import static com.bhaimadadchahiye.club.constants.DB_Constants.TABLE_LOCATION;
 
 public class GPSTracker extends AppCompatActivity {
 
-    public static final int REQUEST_LOCATION = 199;
+    private static final int REQUEST_LOCATION = 199;
     // The minimum time between updates in milliseconds
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 3; // 3 minute
     // Declaring a Location Manager
-    protected LocationManager locationManager;
+    private LocationManager locationManager;
     private Context mContext;
-    public Location currentBestLocation = null;
+    private Location currentBestLocation = null;
     private ServiceLocationListener gpsLocationListener;
     private ServiceLocationListener networkLocationListener;
     private ServiceLocationListener passiveLocationListener;
@@ -118,16 +118,18 @@ public class GPSTracker extends AppCompatActivity {
             if (gpsProvider != null) {
                 Location lastKnownGPSLocation = locationManager.getLastKnownLocation(gpsProvider.getName());
                 if (lastKnownGPSLocation != null) {
-                    if (isBetterLocation(lastKnownGPSLocation, currentBestLocation))
+                    if (isBetterLocation(lastKnownGPSLocation, currentBestLocation)) {
                         currentBestLocation = lastKnownGPSLocation;
+                    }
                 }
             }
 
             if (networkProvider != null) {
                 Location lastKnownNetworkLocation = locationManager.getLastKnownLocation(networkProvider.getName());
                 if (lastKnownNetworkLocation != null) {
-                    if (isBetterLocation(lastKnownNetworkLocation, currentBestLocation))
+                    if (isBetterLocation(lastKnownNetworkLocation, currentBestLocation)) {
                         currentBestLocation = lastKnownNetworkLocation;
+                    }
                 }
             }
 
@@ -177,7 +179,7 @@ public class GPSTracker extends AppCompatActivity {
      * @param location            The new Location that you want to evaluate
      * @param currentBestLocation The current Location fix, to which you want to compare the new one
      */
-    protected boolean isBetterLocation(Location location, Location currentBestLocation) {
+    private boolean isBetterLocation(Location location, Location currentBestLocation) {
         if (currentBestLocation == null) {
             // A new location is always better than no location
             return true;
@@ -206,7 +208,7 @@ public class GPSTracker extends AppCompatActivity {
 
         // Check if the old and new location are from the same provider
         boolean isFromSameProvider = isSameProvider(location.getProvider(),
-                currentBestLocation.getProvider());
+                                                    currentBestLocation.getProvider());
 
         // Determine location quality using a combination of timeliness and accuracy
         if (isMoreAccurate) {
@@ -229,9 +231,9 @@ public class GPSTracker extends AppCompatActivity {
         return provider1.equals(provider2);
     }
 
-    public class ServiceLocationListener implements android.location.LocationListener {
+    private class ServiceLocationListener implements android.location.LocationListener {
 
-        public Location finalLocation;
+        Location finalLocation;
 
         @Override
         public void onLocationChanged(Location newLocation) {
@@ -270,7 +272,7 @@ public class GPSTracker extends AppCompatActivity {
             this.finalLocation = finalLocation;
         }
 
-        public void storeLocation() {
+        void storeLocation() {
             Location currentBestLocation = getLocation();
             DatabaseHandler localDB = new DatabaseHandler(MenuActivity.getcontext());
             //Check for home location
@@ -280,7 +282,7 @@ public class GPSTracker extends AppCompatActivity {
             }
         }
 
-        public void saveLocation() {
+        void saveLocation() {
             new CurrentLocationRegister().execute(currentBestLocation.getLatitude(), currentBestLocation.getLongitude());
         }
     }

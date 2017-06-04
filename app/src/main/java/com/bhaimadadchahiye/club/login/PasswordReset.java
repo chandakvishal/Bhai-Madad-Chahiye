@@ -18,7 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bhaimadadchahiye.club.R;
-import com.bhaimadadchahiye.club.library.UserFunctions;
+import com.bhaimadadchahiye.club.utils.UserFunctions;
 
 import org.json.JSONException;
 import org.json.JSONObject;

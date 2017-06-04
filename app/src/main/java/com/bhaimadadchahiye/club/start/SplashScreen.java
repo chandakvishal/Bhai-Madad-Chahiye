@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.MenuActivity;
+import com.bhaimadadchahiye.club.NavigationMenu.MenuActivity;
 import com.bhaimadadchahiye.club.R;
-import com.bhaimadadchahiye.club.library.DatabaseHandler;
+import com.bhaimadadchahiye.club.utils.DatabaseHandler;
 
 import static com.bhaimadadchahiye.club.constants.DB_Constants.TABLE_LOGIN;
 

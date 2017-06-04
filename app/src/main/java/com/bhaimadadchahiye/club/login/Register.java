@@ -19,10 +19,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.bhaimadadchahiye.club.ActualMatter.NavigationMenu.MenuActivity;
+import com.bhaimadadchahiye.club.NavigationMenu.MenuActivity;
 import com.bhaimadadchahiye.club.R;
-import com.bhaimadadchahiye.club.library.DatabaseHandler;
-import com.bhaimadadchahiye.club.library.UserFunctions;
+import com.bhaimadadchahiye.club.utils.DatabaseHandler;
+import com.bhaimadadchahiye.club.utils.UserFunctions;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,9 +67,7 @@ public class Register extends AppCompatActivity {
         TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
         textView.setTextColor(getResources().getColor(R.color.YellowGreen));
 
-        /**
-         * Defining all layout items
-         **/
+         // Defining all layout items
         inputFullName = (EditText) findViewById(R.id.register_name);
         inputPhoneNumber = (EditText) findViewById(R.id.phoneNumber);
         inputUsername = (EditText) findViewById(R.id.username);
@@ -80,7 +78,7 @@ public class Register extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        /**
+        /*
          * Register Button click event.
          * A Snackbar is set to alert when the fields are empty.
          * Another Snackbar is set to alert Username must be 5 characters.
@@ -138,9 +136,10 @@ public class Register extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(String... args) {
-            /**
-             * Gets current device state and checks for working internet connection by trying Google.
-             **/
+             /*
+              TODO: Change the implementation to a more reliable solution
+              Gets current device state and checks for working internet connection by trying Google.
+             */
             ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 Network[] networks = cm.getAllNetworks();
@@ -217,9 +216,6 @@ public class Register extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(JSONObject json) {
-            /**
-             * Checks for success message.
-             **/
             try {
                 if (json.getString(KEY_SUCCESS) != null) {
                     String res = json.getString(KEY_SUCCESS);
@@ -232,22 +228,18 @@ public class Register extends AppCompatActivity {
                         DatabaseHandler db = new DatabaseHandler(getApplicationContext());
                         JSONObject json_user = json.getJSONObject("user");
 
-                        /**
-                         * Removes all the previous data in the SQlite database
-                         **/
+                        // Reset Local DB to remove all user data
                         UserFunctions logout = new UserFunctions();
                         logout.logoutUser(getApplicationContext(), false);
                         db.addUser(json_user.getString(KEY_FULLNAME), json_user.getString(KEY_PHONE), json_user.getString(KEY_EMAIL), json_user.getString(KEY_USERNAME), json_user.getString(KEY_UID), json_user.getString(KEY_CREATED_AT));
-                        /**
+                        /*
                          * Stores registered data in SQlite Database
                          * Launch Registered screen
-                         **/
+                         */
                         Thread.sleep(1000);
                         pDialog.dismiss();
                         final Intent registered = new Intent(getApplicationContext(), MenuActivity.class);
-                        /**
-                         * Close all views before launching Registered screen
-                         **/
+                         // Close all views before launching Registered screen
                         registered.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         registered.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         registered.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);

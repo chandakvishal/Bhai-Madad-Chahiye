@@ -10,7 +10,7 @@ import java.util.List;
 class PagerAdapter extends FragmentPagerAdapter {
     private List<Fragment> fragments;
 
-    public PagerAdapter(FragmentManager fm, @NonNull List<Fragment> fragments) {
+    PagerAdapter(FragmentManager fm, @NonNull List<Fragment> fragments) {
         super(fm);
         this.fragments = fragments;
     }

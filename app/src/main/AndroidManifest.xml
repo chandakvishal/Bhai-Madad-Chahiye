@@ -54,11 +54,11 @@
             android:label="@string/change_password" />
 
         <activity
-            android:name=".ActualMatter.NavigationMenu.MenuActivity"
+            android:name=".NavigationMenu.MenuActivity"
             android:label="@string/toolbar" />
 
         <activity
-            android:name=".ActualMatter.Search.Search"
+            android:name=".Search.Search"
             android:label="@string/place_autocomplete_search_hint"
             android:windowSoftInputMode="stateHidden"/>
     </application>

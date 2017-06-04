@@ -62,8 +62,8 @@ public class AppIntroViewPager extends ViewPager {
     }
 
     private boolean checkPagingState(MotionEvent event) {
-        if (!pagingEnabled) {
-            return true;
+        if (pagingEnabled) {
+            return false;
         }
 
         if (!nextPagingEnabled) {

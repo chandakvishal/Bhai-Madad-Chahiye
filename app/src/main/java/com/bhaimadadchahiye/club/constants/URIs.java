@@ -2,6 +2,9 @@ package com.bhaimadadchahiye.club.constants;
 
 /**
  * URLs for various operations
+ *
+ * Before changing the values for these constants, make sure that the server changes are also in place
+ * to accept the new keys. If not, server will start throwing errors.
  */
 public class URIs {
 
@@ -9,9 +12,9 @@ public class URIs {
 
     public static String registerURL = "http://bhaimadadchahiye.xyz/bhaiMadadChahiye/";
 
-    public static String forpassURL = "http://bhaimadadchahiye.xyz/bhaiMadadChahiye/";
+    public static String forgetPasswordURL = "http://bhaimadadchahiye.xyz/bhaiMadadChahiye/";
 
-    public static String chgpassURL = "http://bhaimadadchahiye.xyz/bhaiMadadChahiye/";
+    public static String changePasswordURL = "http://bhaimadadchahiye.xyz/bhaiMadadChahiye/";
 
     public static String locationUrl = "http://bhaimadadchahiye.xyz/bhaiMadadChahiye/location/";
 
@@ -21,13 +24,13 @@ public class URIs {
 
     public static String register_tag = "register";
 
-    public static String forpass_tag = "forpass";
+    public static String forgetPasswordTag = "forpass";
 
-    public static String chgpass_tag = "chgpass";
+    public static String changePasswordTag = "chgpass";
 
-    public static String home_location_tag = "homeLocation";
+    public static String homeLocationTag = "homeLocation";
 
-    public static String post_question_tag = "postQuestion";
+    public static String postQuestionTag = "postQuestion";
 
-    public static String load_questions = "aurDikhao";
+    public static String loadQuestions = "aurDikhao";
 }

@@ -4,18 +4,18 @@ import android.content.Context;
 import android.view.animation.Interpolator;
 import android.widget.Scroller;
 
-public class ScrollerCustomDuration extends Scroller {
+class ScrollerCustomDuration extends Scroller {
 
     private double mScrollFactor = 6;
 
-    public ScrollerCustomDuration(Context context, Interpolator interpolator) {
+    ScrollerCustomDuration(Context context, Interpolator interpolator) {
         super(context, interpolator);
     }
 
     /**
      * Set the factor by which the duration will change
      */
-    public void setScrollDurationFactor(double scrollFactor) {
+    void setScrollDurationFactor(double scrollFactor) {
         mScrollFactor = scrollFactor;
     }
 
